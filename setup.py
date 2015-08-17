@@ -1,6 +1,6 @@
 from setuptools import setup
 from pip.req import parse_requirements
-
+import os
 
 install_reqs = list(parse_requirements("requirements", session = {}))
 def version():
@@ -13,5 +13,7 @@ setup(  name="wutu",
         author_email="zaibacu@gmail.com",
         license="MIT",
         packages=["wutu"],
-        install_requires=[str(ir.req) for ir in install_reqs]
+        install_requires=[str(ir.req) for ir in install_reqs],
+        test_suite="nose.collector",
+        tests_require=['nose']
     )
