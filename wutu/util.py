@@ -14,7 +14,7 @@ def load_module_config(module, locator=current):
 
 def load_module(module, locator=current):
 	conf = load_module_config(module, locator)
-	mod = importlib.import_module("wutu.tests.modules.{0}.{1}".format(module, conf.get("DEFAULT", "module_name")))
+	mod = importlib.import_module("modules.{0}.{1}".format(module, conf.get("DEFAULT", "module_name")))
 	return getattr(mod, conf.get("DEFAULT", "class_name"))()
 
 def inject_module(module, locator=current):

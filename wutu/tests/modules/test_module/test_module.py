@@ -1,4 +1,6 @@
+from wutu.module import Module
 
-class TestModule(object):
+
+class TestModule(Module):
     def ping(self):
         return "pong"
