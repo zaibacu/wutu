@@ -12,13 +12,16 @@ def load_module_config(module, locator=current):
 	conf.read(loadDir)
 	return conf
 
-def load_module(module, locator=current):
+def load_module(api, module, locator=current):
 	conf = load_module_config(module, locator)
-	mod = importlib.import_module("modules.{0}.{1}".format(module, conf.get("DEFAULT", "module_name")))
-	return getattr(mod, conf.get("DEFAULT", "class_name"))()
+	name = conf.get("DEFAULT", "module_name")
+	mod = importlib.import_module("modules.{0}.{1}".format(module, name))
+	inst = getattr(mod, conf.get("DEFAULT", "class_name"))()
+	api.add_resource(inst, "/{0}/".format(name))
+	return inst
 
-def inject_module(module, locator=current):
-	mod = load_module(module, locator)
+def inject_module(api, module, locator=current):
+	mod = load_module(api, module, locator)
 	def injector(fn):
 		def wrapper(*args, **kwargs):
 			kwargs["module"] = mod
