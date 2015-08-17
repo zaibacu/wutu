@@ -12,6 +12,8 @@ class UtilTests(unittest.TestCase):
 		self.assertEqual(modules, ["test_module"])
 
 	def test_module_injector(self):
-		@inject_module("test_module")
+		@inject_module("test_module", test_locator)
 		def injected_fn(module):
-			pass
+			self.assertEqual(module.ping(), "pong")
+
+		injected_fn()

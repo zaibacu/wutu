@@ -1,17 +1,21 @@
 import os
 import configparser
-
+import importlib
 
 def current(*dir):
 	return os.path.join(os.getcwd(), *dir)
 
 def load_module_config(module, locator=current):
 	conf = configparser.ConfigParser()
-	conf.read(locator("modules", module, "module.ini"))
+
+	loadDir = locator("modules", module, "module.ini")
+	conf.read(loadDir)
 	return conf
 
 def load_module(module, locator=current):
 	conf = load_module_config(module, locator)
+	mod = importlib.import_module("wutu.tests.modules.{0}.{1}".format(module, conf.get("DEFAULT", "module_name")))
+	return getattr(mod, conf.get("DEFAULT", "class_name"))()
 
 def inject_module(module, locator=current):
 	mod = load_module(module, locator)
