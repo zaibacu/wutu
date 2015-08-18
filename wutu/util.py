@@ -3,6 +3,17 @@ import configparser
 import importlib
 from flask import Response
 
+def get_logger():
+	class LoggerStub(object):
+		def debug(self, msg):
+			print("[DEBUG]: {0}".format(msg))
+
+		def info(self, msg):
+			print("[INFO]: {0}".format(msg))
+
+		def error(self, msg):
+			print("[ERROR]: {0}".format(msg))
+	return LoggerStub()
 
 def current(*dir):
 	return os.path.join(os.getcwd(), *dir)
@@ -46,15 +57,3 @@ def load_js(file):
 		raw = f.read()
 
 	return Response(raw, mimetype="text/javascript")
-
-def get_logger():
-	class LoggerStub(object):
-		def debug(self, msg):
-			print("[DEBUG]: {0}".format(msg))
-
-		def info(self, msg):
-			print("[INFO]: {0}".format(msg))
-
-		def error(self, msg):
-			print("[ERROR]: {0}".format(msg))
-	return LoggerStub()
