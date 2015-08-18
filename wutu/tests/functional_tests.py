@@ -1,12 +1,24 @@
 from selenium import webdriver
 import unittest
+from multiprocessing import Process
 
 from wutu import app
 
-app.main(host="localhost", port=5555, debug=True)
+def start_server():
+    app.main(host="localhost", port=5555, debug=True)
 
 
-"""browser = webdriver.Firefox()
-browser.get("http://localhost:5555/test_module")
+class Functional(unittest.TestCase):
+    def setUp(self):
+        self.browser = webdriver.Firefox()
 
-assert "test" in browser.title"""
+    def tearDown(self):
+        self.browser.close()
+
+    def test_module_get(self):
+        self.browser.get("http://localhost:5555/")
+
+if __name__ == "__main__":
+    p = Process(target=start_server)
+    p.start()
+    unittest.main(warnings=False)
