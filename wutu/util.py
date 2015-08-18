@@ -15,6 +15,8 @@ def get_logger():
 			print("[ERROR]: {0}".format(msg))
 	return LoggerStub()
 
+log = get_logger()
+
 def current(*dir):
 	return os.path.join(os.getcwd(), *dir)
 
@@ -30,6 +32,7 @@ def load_module(module, locator=current, api=None):
 	name = conf.get("DEFAULT", "module_name")
 	mod = importlib.import_module("modules.{0}.{1}".format(module, name))
 	inst = getattr(mod, conf.get("DEFAULT", "class_name"))()
+	inst.__name__ = name
 	if api:
 		api.add_resource(inst, "/{0}/".format(name))
 	return inst
@@ -49,6 +52,7 @@ def is_module_enabled(module, locator=current):
 
 def get_modules(locator=current):
 	modules = os.listdir(locator("modules"))
+	log.info("{0} modules loaded".format(len(modules)))
 	return list(filter(lambda mod: is_module_enabled(mod, locator),  modules))
 
 def load_js(file):
