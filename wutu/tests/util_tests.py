@@ -1,13 +1,7 @@
 import unittest
 from wutu.util import *
-import os
+from wutu.tests.util import *
 
-class ApiMock(object):
-	def add_resource(self, res, *args):
-		pass
-
-def test_locator(*dir):
-	return os.path.join(os.path.dirname(os.path.realpath(__file__)), *dir)
 
 class UtilTests(unittest.TestCase):
 	def setUp(self):
