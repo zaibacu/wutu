@@ -1,6 +1,8 @@
 import os
 import configparser
 import importlib
+from flask import Response
+
 
 def current(*dir):
 	return os.path.join(os.getcwd(), *dir)
@@ -37,3 +39,10 @@ def is_module_enabled(module, locator=current):
 def get_modules(locator=current):
 	modules = os.listdir(locator("modules"))
 	return list(filter(lambda mod: is_module_enabled(mod, locator),  modules))
+
+def load_js(file):
+	raw = ""
+	with open(file, "r") as f:
+		raw = f.read()
+
+	return Response(raw, mimetype="text/javascript")

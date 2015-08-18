@@ -2,4 +2,8 @@ from flask_restful import Resource
 
 
 class Module(Resource):
-    pass
+    def get_service(self):
+        pass
+
+    def get_controller(self):
+        pass
