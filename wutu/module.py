@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from compiler import *
 
 
 class Module(Resource):
@@ -9,7 +10,7 @@ class Module(Resource):
         return ["application/json"]
 
     def get_service(self):
-        pass
+        return create_service_js(self)
 
     def get_controller(self):
         pass
