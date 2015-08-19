@@ -15,7 +15,7 @@ def main(index, locator, *args, **kwargs):
 
     @app.route("/")
     def index_page():
-        return render_template(index, modules=modules, init=compile_base)
+        return render_template(index, modules=modules, init=create_base)
 
     app.run(*args, **kwargs)
 
