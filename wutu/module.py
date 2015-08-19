@@ -13,3 +13,6 @@ class Module(Resource):
 
     def get_controller(self):
         pass
+
+    def get_identifier(self):
+        return "id"
