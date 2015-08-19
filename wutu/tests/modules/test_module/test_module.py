@@ -8,5 +8,5 @@ class TestModule(Module):
     def ping(self):
         return "pong"
 
-    def get(self):
-        return {"result": "Hello"}
+    def get(self, id):
+        return {"result": id}
