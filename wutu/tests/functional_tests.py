@@ -16,8 +16,9 @@ class Functional(unittest.TestCase):
         self.browser = webdriver.Firefox()
 
     def tearDown(self):
-        self.browser.close()
-        self.p.terminate()
+        #self.browser.close()
+        #self.p.terminate()
+        pass
 
     def test_module_get(self):
         self.browser.get("http://localhost:5555/")
