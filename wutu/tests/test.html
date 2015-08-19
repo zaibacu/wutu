@@ -9,6 +9,10 @@
 
 <script type="text/javascript">
     {{ init()|safe }}
+
+    {% for module in modules %}
+        {{ module.get_service()|safe }}
+    {% endfor %}
 </script>
 </body>
 </html>
