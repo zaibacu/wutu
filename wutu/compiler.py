@@ -22,3 +22,9 @@ def create_service_js(module):
     """.format(module.__class__.__name__, module.get_identifier(), module.__name__)
 
     return tmpl
+
+def create_base():
+    tmpl = """
+            var wutu = angular.module("wutu", []);
+        """
+    return tmpl
