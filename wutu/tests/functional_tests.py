@@ -6,7 +6,7 @@ from wutu import app
 from test_util import *
 
 def start_server():
-    app.main(index="test.html", locator=test_locator, host="localhost", port=5555, debug=True)
+    app.main(index="test.html", locator=test_locator, host="localhost", port=5555, debug=True, use_reloader=False)
 
 
 class Functional(unittest.TestCase):
@@ -22,6 +22,3 @@ class Functional(unittest.TestCase):
     def test_module_get(self):
         self.browser.get("http://localhost:5555/")
         self.assertEqual(self.browser.title, "test")
-
-if __name__ == "__main__":
-    unittest.main(warnings=False)
