@@ -1,3 +1,6 @@
+from io import StringIO
+from contextlib import contextmanager
+
 
 def create_service_js(module):
     tmpl = """
@@ -28,3 +31,19 @@ def create_base():
             var wutu = angular.module("wutu", []);
         """
     return tmpl
+
+def create_stream():
+    return StringIO()
+
+def get_data(stream):
+    stream.seek(0)
+    return stream.read()
+
+@contextmanager
+def function_block(stream, params):
+    stream.write("function({0}){{\n".format(", ".join(params)))
+    try:
+        yield stream
+    finally:
+        stream.write("\n}")
+
