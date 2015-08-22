@@ -4,7 +4,7 @@ from flask import Flask, render_template
 from flask_restful import Api
 
 from wutu.util import *
-from compiler import create_base
+from compiler import create_base, create_stream, get_data
 
 app = Flask(__name__)
 api = Api(app)
@@ -15,7 +15,11 @@ def main(index, locator, *args, **kwargs):
 
     @app.route("/")
     def index_page():
-        return render_template(index, modules=modules, init=create_base)
+        def init():
+            stream = create_stream()
+            create_base(stream)
+            return get_data(stream)
+        return render_template(index, modules=modules, init=init)
 
     app.run(*args, **kwargs)
 

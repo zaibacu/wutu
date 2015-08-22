@@ -9,10 +9,15 @@ class Module(Resource):
     def mediatypes(self):
         return ["application/json"]
 
-    def get_service(self):
-        return create_service_js(self)
+    def create_service(self, stream):
+        create_service_js(stream, self)
 
-    def get_controller(self):
+    def get_service(self):
+        stream = create_stream()
+        self.create_service(stream)
+        return get_data(stream)
+
+    def create_controller(self):
         pass
 
     def get_identifier(self):

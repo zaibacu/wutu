@@ -5,7 +5,9 @@ from wutu.compiler import *
 
 class CompilerTests(unittest.TestCase):
     def test_initial_tmpl(self):
-        result = create_base()
+        stream = create_stream()
+        create_base(stream)
+        result = get_data(stream)
         expected = """var wutu = angular.module("wutu", []);"""
         self.assertEqual(result.strip(), expected)
 
@@ -44,13 +46,15 @@ class CompilerTests(unittest.TestCase):
 
     def test_string_argument(self):
         stream = create_stream()
-        result = add_variable(stream, "test", "hello")
+        add_variable(stream, "test", "hello")
+        result = get_data(stream)
         excepted = "var test = \"hello\";"
         self.assertEqual(excepted, result)
 
     def test_int_argument(self):
         stream = create_stream()
-        result = add_variable(stream, "test", 123)
+        add_variable(stream, "test", 123)
+        result = get_data(stream)
         excepted = "var test = 123;"
         self.assertEqual(excepted, result)
 

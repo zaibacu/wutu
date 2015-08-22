@@ -16,10 +16,8 @@ def add_variable(stream, name, value, private = True):
             raise NotImplementedError("Not supported... Yet")
 
     stream.write("{0} = {1};".format(name, format_value(value)))
-    return get_data(stream)
 
-def create_service_js(module):
-    stream = create_stream()
+def create_service_js(stream, module):
     stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))
     with function_block(stream, ["$http"]) as block:
         block.write("var url = \"{0}\";".format(module.__name__))
@@ -35,10 +33,7 @@ def create_service_js(module):
                                                             s.write("return $http.delete(url + \"/\" + {0});".format(id)))
     stream.write("])")
 
-    return get_data(stream)
-
-def create_base():
-    stream = create_stream()
+def create_base(stream):
     return add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [])")
 
 def create_stream():
