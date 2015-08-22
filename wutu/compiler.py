@@ -10,6 +10,8 @@ def add_variable(stream, name, value, private = True):
             return value
         elif isinstance(value, str):
             return "\"{0}\"".format(value)
+        elif callable(value):
+            return value()
         else:
             raise NotImplementedError("Not supported... Yet")
 
@@ -36,10 +38,8 @@ def create_service_js(module):
     return get_data(stream)
 
 def create_base():
-    tmpl = """
-            var wutu = angular.module("wutu", []);
-        """
-    return tmpl
+    stream = create_stream()
+    return add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [])")
 
 def create_stream():
     return StringIO()
