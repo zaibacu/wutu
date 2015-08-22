@@ -3,28 +3,23 @@ from contextlib import contextmanager
 
 
 def create_service_js(module):
-    tmpl = """
-        wutu.factory("{0}Service", ["$http", function($http){{
-            var url = "/{2}";
-            var service = {{
-                get: function({1}){{
-                    return $http.get(url + "/" + {1});
-                }},
-                put: function({1}, data){{
-                    return $http.put(url + "/" + {1}, data);
-                }},
-                post: function({1}, data){{
-                    return $http.post(url + "/" + {1}, data);
-                }},
-                delete: function({1}){{
-                    return $http.delete(url + "/" + {1});
-                }}
-            }};
-            return service;
-        }}]);
-    """.format(module.__class__.__name__, module.get_identifier(), module.__name__)
+    stream = create_stream()
+    stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))
+    with function_block(stream, ["$http"]) as block:
+        block.write("var url = \"{0}\";".format(module.__name__))
+        with service_block(stream) as service:
+            id = module.get_identifier()
+            service.add_method("get", [id], lambda s:
+                                                    s.write("return $http.get(url + \"/\" + {0});".format(id)))
+            service.add_method("put", [id, "data"], lambda s:
+                                                            s.write("return $http.put(url + \"/\" + {0}, data);".format(id)))
+            service.add_method("post", [id, "data"], lambda s:
+                                                            s.write("return $http.post(url + \"/\" + {0}, data);".format(id)))
+            service.add_method("delete", [id], lambda s:
+                                                            s.write("return $http.delete(url + \"/\" + {0});".format(id)))
+    stream.write("])")
 
-    return tmpl
+    return get_data(stream)
 
 def create_base():
     tmpl = """
@@ -46,4 +41,37 @@ def function_block(stream, params):
         yield stream
     finally:
         stream.write("\n}")
+
+class ServiceObj(object):
+    def __init__(self, stream):
+        self.stream = stream
+        self.first = True
+
+    def is_first(self):
+        return self.first
+
+    def write_header(self):
+        self.stream.write("var service = {\n")
+
+    def write_footer(self):
+        self.stream.write("\n}\n return service;")
+
+    def add_method(self, name, args, fn):
+        if not self.is_first():
+            self.stream.write(",\n")
+        else:
+            self.first = False
+
+        self.stream.write("{0}:".format(name))
+        with function_block(self.stream, args) as block:
+            fn(self.stream)
+
+@contextmanager
+def service_block(stream):
+    service = ServiceObj(stream)
+    service.write_header()
+    try:
+        yield service
+    finally:
+        service.write_footer()
 

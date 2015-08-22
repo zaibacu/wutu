@@ -21,3 +21,23 @@ class CompilerTests(unittest.TestCase):
             }
         """
         compare(self.assertEqual, result.strip(), expected.strip())
+
+    def test_service_block(self):
+        stream = create_stream()
+        with service_block(stream) as service:
+            service.add_method("test_fn", ["test1", "test2"], lambda s: s.write("return true;"))
+            service.add_method("test_fn2", ["test3"], lambda s: s.write("return false;"))
+
+        result = get_data(stream)
+        expected = """
+            var service = {
+             test_fn: function(test1, test2){
+                return true;
+             },
+             test_fn2: function(test3){
+                return false;
+             }
+            }
+            return service;
+        """
+        compare(self.assertEqual, result.strip(), expected.strip())
