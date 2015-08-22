@@ -20,7 +20,7 @@ class CompilerTests(unittest.TestCase):
                 console.log('Hello world!');
             }
         """
-        compare(self.assertEqual, result.strip(), expected.strip())
+        compare(self.assertEqual, expected.strip(), result.strip())
 
     def test_service_block(self):
         stream = create_stream()
@@ -40,4 +40,17 @@ class CompilerTests(unittest.TestCase):
             }
             return service;
         """
-        compare(self.assertEqual, result.strip(), expected.strip())
+        compare(self.assertEqual, expected.strip(), result.strip())
+
+    def test_string_argument(self):
+        stream = create_stream()
+        result = add_variable(stream, "test", "hello")
+        excepted = "var test = \"hello\";"
+        self.assertEqual(excepted, result)
+
+    def test_int_argument(self):
+        stream = create_stream()
+        result = add_variable(stream, "test", 123)
+        excepted = "var test = 123;"
+        self.assertEqual(excepted, result)
+

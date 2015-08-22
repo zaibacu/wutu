@@ -1,6 +1,20 @@
 from io import StringIO
 from contextlib import contextmanager
+import numbers
 
+def add_variable(stream, name, value, private = True):
+    if private:
+        stream.write("var ")
+    def format_value(value):
+        if isinstance(value, numbers.Number):
+            return value
+        elif isinstance(value, str):
+            return "\"{0}\"".format(value)
+        else:
+            raise NotImplementedError("Not supported... Yet")
+
+    stream.write("{0} = {1};".format(name, format_value(value)))
+    return get_data(stream)
 
 def create_service_js(module):
     stream = create_stream()
