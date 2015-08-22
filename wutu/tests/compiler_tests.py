@@ -15,7 +15,6 @@ class CompilerTests(unittest.TestCase):
             block.write("console.log('Hello world!');")
 
         result = get_data(stream)
-        print(result)
         expected = """
             function(test1, test2){
                 console.log('Hello world!');
