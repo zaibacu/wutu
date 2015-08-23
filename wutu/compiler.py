@@ -23,14 +23,15 @@ def create_service_js(stream, module):
         block.write("var url = \"{0}\";".format(module.__name__))
         with service_block(stream) as service:
             id = module.get_identifier()
-            service.add_method("get", [id], lambda s:
-                                                    s.write("return $http.get(url + \"/\" + {0});".format(id)))
-            service.add_method("put", [id, "data"], lambda s:
-                                                            s.write("return $http.put(url + \"/\" + {0}, data);".format(id)))
-            service.add_method("post", [id, "data"], lambda s:
-                                                            s.write("return $http.post(url + \"/\" + {0}, data);".format(id)))
-            service.add_method("delete", [id], lambda s:
-                                                            s.write("return $http.delete(url + \"/\" + {0});".format(id)))
+            params = lambda x: ", ".join(x)
+            service.add_method("get", id, lambda s:
+                                                    s.write("return $http.get(url + \"/\" + {0});".format(params(id))))
+            service.add_method("put", id + ["data"], lambda s:
+                                                            s.write("return $http.put(url + \"/\" + {0}, data);".format(params(id))))
+            service.add_method("post", id + ["data"], lambda s:
+                                                            s.write("return $http.post(url + \"/\" + {0}, data);".format(params(id))))
+            service.add_method("delete", id, lambda s:
+                                                            s.write("return $http.delete(url + \"/\" + {0});".format(params(id))))
     stream.write("])")
 
 def create_base(stream):

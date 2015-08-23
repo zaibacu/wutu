@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="wutu">
 <head>
     <meta charset="UTF-8">
     <title>test</title>
-    <script> type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    <script type="text/javascript" src="/init.js"></script>
     {% for module in modules %}
-        <script src="/{{ module.get_name()}}/service.js"></script>
+    <script src="/{< module.get_name()>}/service.js"></script>
+    <script src="/{< module.get_name()>}/controller.js"></script>
     {% endfor %}
 </head>
 <body>
-
-<script type="text/javascript">
-    {{ init()|safe }}
-</script>
+    <div ng-controller="TestModuleController">
+        {{ data.result }}
+    </div>
 </body>
 </html>

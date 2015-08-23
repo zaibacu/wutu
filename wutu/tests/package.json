@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "angular": "latest",
+    "angular-mocks": "latest",
+    "karma": "latest",
+    "jasmine": "latest",
+    "karma-jasmine": "latest",
+    "karma-phantomjs-launcher": "latest",
+    "phantomjs": "latest"
+  }
+}

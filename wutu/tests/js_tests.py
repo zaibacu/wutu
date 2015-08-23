@@ -7,9 +7,10 @@ from wutu.compiler import create_base
 class JsTests(unittest.TestCase):
     def setUp(self):
         mod = load_module("test_module", test_locator)
+        stream = create_stream()
         with open("tmp/test_module_service.js", "w") as f:
-            f.write(create_base())
-            f.write(mod.get_service())
+            f.write(create_base(stream))
+            f.write(mod.get_service(stream))
 
     def test_validate_syntax(self):
         self.assertTrue(execute_js("tmp/test_module_service.js"))

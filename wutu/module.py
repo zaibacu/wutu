@@ -17,11 +17,11 @@ class Module(Resource):
         self.create_service(stream)
         return get_data(stream)
 
-    def create_controller(self):
-        pass
+    def get_controller(self):
+        return ""
 
     def get_identifier(self):
-        return "id"
+        return ["id"]
 
     def get_name(self):
         return self.__name__

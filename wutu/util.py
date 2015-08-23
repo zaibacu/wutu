@@ -34,10 +34,14 @@ def load_module(module, locator=current, api=None):
 	inst = getattr(mod, conf.get("DEFAULT", "class_name"))()
 	inst.__name__ = name
 	if api:
-		api.add_resource(inst, "/{0}/".format(name))
+		params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
+		api.add_resource(inst, "/{0}/{1}/".format(name, params))
 		@api.app.route("/{0}/service.js".format(name))
 		def get_service_endpoint():
 			return Response(inst.get_service(), mimetype="text/javascript")
+		@api.app.route("/{0}/controller.js".format(name))
+		def get_controller_endpoint():
+			return Response(inst.get_controller(), mimetype="text/javascript")
 	return inst
 
 def inject_module(module, locator=current):
@@ -58,9 +62,9 @@ def get_modules(locator=current):
 	log.info("{0} modules loaded".format(len(modules)))
 	return list(filter(lambda mod: is_module_enabled(mod, locator),  modules))
 
-def load_js(file):
+def load_js(file, locator=current):
 	raw = ""
-	with open(file, "r") as f:
+	with open(locator("modules", file), "r") as f:
 		raw = f.read()
 
-	return Response(raw, mimetype="text/javascript")
+	return raw
