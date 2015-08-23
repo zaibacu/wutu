@@ -3,22 +3,21 @@
 describe("CRUD service", function(){
 
 	beforeEach(module("wutu"));
-
+	beforeEach(function(){
+		base_url = function(){ return "http://localhost:5555/"; };
+	});
 	var service;
 	beforeEach(inject(function(_TestModuleService_){
 		service = _TestModuleService_;
 	}));
 
+	afterEach(inject(function($rootScope) {
+	  $rootScope.$apply();
+	}));
+
 	it("handle create operation", function(done){
-		var promise = service.get(1);
-		promise.then(
-			function(response){
-				done();
-			},
-			function(error){
-				expect("received error: " + error).toFail();
-			});
-		//var expected = "1";
-		//expect(result).to.equal(expected);
+		service.get(1).then(function(response){
+			expect(response).toBe(1);
+		}).finally(done);
 	});
 });
