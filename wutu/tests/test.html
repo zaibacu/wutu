@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <title>test</title>
     <script> type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    {% for module in modules %}
+        <script src="/{{ module.get_name()}}/service.js"></script>
+    {% endfor %}
 </head>
 <body>
 
 <script type="text/javascript">
     {{ init()|safe }}
-
-    {% for module in modules %}
-        {{ module.get_service()|safe }}
-    {% endfor %}
 </script>
 </body>
 </html>

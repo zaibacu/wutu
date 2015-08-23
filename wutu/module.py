@@ -7,7 +7,7 @@ class Module(Resource):
         super(Module, self).__init__()
 
     def mediatypes(self):
-        return ["application/json"]
+        return ["application/json", "text/javascript"]
 
     def create_service(self, stream):
         create_service_js(stream, self)
@@ -22,3 +22,6 @@ class Module(Resource):
 
     def get_identifier(self):
         return "id"
+
+    def get_name(self):
+        return self.__name__

@@ -35,6 +35,9 @@ def load_module(module, locator=current, api=None):
 	inst.__name__ = name
 	if api:
 		api.add_resource(inst, "/{0}/".format(name))
+		@api.app.route("/{0}/service.js".format(name))
+		def get_service_endpoint():
+			return Response(inst.get_service(), mimetype="text/javascript")
 	return inst
 
 def inject_module(module, locator=current):
