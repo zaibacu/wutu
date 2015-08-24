@@ -1,4 +1,5 @@
 from selenium import webdriver
+from flask.ext.testing import LiveServerTestCase
 import unittest
 from multiprocessing import Process
 
@@ -9,15 +10,25 @@ def start_server():
     app.main(index="test.html", locator=test_locator, host="localhost", port=5555, debug=True, use_reloader=False)
 
 
-class Functional(unittest.TestCase):
+class Functional(LiveServerTestCase):
+    def create_app(self):
+        return app.create(index="test.html",
+                        locator=test_locator,
+                        host="localhost",
+                        port=5555,
+                        debug=True,
+                        use_reloader=False,
+                        testing=True)
+
+
     def setUp(self):
-        self.p = Process(target=start_server)
-        self.p.start()
+        #self.p = Process(target=start_server)
+        #self.p.start()
         self.browser = webdriver.PhantomJS()
 
     def tearDown(self):
         self.browser.close()
-        self.p.terminate()
+        #self.p.terminate()
 
     def test_module_get(self):
         self.browser.get("http://localhost:5555/")

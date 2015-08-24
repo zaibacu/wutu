@@ -16,7 +16,7 @@ class CustomFlask(Flask):
 app = CustomFlask(__name__)
 api = Api(app)
 
-def main(index, locator, *args, **kwargs):
+def create(index, locator, *args, **kwargs):
     app.jinja_loader = jinja2.FileSystemLoader(locator())
     modules = [ load_module(module, api=api) for module in get_modules() ]
 
@@ -30,7 +30,7 @@ def main(index, locator, *args, **kwargs):
         create_base(stream)
         return Response(get_data(stream), mimetype="text/javascript")
 
-    app.run(*args, **kwargs)
+    return app
 
 if __name__ == "__main__":
-    main(sys.argv)
+    create(sys.argv).run(sys.argv)
