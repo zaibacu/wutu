@@ -1,6 +1,15 @@
 from flask_restful import Resource
 from compiler import *
+import os
+import sys
+import inspect
 
+def module_locator(module, *dir):
+    get_module_dir = lambda mod: \
+                            os.path.dirname(
+                                inspect.getmodule(mod.__class__).__file__
+                            )
+    return os.path.join(get_module_dir(module), *dir)
 
 class Module(Resource):
     def __init__(self):
