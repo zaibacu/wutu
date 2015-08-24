@@ -16,4 +16,4 @@ class TestModule(Module):
         return ["id"]
 
     def get_controller(self):
-        return load_js("controller.js", module_locator)
+        return load_js("controller.js", lambda *args: module_locator(self, *args))

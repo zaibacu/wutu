@@ -64,7 +64,7 @@ def get_modules(locator=current):
 
 def load_js(file, locator=current):
 	raw = ""
-	with open(locator("modules", file), "r") as f:
+	with open(locator(file), "r") as f:
 		raw = f.read()
 
 	return raw
