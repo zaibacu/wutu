@@ -1,6 +1,5 @@
-from wutu.module import Module
+from wutu.module import Module, module_locator
 from wutu.util import load_js
-from test_util import test_locator
 
 
 class TestModule(Module):
@@ -17,4 +16,4 @@ class TestModule(Module):
         return ["id"]
 
     def get_controller(self):
-        return load_js("test_module/controller.js", test_locator)
+        return load_js("controller.js", module_locator)
