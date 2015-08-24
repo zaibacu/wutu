@@ -18,7 +18,7 @@ describe("CRUD service", function(){
 			expect(response.data.id).toBe(1);
 		}).finally(done);
 
-		$httpBackend.expectPOST("/test_module/1", {"text": "#1"}).respond({id: 1})
+		$httpBackend.expectPOST("/test_module/1/", {"text": "#1"}).respond({id: 1})
 		$httpBackend.flush();
 	});
 
@@ -27,7 +27,7 @@ describe("CRUD service", function(){
 			expect(response.data).toEqual({"text": "#1"});
 		}).finally(done);
 
-		$httpBackend.expectGET("/test_module/1").respond({"text": "#1"})
+		$httpBackend.expectGET("/test_module/1/").respond({"text": "#1"})
 		$httpBackend.flush();
 	});
 
@@ -45,7 +45,7 @@ describe("CRUD service", function(){
 			expect(response.data).toBe(true);
 		}).finally(done);
 
-		$httpBackend.expectDELETE("/test_module/1").respond(true)
+		$httpBackend.expectDELETE("/test_module/1/").respond(true)
 		$httpBackend.flush();
 	});
 });
