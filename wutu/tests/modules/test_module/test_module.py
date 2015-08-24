@@ -21,15 +21,15 @@ class TestModule(Module):
         if id == "*": #Wild Card
             return [{"id": row[0], "text": row[1]} for row in cursor.execute("SELECT id, text FROM notes")]
         else:
-            return [{"id": row[0], "text": row[1]} for row in cursor.execute("SELECT id, text FROM notes WHERE id = ?", id)]
+            return [{"id": row[0], "text": row[1]} for row in cursor.execute("SELECT id, text FROM notes WHERE id = ?", int(id))]
 
-    def put(self, id):
+    def put(self):
         data = json.loads(request.data.decode("utf-8"))
         conn = self._get_connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO notes VALUES(?, ?)", (id, data["text"]))
+        cursor.execute("INSERT INTO notes(text) VALUES(?)", (data["text"],))
         conn.commit()
-        return {"id": id}
+        return {"id": cursor.lastrowid}
 
     def get_identifier(self):
         return ["id"]

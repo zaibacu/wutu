@@ -35,7 +35,7 @@ def load_module(module, locator=current, api=None):
 	inst.__name__ = name
 	if api:
 		params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
-		api.add_resource(inst, "/{0}/{1}/".format(name, params))
+		api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
 		@api.app.route("/{0}/service.js".format(name))
 		def get_service_endpoint():
 			return Response(inst.get_service(), mimetype="text/javascript")

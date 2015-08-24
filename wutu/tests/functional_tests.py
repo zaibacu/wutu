@@ -24,7 +24,7 @@ class Functional(unittest.TestCase):
 
     def tearDown(self):
         self.browser.close()
-        self.p.terminate()
+        #self.p.terminate()
 
     def test_module_index(self):
         self.browser.get(get_server_url())

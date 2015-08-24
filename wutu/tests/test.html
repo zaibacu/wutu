@@ -17,8 +17,10 @@
         </div>
 
 
-        <input ng-model="new_note" type="text"/>
-        <button ng-click="add_note(1, new_note)">Add</button>
+        <form ng-submit="add_note(note)">
+            <input ng-model="note" type="text"/>
+            <input type="submit" value="Add"/>
+        </form>
     </div>
 </body>
 </html>
