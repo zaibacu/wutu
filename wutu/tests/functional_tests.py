@@ -29,6 +29,7 @@ class Functional(unittest.TestCase):
     def test_module_index(self):
         self.browser.get(get_server_url())
         self.assertEqual(self.browser.title, "test")
+        print(self.browser.page_source)
 
     def test_module_controller(self):
         self.browser.get("{0}/test_module/controller.js".format(get_server_url()))

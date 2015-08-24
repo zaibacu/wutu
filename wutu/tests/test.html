@@ -12,7 +12,13 @@
 </head>
 <body>
     <div ng-controller="TestModuleController">
-        {{ data.result }}
+        <div ng-repeat="row in data">
+            {{ row.text }}
+        </div>
+
+
+        <input ng-model="new_note" type="text"/>
+        <button ng-click="add_note(1, new_note)">Add</button>
     </div>
 </body>
 </html>
