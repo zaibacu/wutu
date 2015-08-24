@@ -13,12 +13,11 @@ class Functional(unittest.TestCase):
     def setUp(self):
         self.p = Process(target=start_server)
         self.p.start()
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.PhantomJS()
 
     def tearDown(self):
-        #self.browser.close()
-        #self.p.terminate()
-        pass
+        self.browser.close()
+        self.p.terminate()
 
     def test_module_get(self):
         self.browser.get("http://localhost:5555/")
