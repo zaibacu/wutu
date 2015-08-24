@@ -12,13 +12,13 @@
 </head>
 <body>
     <div ng-controller="TestModuleController">
-        <div ng-repeat="row in data">
-            {{ row.text }}
+        <div class="note-block" ng-repeat="row in data">
+            <span class="note-text">{{ row.text }}</span> <button class="node-delete" ng-click="delete_note(row.id)">-</button>
         </div>
 
 
         <form ng-submit="add_note(note)">
-            <input ng-model="note" type="text"/>
+            <input id="note-field" ng-model="note" type="text"/>
             <input type="submit" value="Add"/>
         </form>
     </div>

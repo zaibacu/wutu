@@ -31,6 +31,13 @@ class TestModule(Module):
         conn.commit()
         return {"id": cursor.lastrowid}
 
+    def delete(self, id):
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
+        conn.commit()
+        return {"success": True}
+
     def get_identifier(self):
         return ["id"]
 

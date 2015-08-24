@@ -19,17 +19,16 @@ class Functional(unittest.TestCase):
     def setUp(self):
         self.p = Process(target=start_server)
         self.p.start()
-        self.browser = webdriver.PhantomJS()
+        self.browser = webdriver.Firefox()
 
 
     def tearDown(self):
         self.browser.close()
-        #self.p.terminate()
+        self.p.terminate()
 
     def test_module_index(self):
         self.browser.get(get_server_url())
         self.assertEqual(self.browser.title, "test")
-        print(self.browser.page_source)
 
     def test_module_controller(self):
         self.browser.get("{0}/test_module/controller.js".format(get_server_url()))
@@ -38,5 +37,15 @@ class Functional(unittest.TestCase):
     def test_module_service(self):
         self.browser.get("{0}/test_module/service.js".format(get_server_url()))
         self.assertTrue(len(self.browser.page_source) > 0)
+
+    def test_editing_notes(self):
+        self.browser.get(get_server_url())
+        note = self.browser.find_element_by_id("note-field")
+        note.send_keys("temp note")
+        note.submit()
+        self.browser.save_screenshot('test.png')
+        self.assertIn("temp note", [ note.text for note in self.browser.find_elements_by_class_name("note-text") ])
+        map(lambda n: n.find_element_by_xpath(".//button[@class='note-delete']").click(), filter(lambda x: x.find_element_by_xpath(".//span[@class='note-text']").text == "temp note", self.browser.find_elements_by_class_name("note-block")))
+        self.assertNotIn("temp note", [ note.text for note in self.browser.find_elements_by_class_name("note-text") ])
 
 

@@ -25,13 +25,13 @@ def create_service_js(stream, module):
             id = module.get_identifier()
             params = lambda x: ", ".join(x)
             service.add_method("get", id, lambda s:
-                                                    s.write("return $http.get(base_url() + url + \"/\" + {0});".format(params(id))))
+                                                    s.write("return $http.get(base_url() + url + \"/\" + {0} + \"/\");".format(params(id))))
             service.add_method("put", ["data"], lambda s:
                                                             s.write("return $http.put(base_url() + url, data);"))
             service.add_method("post", id + ["data"], lambda s:
-                                                            s.write("return $http.post(base_url() + url + \"/\" + {0}, data);".format(params(id))))
+                                                            s.write("return $http.post(base_url() + url + \"/\" + {0} + \"/\", data);".format(params(id))))
             service.add_method("delete", id, lambda s:
-                                                            s.write("return $http.delete(base_url() + url + \"/\" + {0});".format(params(id))))
+                                                            s.write("return $http.delete(base_url() + url + \"/\" + {0} + \"/\");".format(params(id))))
     stream.write("])")
 
 def create_base(stream):
