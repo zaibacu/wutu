@@ -6,10 +6,6 @@ from multiprocessing import Process
 from wutu import app
 from test_util import *
 
-def start_server():
-    app.main(index="test.html", locator=test_locator, host="localhost", port=5555, debug=True, use_reloader=False)
-
-
 class Functional(LiveServerTestCase):
     def create_app(self):
         return app.create(index="test.html",
@@ -22,14 +18,11 @@ class Functional(LiveServerTestCase):
 
 
     def setUp(self):
-        #self.p = Process(target=start_server)
-        #self.p.start()
         self.browser = webdriver.PhantomJS()
 
     def tearDown(self):
         self.browser.close()
-        #self.p.terminate()
 
     def test_module_get(self):
-        self.browser.get("http://localhost:5555/")
+        self.browser.get(self.get_server_url())
         self.assertEqual(self.browser.title, "test")
