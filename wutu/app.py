@@ -13,10 +13,9 @@ class CustomFlask(Flask):
         variable_end_string='>}',
     ))
 
-app = CustomFlask(__name__)
-api = Api(app)
-
 def create(index, locator, *args, **kwargs):
+    app = CustomFlask(__name__)
+    api = Api(app)
     app.jinja_loader = jinja2.FileSystemLoader(locator())
     modules = [ load_module(module, api=api) for module in get_modules() ]
 
