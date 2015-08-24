@@ -9,7 +9,7 @@ from test_util import *
 TEST_HOST = "localhost"
 TEST_PORT = 5555
 def get_server_url():
-    return "http://{0}:{1}/".format(TEST_HOST, TEST_PORT)
+    return "http://{0}:{1}".format(TEST_HOST, TEST_PORT)
 
 def start_server():
     testing_app = app.create(index="test.html", locator=test_locator)
@@ -32,5 +32,10 @@ class Functional(unittest.TestCase):
 
     def test_module_controller(self):
         self.browser.get("{0}/test_module/controller.js".format(get_server_url()))
+        self.assertTrue(len(self.browser.page_source) > 0)
+
+    def test_module_service(self):
+        self.browser.get("{0}/test_module/service.js".format(get_server_url()))
+        self.assertTrue(len(self.browser.page_source) > 0)
 
 
