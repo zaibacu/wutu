@@ -4,7 +4,7 @@ from flask import Flask, render_template, Response
 from flask_restful import Api
 
 from wutu.util import *
-from compiler import create_base, create_stream, get_data
+from wutu.compiler import create_base, create_stream, get_data
 
 class CustomFlask(Flask):
     jinja_options = Flask.jinja_options.copy()
