@@ -6,6 +6,7 @@
     "jasmine": "latest",
     "karma-jasmine": "latest",
     "karma-phantomjs-launcher": "latest",
-    "phantomjs": "latest"
+    "phantomjs": "latest",
+    "protractor": "latest"
   }
 }
