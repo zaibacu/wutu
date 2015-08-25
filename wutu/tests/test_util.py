@@ -1,5 +1,5 @@
 import os
-
+from wutu import app
 
 class ApiMock(object):
 	def add_resource(self, res, *args):
@@ -16,3 +16,12 @@ def remove_whitespace(str):
 
 def compare(fn, str1, str2):
 	return fn(remove_whitespace(str1), remove_whitespace(str2))
+
+TEST_HOST = "localhost"
+TEST_PORT = 5555
+def get_server_url():
+    return "http://{0}:{1}".format(TEST_HOST, TEST_PORT)
+
+def start_server():
+    testing_app = app.create(index="test.html", locator=test_locator)
+    testing_app.run(host=TEST_HOST, port=TEST_PORT, debug=True, use_reloader=False)
