@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from compiler import *
+from wutu.compiler import *
 import os
 import sys
 import inspect
