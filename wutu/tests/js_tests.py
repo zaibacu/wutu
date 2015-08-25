@@ -1,12 +1,12 @@
 import unittest
-from Naked.toolshed.shell import execute_js, execute
+from Naked.toolshed.shell import execute_js, execute, muterun
 from multiprocessing import Process
 from test_util import *
 
 class JsTests(unittest.TestCase):
     def setUp(self):
         execute("npm install")
-        execute("./node/modules/protractor/bin/webdriver-manager update")
+        execute("./node_modules/protractor/bin/webdriver-manager update")
         self.p = Process(target=start_server)
         self.p.start()
 
@@ -18,4 +18,6 @@ class JsTests(unittest.TestCase):
         self.assertTrue(result)
 
     def test_run_e2e_tests(self):
+        muterun("./node_modules/protractor/bin/webdriver-manager start &")
         result = execute("./node_modules/protractor/bin/protractor e2e.conf.js")
+        execute("./node_modules/protractor/bin/webdriver-manager stop")
