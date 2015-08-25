@@ -13,6 +13,7 @@ module.exports = function(config) {
     ],
     logLevel: "LOG_DEBUG",
     browsers: ["PhantomJS"],
-    autoWatch: true
+    autoWatch: false,
+    singleRun: true
   });
 };
