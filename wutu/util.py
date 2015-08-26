@@ -58,7 +58,7 @@ def load_module_config(module, locator=current):
 	conf.read(directory)
 	return conf
 
-def setup_endpoint(api, inst):
+def setup_endpoint(api, inst, name):
 	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
 	@api.app.route("/{0}/service.js".format(name))
@@ -76,7 +76,7 @@ def load_module(module, locator=current, api=None):
 				inst = cls()
 				name = endpoint_name(cls.__name__)
 				if api:
-					setup_endpoint(api, inst)
+					setup_endpoint(api, inst, name)
 				return inst
 
 		@api.app.route("/{0}/service.js".format(name))
