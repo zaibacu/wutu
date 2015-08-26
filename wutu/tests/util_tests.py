@@ -24,4 +24,9 @@ class UtilTests(unittest.TestCase):
 		module = load_module(get_modules(test_locator)[0])
 		result = module_locator(module, "controller.js")
 		expected = "{0}/modules/test_module/controller.js".format(os.getcwd())
+		self.assertEqual(expected, result)
+
+	def test_endpoint_name(self):
+		result = endpoint_name("TestModule")
+        expected = "test_module"
 		compare_dir(self.assertEqual, expected, result)

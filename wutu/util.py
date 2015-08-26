@@ -1,8 +1,10 @@
 import os
 import configparser
 import importlib
+import inspect
 from flask import Response
 
+from wutu.module import Module
 
 def get_logger():
 	class LoggerStub(object):
@@ -21,10 +23,33 @@ def get_logger():
 
 log = get_logger()
 
+def current(*dir):
+	return os.path.join(os.getcwd(), *dir)
 
-def current(*directory):
-	return os.path.join(os.getcwd(), *directory)
+def endpoint_name(str):
+	class LState(object):
+		pass
+	class UState(object):
+		pass
 
+	state = UState
+	words = []
+	cur = []
+	for l in str:
+		if state == UState and l.isupper():
+			cur.append(l.lower())
+		elif state == UState and l.islower():
+			state = LState
+			cur.append(l)
+		elif state == LState and l.isupper():
+			words.append("".join(cur))
+			cur = [l.lower()]
+			state = UState
+		else:
+			cur.append(l)
+
+	words.append("".join(cur))
+	return "_".join(words)
 
 def load_module_config(module, locator=current):
 	conf = configparser.ConfigParser()
