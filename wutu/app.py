@@ -6,6 +6,7 @@ from flask_restful import Api
 from wutu.util import *
 from wutu.compiler import create_base, create_stream, get_data
 
+
 class CustomFlask(Flask):
     jinja_options = Flask.jinja_options.copy()
     jinja_options.update(dict(
@@ -13,11 +14,12 @@ class CustomFlask(Flask):
         variable_end_string='>}',
     ))
 
-def create(index, locator, *args, **kwargs):
+
+def create(index, locator):
     app = CustomFlask(__name__)
     api = Api(app)
     app.jinja_loader = jinja2.FileSystemLoader(locator())
-    modules = [ load_module(module, api=api) for module in get_modules() ]
+    modules = [load_module(module, api=api) for module in get_modules()]
 
     @app.route("/")
     def index_page():

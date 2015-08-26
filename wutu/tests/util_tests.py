@@ -25,4 +25,3 @@ class UtilTests(unittest.TestCase):
 		result = module_locator(module, "controller.js")
 		expected = "{0}/modules/test_module/controller.js".format(os.getcwd())
 		compare_dir(self.assertEqual, expected, result)
-

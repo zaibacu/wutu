@@ -1,15 +1,13 @@
 from flask_restful import Resource
 from wutu.compiler import *
 import os
-import sys
 import inspect
 
-def module_locator(module, *dir):
-    get_module_dir = lambda mod: \
-                            os.path.dirname(
-                                inspect.getmodule(mod.__class__).__file__
-                            )
-    return os.path.join(get_module_dir(module), *dir)
+
+def module_locator(module, *directory):
+    get_module_dir = lambda mod: os.path.dirname(inspect.getmodule(mod.__class__).__file__)
+    return os.path.join(get_module_dir(module), *directory)
+
 
 class Module(Resource):
     def __init__(self):
