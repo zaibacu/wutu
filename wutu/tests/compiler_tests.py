@@ -8,8 +8,11 @@ class CompilerTests(unittest.TestCase):
         stream = create_stream()
         create_base(stream)
         result = get_data(stream)
-        expected = """var wutu = angular.module("wutu", []);"""
-        self.assertEqual(result.strip(), expected)
+        expected = """
+                var base_url = function(){ return "/"; };
+                var wutu = angular.module("wutu", []);
+            """
+        compare(self.assertEqual, expected.strip(), result.strip())
 
     def test_function_block(self):
         stream = create_stream()
@@ -31,6 +34,7 @@ class CompilerTests(unittest.TestCase):
             service.add_method("test_fn2", ["test3"], lambda s: s.write("return false;"))
 
         result = get_data(stream)
+        print(result)
         expected = """
             var service = {
              test_fn: function(test1, test2){
@@ -47,14 +51,14 @@ class CompilerTests(unittest.TestCase):
     def test_string_argument(self):
         stream = create_stream()
         add_variable(stream, "test", "hello")
-        result = get_data(stream)
+        result = get_data(stream).strip()
         excepted = "var test = \"hello\";"
         self.assertEqual(excepted, result)
 
     def test_int_argument(self):
         stream = create_stream()
         add_variable(stream, "test", 123)
-        result = get_data(stream)
+        result = get_data(stream).strip()
         excepted = "var test = 123;"
         self.assertEqual(excepted, result)
 

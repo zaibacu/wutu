@@ -15,7 +15,7 @@ def add_variable(stream, name, value, private = True):
         else:
             raise NotImplementedError("Not supported... Yet")
 
-    stream.write("{0} = {1};".format(name, format_value(value)))
+    stream.write("{0} = {1};\n".format(name, format_value(value)))
 
 def create_service_js(stream, module):
     stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))
@@ -35,7 +35,7 @@ def create_service_js(stream, module):
     stream.write("])")
 
 def create_base(stream):
-    add_variable(stream, "base_url", lambda: "function(){ return \"/\"; };")
+    add_variable(stream, "base_url", lambda: "function(){ return \"/\"; }")
     add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [])")
 
 def create_stream():
@@ -45,13 +45,20 @@ def get_data(stream):
     stream.seek(0)
     return stream.read()
 
+def indent_wrapper(stream):
+    class Wrapper(object):
+        def write(self, msg):
+            stream.write("\t" + msg)
+    return Wrapper()
+
 @contextmanager
 def function_block(stream, params):
     stream.write("function({0}){{\n".format(", ".join(params)))
     try:
-        yield stream
+        yield indent_wrapper(stream)
     finally:
-        stream.write("\n}")
+        stream.write("\n")
+        stream.write("}")
 
 class ServiceObj(object):
     def __init__(self, stream):
@@ -65,7 +72,10 @@ class ServiceObj(object):
         self.stream.write("var service = {\n")
 
     def write_footer(self):
-        self.stream.write("\n}\n return service;")
+        self.stream.write("\n")
+        self.stream.write("}")
+        self.stream.write("\n")
+        self.stream.write("return service;")
 
     def add_method(self, name, args, fn):
         if not self.is_first():
@@ -73,9 +83,10 @@ class ServiceObj(object):
         else:
             self.first = False
 
-        self.stream.write("{0}:".format(name))
-        with function_block(self.stream, args) as block:
-            fn(self.stream)
+        stream = indent_wrapper(self.stream)
+        stream.write("{0}:".format(name))
+        with function_block(stream, args) as block:
+            fn(block)
 
 @contextmanager
 def service_block(stream):
