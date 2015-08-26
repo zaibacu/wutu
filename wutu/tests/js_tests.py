@@ -2,10 +2,10 @@ import unittest
 from Naked.toolshed.shell import execute_js, execute, muterun
 from multiprocessing import Process
 from test_util import *
-import re
+import time
 
 def start_selenium():
-    yield execute("./node_modules/protractor/bin/webdriver-manager start")
+    muterun("./node_modules/protractor/bin/webdriver-manager start")
 
 class JsTests(unittest.TestCase):
     def setUp(self):
@@ -24,5 +24,6 @@ class JsTests(unittest.TestCase):
     def test_run_e2e_tests(self):
         selenium = Process(target=start_selenium)
         selenium.start()
+        time.sleep(5)
         result = execute("./node_modules/protractor/bin/protractor e2e.conf.js")
         selenium.terminate()
