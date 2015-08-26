@@ -14,8 +14,14 @@ def remove_whitespace(str):
 		return x in chars
 	return "".join(list(filter(lambda x: not ignore(x), str)))
 
+def normalize_slashes(str):
+	return str.replace("\\", "/")
+
 def compare(fn, str1, str2):
 	return fn(remove_whitespace(str1), remove_whitespace(str2))
+
+def compare_dir(fn, str1, str2):
+	return fn(normalize_slashes(str1), normalize_slashes(str2))
 
 TEST_HOST = "localhost"
 TEST_PORT = 5555
