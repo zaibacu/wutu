@@ -108,7 +108,7 @@ def is_module_enabled(module, locator=current):
 def get_modules(locator=current):
 	modules = os.listdir(locator("modules"))
 	log.info("{0} modules loaded".format(len(modules)))
-	return list(filter(lambda mod: is_module_enabled(mod, locator),  modules))
+	return modules
 
 
 def load_js(file, locator=current):
