@@ -58,16 +58,26 @@ def load_module_config(module, locator=current):
 	conf.read(directory)
 	return conf
 
+def setup_endpoint(api, inst):
+	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
+	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
+	@api.app.route("/{0}/service.js".format(name))
+	def get_service_endpoint():
+		return Response(inst.get_service(), mimetype="text/javascript")
+	@api.app.route("/{0}/controller.js".format(name))
+	def get_controller_endpoint():
+		return Response(inst.get_controller(), mimetype="text/javascript")
 
 def load_module(module, locator=current, api=None):
-	conf = load_module_config(module, locator)
-	name = conf.get("DEFAULT", "module_name")
-	mod = importlib.import_module("modules.{0}.{1}".format(module, name))
-	inst = getattr(mod, conf.get("DEFAULT", "class_name"))()
-	inst.__name__ = name
-	if api:
-		params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
-		api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
+	mod = __import__("modules.{0}".format(module), globals(), locals(), fromlist=["*"])
+	for _, m in inspect.getmembers(mod, inspect.ismodule):
+		for _, cls in inspect.getmembers(m, inspect.isclass):
+			if issubclass(cls, Module) and cls != Module:
+				inst = cls()
+				name = endpoint_name(cls.__name__)
+				if api:
+					setup_endpoint(api, inst)
+				return inst
 
 		@api.app.route("/{0}/service.js".format(name))
 		def get_service_endpoint():
