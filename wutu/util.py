@@ -2,26 +2,15 @@ import os
 import configparser
 import inspect
 from flask import Response
+from logbook import Logger
 
 from wutu.module import Module
 
 
-def get_logger():
-	class LoggerStub(object):
-		@staticmethod
-		def debug(msg):
-			print("[DEBUG]: {0}".format(msg))
+def get_logger(name):
+	return Logger(name)
 
-		@staticmethod
-		def info(msg):
-			print("[INFO]: {0}".format(msg))
-
-		@staticmethod
-		def error(msg):
-			print("[ERROR]: {0}".format(msg))
-	return LoggerStub()
-
-log = get_logger()
+log = get_logger("util")
 
 
 def current(*dir):
