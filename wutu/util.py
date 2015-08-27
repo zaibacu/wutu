@@ -1,5 +1,4 @@
 import os
-import configparser
 import inspect
 from flask import Response
 from logbook import Logger
@@ -77,12 +76,6 @@ def inject_module(module, locator=current):
 			fn(*args, **kwargs)
 		return wrapper
 	return injector
-
-
-def is_module_enabled(module, locator=current):
-	conf = load_module_config(module, locator)
-	return conf.getboolean("DEFAULT", "enabled")
-
 
 def get_modules(locator=current):
 	modules = os.listdir(locator("modules"))
