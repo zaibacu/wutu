@@ -43,14 +43,6 @@ def endpoint_name(str):
 	return "_".join(words)
 
 
-def load_module_config(module, locator=current):
-	conf = configparser.ConfigParser()
-
-	directory = locator("modules", module, "module.ini")
-	conf.read(directory)
-	return conf
-
-
 def setup_endpoint(api, inst, name):
 	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
