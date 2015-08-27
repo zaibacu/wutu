@@ -67,15 +67,6 @@ def load_module(module, locator=current, api=None):
 					setup_endpoint(api, inst, name)
 				return inst
 
-		@api.app.route("/{0}/service.js".format(name))
-		def get_service_endpoint():
-			return Response(inst.get_service(), mimetype="text/javascript")
-
-		@api.app.route("/{0}/controller.js".format(name))
-		def get_controller_endpoint():
-			return Response(inst.get_controller(), mimetype="text/javascript")
-	return inst
-
 
 def inject_module(module, locator=current):
 	mod = load_module(module, locator)
