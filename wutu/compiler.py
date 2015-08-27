@@ -2,54 +2,62 @@ from io import StringIO
 from contextlib import contextmanager
 import numbers
 
-def add_variable(stream, name, value, private = True):
+
+def add_variable(stream, name, value, private=True):
     if private:
         stream.write("var ")
-    def format_value(value):
-        if isinstance(value, numbers.Number):
-            return value
-        elif isinstance(value, str):
-            return "\"{0}\"".format(value)
-        elif callable(value):
-            return value()
+
+    def format_value(val):
+        if isinstance(val, numbers.Number):
+            return val
+        elif isinstance(val, str):
+            return "\"{0}\"".format(val)
+        elif callable(val):
+            return val()
         else:
             raise NotImplementedError("Not supported... Yet")
 
     stream.write("{0} = {1};\n".format(name, format_value(value)))
+
 
 def create_service_js(stream, module):
     stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))
     with function_block(stream, ["$http"]) as block:
         block.write("var url =  \"{0}\";".format(module.__name__))
         with service_block(stream) as service:
-            id = module.get_identifier()
+            _id = module.get_identifier()
             params = lambda x: ", ".join(x)
-            service.add_method("get", id, lambda s:
-                                                    s.write("return $http.get(base_url() + url + \"/\" + {0} + \"/\");".format(params(id))))
+            service.add_method("get", _id, lambda s:
+                s.write("return $http.get(base_url() + url + \"/\" + {0} + \"/\");".format(params(_id))))
             service.add_method("put", ["data"], lambda s:
-                                                            s.write("return $http.put(base_url() + url, data);"))
-            service.add_method("post", id + ["data"], lambda s:
-                                                            s.write("return $http.post(base_url() + url + \"/\" + {0} + \"/\", data);".format(params(id))))
-            service.add_method("delete", id, lambda s:
-                                                            s.write("return $http.delete(base_url() + url + \"/\" + {0} + \"/\");".format(params(id))))
+                s.write("return $http.put(base_url() + url, data);"))
+            service.add_method("post", _id + ["data"], lambda s:
+                s.write("return $http.post(base_url() + url + \"/\" + {0} + \"/\", data);".format(params(_id))))
+            service.add_method("delete", _id, lambda s:
+                s.write("return $http.delete(base_url() + url + \"/\" + {0} + \"/\");".format(params(_id))))
     stream.write("])")
+
 
 def create_base(stream):
     add_variable(stream, "base_url", lambda: "function(){ return \"/\"; }")
     add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [])")
 
+
 def create_stream():
     return StringIO()
+
 
 def get_data(stream):
     stream.seek(0)
     return stream.read()
+
 
 def indent_wrapper(stream):
     class Wrapper(object):
         def write(self, msg):
             stream.write("\t" + msg)
     return Wrapper()
+
 
 @contextmanager
 def function_block(stream, params):
@@ -59,6 +67,7 @@ def function_block(stream, params):
     finally:
         stream.write("\n")
         stream.write("}")
+
 
 class ServiceObj(object):
     def __init__(self, stream):
@@ -87,6 +96,7 @@ class ServiceObj(object):
         stream.write("{0}:".format(name))
         with function_block(stream, args) as block:
             fn(block)
+
 
 @contextmanager
 def service_block(stream):

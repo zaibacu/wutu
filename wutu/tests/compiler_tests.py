@@ -1,7 +1,7 @@
 import unittest
-from wutu.util import load_module
 from test_util import *
 from wutu.compiler import *
+
 
 class CompilerTests(unittest.TestCase):
     def test_initial_tmpl(self):
@@ -61,4 +61,3 @@ class CompilerTests(unittest.TestCase):
         result = get_data(stream).strip()
         excepted = "var test = 123;"
         self.assertEqual(excepted, result)
-

@@ -4,8 +4,10 @@ from multiprocessing import Process
 from test_util import *
 import time
 
+
 def start_selenium():
     muterun("./node_modules/protractor/bin/webdriver-manager start")
+
 
 class JsTests(unittest.TestCase):
     def setUp(self):
