@@ -130,7 +130,7 @@ def load_js(file, locator=current):
 	:param locator: function which tells where to look for it
 	:return: javascript as a string
 	"""
-	with open(locator(file), "r") as f:
+	with open(locator(file)) as f:
 		raw = f.read()
 
 	return raw
