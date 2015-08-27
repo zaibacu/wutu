@@ -1,10 +1,10 @@
 import os
 import configparser
-import importlib
 import inspect
 from flask import Response
 
 from wutu.module import Module
+
 
 def get_logger():
 	class LoggerStub(object):
@@ -23,8 +23,10 @@ def get_logger():
 
 log = get_logger()
 
+
 def current(*dir):
 	return os.path.join(os.getcwd(), *dir)
+
 
 def endpoint_name(str):
 	class LState(object):
@@ -51,12 +53,14 @@ def endpoint_name(str):
 	words.append("".join(cur))
 	return "_".join(words)
 
+
 def load_module_config(module, locator=current):
 	conf = configparser.ConfigParser()
 
 	directory = locator("modules", module, "module.ini")
 	conf.read(directory)
 	return conf
+
 
 def setup_endpoint(api, inst, name):
 	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
@@ -67,6 +71,7 @@ def setup_endpoint(api, inst, name):
 	@api.app.route("/{0}/controller.js".format(name))
 	def get_controller_endpoint():
 		return Response(inst.get_controller(), mimetype="text/javascript")
+
 
 def load_module(module, locator=current, api=None):
 	mod = __import__("modules.{0}".format(module), globals(), locals(), fromlist=["*"])
