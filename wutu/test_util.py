@@ -4,8 +4,9 @@ from Naked.toolshed.shell import execute
 import sqlite3
 import os
 import sys
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
-sys.path.append("tests/modules/")
+os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "tests"))
+sys.path.append("modules/")
+
 
 class AppMock(object):
 	@staticmethod
