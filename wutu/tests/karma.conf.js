@@ -11,6 +11,9 @@ module.exports = function(config) {
 
       "specs/*.js"
     ],
+    exclude: [
+      "specs/*_e2e_spec.js"
+    ],
     logLevel: "LOG_DEBUG",
     browsers: ["PhantomJS"],
     autoWatch: false,
