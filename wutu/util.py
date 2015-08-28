@@ -127,7 +127,7 @@ def create_module(api, name=None):
 	return injector
 
 
-def load_module(module, locator=current, api=None):
+def load_module(module, api=None):
 	"""
 	Loads selected module
 	:param module: module name
@@ -147,14 +147,14 @@ def load_module(module, locator=current, api=None):
 				return inst
 
 
-def inject_module(module, locator=current):
+def inject_module(module):
 	"""
 	Decorator which loads and passes module as a parameter
 	:param module: module name
 	:param locator: function which tells where to look for modules
 	:return: wrapped function
 	"""
-	mod = load_module(module, locator)
+	mod = load_module(module)
 
 	def injector(fn):
 		def wrapper(*args, **kwargs):

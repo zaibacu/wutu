@@ -14,14 +14,14 @@ class UtilTests(unittest.TestCase):
 		self.assertEqual(modules, ["test_module"])
 
 	def test_module_injector(self):
-		@inject_module("test_module", test_locator)
+		@inject_module("test_module")
 		def injected_fn(module):
 			self.assertEqual(module.ping(), "pong")
 
 		injected_fn()
 
 	def test_module_locator(self):
-		module = load_module(get_modules(test_locator)[0])
+		module = load_module(get_modules()[0])
 		result = module_locator(module, "controller.js")
 		expected = "modules/test_module/controller.js"
 		self.assertEqual(expected, result)
