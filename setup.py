@@ -17,4 +17,4 @@ setup(name="wutu",
 		packages=["wutu"],
 		install_requires=[str(ir.req) for ir in install_reqs],
 		test_suite="nose.collector",
-		tests_require=['nose'])
+		tests_require=["nose"])

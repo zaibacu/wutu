@@ -1,5 +1,5 @@
-from wutu import app
-from wutu.util import *
+import app
+from util import *
 from Naked.toolshed.shell import execute
 import sqlite3
 
@@ -49,7 +49,7 @@ def prepare_db():
 
 
 def test_locator(*directory):
-	return os.path.join(os.path.dirname(os.path.realpath(__file__)), *directory)
+	return os.path.join(os.path.dirname(os.path.realpath(__file__)), "tests", *directory)
 
 
 def remove_whitespace(_str):
