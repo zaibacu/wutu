@@ -1,10 +1,35 @@
 import os
 from wutu import app
+from wutu.util import *
+
+
+class AppMock(object):
+	@staticmethod
+	def route(rule, endpoint, **options):
+		def injector(fn):
+			def wrapper(*args, **kwargs):
+				return fn(*args, **kwargs)
+			return wrapper
+		return injector
 
 
 class ApiMock(object):
+	app = AppMock()
+
+	def __init__(self):
+		self.log = get_logger("api_mock")
+		self.resources = {}
+
 	def add_resource(self, res, *args):
-		pass
+		for endpoint in args:
+			self.log.info("Registering {0} endpoint".format(endpoint))
+			self.resources[endpoint] = res
+
+	def call(self, endpoint, method, *args):
+		def do_call(inst):
+			return getattr(inst, method)(*args)
+
+		return do_call(self.resources[endpoint])
 
 
 def test_locator(*directory):
