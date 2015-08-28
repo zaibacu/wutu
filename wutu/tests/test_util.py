@@ -5,7 +5,7 @@ from wutu.util import *
 
 class AppMock(object):
 	@staticmethod
-	def route(endpoint):
+	def route(rule, endpoint, **options):
 		def injector(fn):
 			def wrapper(*args, **kwargs):
 				return fn(*args, **kwargs)
@@ -18,18 +18,18 @@ class ApiMock(object):
 
 	def __init__(self):
 		self.log = get_logger("api_mock")
-		self.resources = []
+		self.resources = {}
 
 	def add_resource(self, res, *args):
 		for endpoint in args:
 			self.log.info("Registering {0} endpoint".format(endpoint))
-			self.resources.append({"endpoint": endpoint, "resource": res})
+			self.resources[endpoint] = res
 
 	def call(self, endpoint, method, *args):
 		def do_call(inst):
 			return getattr(inst, method)(*args)
 
-		return [do_call(item["resource"]) for item in filter(lambda obj: obj["endpoint"] == endpoint, self.resources)]
+		return do_call(self.resources[endpoint])
 
 
 def test_locator(*directory):
