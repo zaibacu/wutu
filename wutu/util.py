@@ -57,6 +57,15 @@ def endpoint_name(str):
 	return "_".join(words)
 
 
+def camel_case_name(str):
+	"""
+	Converts string to CamelCase
+	:param str: input string
+	:return: CamelCased string
+	"""
+	return "".join([words[0].upper() + words[1:] for words in str.split("_")])
+
+
 def setup_endpoint(api, inst, name):
 	"""
 	Binds module to API
@@ -112,6 +121,7 @@ def create_module(api, name=None):
 
 		result = fn()
 		inst = WrappedModule()
+		inst.__name__ = camel_case_name(name)
 		extend_module(inst, result)
 		setup_endpoint(api, inst, name)
 		log.info("Module '{0}' created".format(name))
