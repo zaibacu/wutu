@@ -2,7 +2,10 @@ import app
 from util import *
 from Naked.toolshed.shell import execute
 import sqlite3
-
+import os
+import sys
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append("tests/modules/")
 
 class AppMock(object):
 	@staticmethod

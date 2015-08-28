@@ -1,12 +1,5 @@
-import app
-from util import create_module
 from test_util import *
-
-import os
-import sys
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
-sys.path.append("../")
-sys.path.append("modules/")
+from util import *
 
 def start_server():
 	prepare_db()

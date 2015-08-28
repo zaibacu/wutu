@@ -19,7 +19,7 @@ def create(index, locator):
     app = CustomFlask(__name__)
     api = Api(app)
     app.jinja_loader = jinja2.FileSystemLoader(locator())
-    modules = [load_module(module, api=api) for module in get_modules()]
+    modules = [load_module(module, api=api) for module in get_modules(locator)]
 
     @app.route("/")
     def index_page():
