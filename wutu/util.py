@@ -26,6 +26,23 @@ def current(*directory):
 	return os.path.join(os.getcwd(), *directory)
 
 
+def class_factory(name, base):
+	"""
+	Dynamic class generator
+	:param name: class name
+	:param base: parent class
+	:return:
+	"""
+	def __init__(self, **kwargs):
+		for key, val in kwargs.items():
+			setattr(self, key, val)
+		self.__name__ = name
+		base.__init__(self)
+
+	ctr = type(name, (base,), {"__init__": __init__})
+	return ctr
+
+
 def endpoint_name(str):
 	"""
 	Converts string from CameCase to under_score_case
@@ -112,17 +129,12 @@ def create_module(api, name=None):
 	:return:
 	"""
 	def injector(fn):
-		class WrappedModule(Module):
-			pass
-
 		nonlocal name
 		if not name:
 			name = fn.__name__
-
+		ctr = class_factory(camel_case_name(name), Module)
 		result = fn()
-		inst = WrappedModule()
-		inst.__name__ = camel_case_name(name)
-		extend_module(inst, result)
+		inst = ctr(**result)
 		setup_endpoint(api, inst, name)
 		log.info("Module '{0}' created".format(name))
 
