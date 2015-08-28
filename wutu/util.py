@@ -26,7 +26,7 @@ def current(*directory):
 	return os.path.join(os.getcwd(), *directory)
 
 
-def class_factory(name, base):
+def class_factory(name, base, **kwargs):
 	"""
 	Dynamic class generator
 	:param name: class name
@@ -39,7 +39,9 @@ def class_factory(name, base):
 		self.__name__ = name
 		base.__init__(self)
 
-	ctr = type(name, (base,), {"__init__": __init__})
+	struct = {"__init__": __init__}
+	struct.update(kwargs)
+	ctr = type(name, (base,), struct)
 	return ctr
 
 
@@ -130,9 +132,8 @@ def create_module(api, name=None):
 		nonlocal name
 		if not name:
 			name = fn.__name__
-		ctr = class_factory(camel_case_name(name), Module)
-		result = fn()
-		inst = ctr(**result)
+		ctr = class_factory(camel_case_name(name), Module, **fn())
+		inst = ctr()
 		setup_endpoint(api, inst, name)
 		log.info("Module '{0}' created".format(name))
 
