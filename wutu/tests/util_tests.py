@@ -23,7 +23,7 @@ class UtilTests(unittest.TestCase):
 	def test_module_locator(self):
 		module = load_module(get_modules(test_locator)[0])
 		result = module_locator(module, "controller.js")
-		expected = "{0}/modules/test_module/controller.js".format(os.getcwd())
+		expected = "modules/test_module/controller.js"
 		self.assertEqual(expected, result)
 
 	def test_endpoint_name(self):
