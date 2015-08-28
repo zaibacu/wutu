@@ -1,7 +1,7 @@
 import unittest
-from wutu.util import *
+from util import *
 from test_util import *
-from wutu.module import module_locator
+from module import module_locator
 import os
 
 
