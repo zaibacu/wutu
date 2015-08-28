@@ -8,11 +8,11 @@ def start_server():
 
 	@create_module(testing_app.api)
 	def test_module_2():
-		return {"get": lambda: "Hello"}
+		return {"get": lambda req: "Hello"}
 
 	@create_module(testing_app.api)
 	def test_module_3():
-		return {"get": lambda x: "Hello again, {0}".format(x)}
+		return {"get": lambda req, id: "Hello again, {0}".format(id)}
 
 	testing_app.run(host="localhost", port=5555, debug=True, use_reloader=False)
 
