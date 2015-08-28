@@ -19,6 +19,7 @@ class JsTests(unittest.TestCase):
 
 	def tearDown(self):
 		self.p.terminate()
+		execute("rm testing.db")
 
 	def test_run_unit_tests(self):
 		result = execute("./node_modules/karma/bin/karma start")
