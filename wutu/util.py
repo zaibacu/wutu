@@ -135,7 +135,7 @@ def load_module(module, locator=current, api=None):
 	:param api: parameter for automatic binding
 	:return: module instance
 	"""
-	mod = __import__("modules.{0}".format(module), globals(), locals(), fromlist=["*"])
+	mod = __import__("{0}".format(module), globals(), locals(), fromlist=["*"])
 	for _, m in inspect.getmembers(mod, inspect.ismodule):
 		for _, cls in inspect.getmembers(m, inspect.isclass):
 			if issubclass(cls, Module) and cls != Module:
@@ -170,7 +170,8 @@ def get_modules(locator=current):
 	:param locator: function which tells where to look for modules
 	:return: list of module names
 	"""
-	modules = os.listdir(locator("modules"))
+	blacklist = ["__pycache__", "__init__.py", ".DS_Store"]
+	modules = list(filter(lambda name: name not in blacklist, os.listdir(locator("modules"))))
 	log.info("{0} modules loaded".format(len(modules)))
 	return modules
 

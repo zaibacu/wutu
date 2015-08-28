@@ -1,6 +1,6 @@
 from setuptools import setup
 from pip.req import parse_requirements
-import sys
+import sys, os
 sys.path.append("wutu/")
 
 install_reqs = list(parse_requirements("requirements", session={}))
