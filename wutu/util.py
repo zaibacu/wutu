@@ -49,10 +49,8 @@ def endpoint_name(str):
 	:param str:
 	:return:
 	"""
-	class LState(object):
-		pass
-	class UState(object):
-		pass
+	LState = class_factory("LState", object)
+	UState = class_factory("UState", object)
 
 	state = UState
 	words = []
