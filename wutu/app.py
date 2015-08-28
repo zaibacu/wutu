@@ -3,8 +3,8 @@ import jinja2
 from flask import Flask, render_template, Response
 from flask_restful import Api
 
-from wutu.util import *
-from wutu.compiler import create_base, create_stream, get_data
+from util import *
+from compiler import create_base, create_stream, get_data
 
 
 class CustomFlask(Flask):
@@ -15,7 +15,7 @@ class CustomFlask(Flask):
     ))
 
 
-def create(index, locator):
+def create(index="index.html", locator=current):
     app = CustomFlask(__name__)
     api = Api(app)
     app.jinja_loader = jinja2.FileSystemLoader(locator())
