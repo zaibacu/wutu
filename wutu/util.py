@@ -76,14 +76,14 @@ def setup_endpoint(api, inst, name):
 	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
 
-	@api.app.route("/{0}/service.js".format(name))
+	@api.app.route("/{0}/service.js".format(name), endpoint="{0}.service_endpoint".format(inst.__name__))
 	def get_service_endpoint():
 		"""
 		Endpoint for AngularJS service (Generated)
 		"""
 		return Response(inst.get_service(), mimetype="text/javascript")
 
-	@api.app.route("/{0}/controller.js".format(name))
+	@api.app.route("/{0}/controller.js".format(name), endpoint="{0}.controller_endpoint".format(inst.__name__))
 	def get_controller_endpoint():
 		"""
 		Endpoint for AngularJS controller (User defined)
