@@ -108,19 +108,6 @@ def setup_endpoint(api, inst, name):
 		return Response(inst.get_controller(), mimetype="text/javascript")
 
 
-def extend_module(inst, attrs):
-	"""
-	Adds additional methods to existing module
-	:param inst: module instance
-	:param attrs: attribute dict, eg. {"get": lambda: "something"}
-	:return: modified module instance
-	"""
-	assert(isinstance(attrs, dict))
-	for key, val in attrs.items():
-		setattr(inst, key, val)
-	return inst
-
-
 def create_module(api, name=None):
 	"""
 	A decorator which dynamically creates and binds new module
