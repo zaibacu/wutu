@@ -131,7 +131,6 @@ def load_module(module, api=None):
 	"""
 	Loads selected module
 	:param module: module name
-	:param locator: function which tells where to look for modules
 	:param api: parameter for automatic binding
 	:return: module instance
 	"""
@@ -151,7 +150,6 @@ def inject_module(module):
 	"""
 	Decorator which loads and passes module as a parameter
 	:param module: module name
-	:param locator: function which tells where to look for modules
 	:return: wrapped function
 	"""
 	mod = load_module(module)
