@@ -142,6 +142,7 @@ def load_module(module, locator=current, api=None):
 		for _, cls in inspect.getmembers(m, inspect.isclass):
 			if issubclass(cls, Module) and cls != Module:
 				inst = cls()
+				inst.__name__ = cls.__name__
 				name = endpoint_name(cls.__name__)
 				if api:
 					setup_endpoint(api, inst, name)

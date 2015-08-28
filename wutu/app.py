@@ -31,6 +31,7 @@ def create(index, locator):
         create_base(stream)
         return Response(get_data(stream), mimetype="text/javascript")
 
+    app.api = api
     return app
 
 if __name__ == "__main__":
