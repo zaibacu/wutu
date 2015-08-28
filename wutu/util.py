@@ -168,10 +168,14 @@ def get_modules(locator=current):
 	:param locator: function which tells where to look for modules
 	:return: list of module names
 	"""
-	blacklist = ["__pycache__", "__init__.py", ".DS_Store"]
-	modules = list(filter(lambda name: name not in blacklist, os.listdir(locator("modules"))))
-	log.info("{0} modules loaded".format(len(modules)))
-	return modules
+	try:
+		blacklist = ["__pycache__", "__init__.py", ".DS_Store"]
+		modules = list(filter(lambda name: name not in blacklist, os.listdir(locator("modules"))))
+		log.info("{0} modules loaded".format(len(modules)))
+		return modules
+	except FileNotFoundError:
+		log.error("Failed to load modules from: '{0}'. Maybe incorrect directory?".format(locator("modules")))
+		return []
 
 
 def load_js(file, locator=current):
