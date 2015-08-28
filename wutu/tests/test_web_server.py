@@ -4,6 +4,8 @@ from test_util import *
 
 
 def start_server():
+	prepare_db()
+
 	testing_app = app.create(index="test.html", locator=test_locator)
 
 	@create_module(testing_app.api)

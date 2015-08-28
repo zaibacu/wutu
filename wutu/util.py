@@ -36,7 +36,7 @@ def class_factory(name, base, **kwargs):
 	def __init__(self, **kwargs):
 		for key, val in kwargs.items():
 			setattr(self, key, val)
-		self.__name__ = name
+		self.__name__ = endpoint_name(name)
 		base.__init__(self)
 
 	struct = {"__init__": __init__}
@@ -93,14 +93,14 @@ def setup_endpoint(api, inst, name):
 	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
 
-	@api.app.route("/{0}/service.js".format(name), endpoint="{0}.service_endpoint".format(inst.__name__))
+	@api.app.route("/{0}/service.js".format(name), endpoint="{0}.service_endpoint".format(name))
 	def get_service_endpoint():
 		"""
 		Endpoint for AngularJS service (Generated)
 		"""
 		return Response(inst.get_service(), mimetype="text/javascript")
 
-	@api.app.route("/{0}/controller.js".format(name), endpoint="{0}.controller_endpoint".format(inst.__name__))
+	@api.app.route("/{0}/controller.js".format(name), endpoint="{0}.controller_endpoint".format(name))
 	def get_controller_endpoint():
 		"""
 		Endpoint for AngularJS controller (User defined)
@@ -140,8 +140,8 @@ def load_module(module, locator=current, api=None):
 		for _, cls in inspect.getmembers(m, inspect.isclass):
 			if issubclass(cls, Module) and cls != Module:
 				inst = cls()
-				inst.__name__ = cls.__name__
 				name = endpoint_name(cls.__name__)
+				inst.__name__ = name
 				if api:
 					setup_endpoint(api, inst, name)
 				return inst

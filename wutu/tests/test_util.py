@@ -1,6 +1,7 @@
-import os
 from wutu import app
 from wutu.util import *
+from Naked.toolshed.shell import execute
+import sqlite3
 
 
 class AppMock(object):
@@ -30,6 +31,21 @@ class ApiMock(object):
 			return getattr(inst, method)(*args)
 
 		return do_call(self.resources[endpoint])
+
+
+def prepare_db():
+	execute("rm testing.db")
+	execute("touch testing.db") # Creates database for testing
+	conn = sqlite3.connect("testing.db")
+	query = """
+		CREATE TABLE notes(
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			text TEXT NOT NULL
+		);
+	"""
+	conn.cursor().execute(query)
+	conn.commit()
+	conn.close()
 
 
 def test_locator(*directory):
