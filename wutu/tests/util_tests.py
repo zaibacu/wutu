@@ -28,5 +28,21 @@ class UtilTests(unittest.TestCase):
 
 	def test_endpoint_name(self):
 		result = endpoint_name("TestModule")
-        expected = "test_module"
+		expected = "test_module"
 		compare_dir(self.assertEqual, expected, result)
+
+	def test_module_extend(self):
+		@inject_module("test_module", test_locator)
+		def injected_fn(module):
+			self.assertRaises(AssertionError, extend_module, *(module, []))
+			extend_module(module, {"new_fn": lambda: "Hello."})
+			self.assertEqual(module.new_fn(), "Hello.")
+
+		injected_fn()
+
+	def test_module_creator(self):
+		@create_module(self.api)
+		def new_module():
+			return {"get": lambda: "Hello, world!"}
+
+		self.assertIn("Hello, world!", list(self.api.call("/new_module", "get")))

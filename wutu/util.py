@@ -69,11 +69,54 @@ def setup_endpoint(api, inst, name):
 
 	@api.app.route("/{0}/service.js".format(name))
 	def get_service_endpoint():
+		"""
+		Endpoint for AngularJS service (Generated)
+		"""
 		return Response(inst.get_service(), mimetype="text/javascript")
 
 	@api.app.route("/{0}/controller.js".format(name))
 	def get_controller_endpoint():
+		"""
+		Endpoint for AngularJS controller (User defined)
+		"""
 		return Response(inst.get_controller(), mimetype="text/javascript")
+
+
+def extend_module(inst, attrs):
+	"""
+	Adds additional methods to existing module
+	:param inst: module instance
+	:param attrs: attribute dict, eg. {"get": lambda: "something"}
+	:return: modified module instance
+	"""
+	assert(isinstance(attrs, dict))
+	for key, val in attrs.items():
+		setattr(inst, key, val)
+	return inst
+
+
+def create_module(api, name=None):
+	"""
+	A decorator which dynamically creates and binds new module
+	:param api: flask_restful api endpoint
+	:param name: optional name override for module. If not defined, automatically picked from function name
+	:return:
+	"""
+	def injector(fn):
+		class WrappedModule(Module):
+			pass
+
+		nonlocal name
+		if not name:
+			name = fn.__name__
+
+		result = fn()
+		inst = WrappedModule()
+		extend_module(inst, result)
+		setup_endpoint(api, inst, name)
+		log.info("Module '{0}' created".format(name))
+
+	return injector
 
 
 def load_module(module, locator=current, api=None):
