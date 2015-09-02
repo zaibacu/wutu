@@ -6,6 +6,7 @@ Basic Usage
 ===========
 ```Python
 from wutu import app
+from wutu.util import create_module
 myapp = app.create(index="index.html")
 
 @create_module(myapp.api)
