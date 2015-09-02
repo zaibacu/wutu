@@ -7,7 +7,8 @@ install_reqs = list(parse_requirements("requirements", session={}))
 
 
 def version():
-	return __import__("wutu").get_version()
+	import version
+	return version.get_version()
 
 
 setup(name="wutu",

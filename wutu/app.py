@@ -3,8 +3,8 @@ import jinja2
 from flask import Flask, render_template, Response
 from flask_restful import Api
 
-from util import *
-from compiler import create_base, create_stream, get_data
+from wutu.util import *
+from wutu.compiler import create_base, create_stream, get_data
 
 
 class CustomFlask(Flask):
