@@ -6,10 +6,9 @@ Basic Usage
 ===========
 ```Python
 from wutu import app
-from wutu.util import current
-myapp = app.create(index="index.html", locator=current)
+myapp = app.create(index="index.html")
 
-@create_module(testing_app.api)
+@create_module(myapp.api)
 def greetings_module():
 	return {"get": lambda req, id: "Hello, #{0}".format(id)}
 
