@@ -26,7 +26,7 @@ def current(*directory):
 	return os.path.join(os.getcwd(), *directory)
 
 
-def class_factory(name, base, **kwargs):
+def class_factory(name, base):
 	"""
 	Dynamic class generator
 	:param name: class name
@@ -45,10 +45,10 @@ def class_factory(name, base, **kwargs):
 	return ctr
 
 
-def endpoint_name(str):
+def endpoint_name(name):
 	"""
 	Converts string from CameCase to under_score_case
-	:param str:
+	:param name: regular name
 	:return:
 	"""
 	LState = class_factory("LState", object)
@@ -57,7 +57,7 @@ def endpoint_name(str):
 	state = UState
 	words = []
 	cur = []
-	for l in str:
+	for l in name:
 		if state == UState and l.isupper():
 			cur.append(l.lower())
 		elif state == UState and l.islower():
@@ -74,13 +74,13 @@ def endpoint_name(str):
 	return "_".join(words)
 
 
-def camel_case_name(str):
+def camel_case_name(name):
 	"""
 	Converts string to CamelCase
-	:param str: input string
+	:param name: input string
 	:return: CamelCased string
 	"""
-	return "".join([words[0].upper() + words[1:] for words in str.split("_")])
+	return "".join([words[0].upper() + words[1:] for words in name.split("_")])
 
 
 def setup_endpoint(api, inst, name):
