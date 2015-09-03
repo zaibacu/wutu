@@ -3,6 +3,23 @@ from contextlib import contextmanager
 import numbers
 
 
+class HttpService(object):
+	"""
+	Generator for AngularJS $http
+	"""
+	def get(self, url, _id):
+		return "$http.get({0} + \"/\" + {1} + \"/\");".format(url, "+ \"/\"".join(_id))
+
+	def post(self, url, _id, data="data"):
+		return "$http.post({0} + \"/\" + {1} + \"/\", {2});".format(url, "+ \"/\"".join(_id), data)
+
+	def put(self, url, data="data"):
+		return "$http.put({0}, {1});".format(url, data)
+
+	def delete(self, url, _id):
+		return "$http.delete({0} + \"/\" + {1} + \"/\");".format(url, "+ \"/\"".join(_id))
+
+
 def add_variable(stream, name, value, private=True):
 	"""
 	Adds JavaScript variable
@@ -37,18 +54,19 @@ def create_service_js(stream, module):
 	"""
 	stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))
 	with function_block(stream, ["$http"]) as block:
-		block.write("var url =  \"{0}\";".format(module.__name__))
+		add_variable(block, "url", module.__name__)
 		with service_block(stream) as service:
 			_id = module.get_identifier()
 			params = lambda x: ", ".join(x)
+			http = HttpService()
 			service.add_method("get", _id, lambda s:
-				s.write("return $http.get(base_url() + url + \"/\" + {0} + \"/\");".format(params(_id))))
+				s.write("return " + http.get("base_url() + url", _id)))
 			service.add_method("put", ["data"], lambda s:
-				s.write("return $http.put(base_url() + url, data);"))
+				s.write("return " + http.put("base_url() + url", "data")))
 			service.add_method("post", _id + ["data"], lambda s:
-				s.write("return $http.post(base_url() + url + \"/\" + {0} + \"/\", data);".format(params(_id))))
+				s.write("return " + http.post("base_url() + url", _id, "data")))
 			service.add_method("delete", _id, lambda s:
-				s.write("return $http.delete(base_url() + url + \"/\" + {0} + \"/\");".format(params(_id))))
+				s.write("return " + http.delete("base_url() + url", _id)))
 	stream.write("])")
 
 
