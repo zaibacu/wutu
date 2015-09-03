@@ -1,6 +1,6 @@
 import sys
 import jinja2
-from flask import Flask, render_template, Response
+from flask import Flask, render_template
 from flask_restful import Api
 
 from wutu.util import *
@@ -8,6 +8,9 @@ from wutu.compiler import create_base, create_stream, get_data
 
 
 class CustomFlask(Flask):
+	"""
+	Enchanted Flask module
+	"""
 	jinja_options = Flask.jinja_options.copy()
 	jinja_options.update(dict(
 		variable_start_string='{<',
@@ -16,6 +19,12 @@ class CustomFlask(Flask):
 
 
 def create(index="index.html", locator=current):
+	"""
+	Creates wutu app
+	:param index: html file for index page
+	:param locator: function which tells where to find templates
+	:return:
+	"""
 	app = CustomFlask(__name__)
 	api = Api(app)
 	app.jinja_loader = jinja2.FileSystemLoader(locator())
@@ -23,13 +32,21 @@ def create(index="index.html", locator=current):
 
 	@app.route("/")
 	def index_page():
+		"""
+		Endpoint for base page
+		:return:
+		"""
 		try:
 			return render_template(index, modules=modules)
-		except:
-			return "Failed to render template {0}".format(index)
+		except IOError:
+			return "Failed to render template {0}, error: Not found".format(index)
 
 	@app.route("/init.js")
 	def init_page():
+		"""
+		Endpoint for JavaScript init
+		:return:
+		"""
 		stream = create_stream()
 		create_base(stream)
 		return Response(get_data(stream), mimetype="text/javascript")
