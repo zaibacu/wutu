@@ -26,15 +26,16 @@ def current(*directory):
 	return os.path.join(os.getcwd(), *directory)
 
 
-def class_factory(name, base):
+def class_factory(name, base, **kwargs):
 	"""
 	Dynamic class generator
 	:param name: class name
 	:param base: parent class
+	:param: kwargs: optional params
 	:return:
 	"""
-	def __init__(self, **kwargs):
-		for key, val in kwargs.items():
+	def __init__(self, **options):
+		for key, val in options.items():
 			setattr(self, key, val)
 		self.__name__ = endpoint_name(name)
 		base.__init__(self)

@@ -22,7 +22,8 @@ class Module(Resource):
 	def __init__(self):
 		super(Module, self).__init__()
 
-	def mediatypes(self):
+	@staticmethod
+	def mediatypes():
 		"""
 		Mediatypes override
 		:return:
