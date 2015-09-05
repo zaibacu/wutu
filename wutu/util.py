@@ -1,7 +1,9 @@
 import os
 import inspect
+import tempfile
 from flask import Response
 from logbook import Logger
+from contextlib import contextmanager
 
 from wutu.module import Module
 
@@ -190,3 +192,17 @@ def load_js(file, locator=current):
 		raw = f.read()
 
 	return raw
+
+
+@contextmanager
+def temp_file():
+	"""
+	Creates a temp file and deletes it afterwards
+	:return:
+	"""
+	temp = tempfile.mkstemp()
+	try:
+		yield temp
+	finally:
+		temp.close()
+		os.unlink(temp.name)
