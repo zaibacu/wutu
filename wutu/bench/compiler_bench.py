@@ -13,7 +13,5 @@ def main():
 	handle_creation(mod, stream)
 
 if __name__ == "__main__":
-	#import timeit
 	import cProfile
 	cProfile.run("main()")
-	#print(timeit.timeit("main()", setup="from __main__ import main"))
