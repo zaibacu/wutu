@@ -215,11 +215,11 @@ def timer(title):
 	:param title: Name of block to be visible in output
 	:return:
 	"""
-	from time import time
-	start = time()
+	from time import perf_counter as pc
+	start = pc()
 	try:
 		yield
 	finally:
-		timediff = (time() - start) * 1000
+		timediff = (pc() - start) * 1000
 		log.debug("It took {0} ms to execute block '{1}'".format(timediff, title))
 
