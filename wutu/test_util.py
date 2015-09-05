@@ -85,3 +85,6 @@ def get_server_url():
 def start_server():
 	testing_app = app.create(index="test.html", locator=test_locator)
 	testing_app.run(host=TEST_HOST, port=TEST_PORT, debug=True, use_reloader=False)
+
+def validate_js(content):
+	return True

@@ -2,7 +2,6 @@ import unittest
 from test_util import *
 from compiler import *
 from util import *
-import pyjslint
 
 
 class CompilerTests(unittest.TestCase):
@@ -68,6 +67,7 @@ class CompilerTests(unittest.TestCase):
 		mod = Module()
 		mod.__name__ = "test_module"
 		stream = StringIO()
+		create_base(stream)
 		mod.create_service(stream)
-		self.assertTrue(pyjslint.check_JSLint(get_data(stream)))
+		self.assertTrue(validate_js(get_data(stream)))
 
