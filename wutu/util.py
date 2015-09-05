@@ -206,3 +206,20 @@ def temp_file():
 	finally:
 		temp.close()
 		os.unlink(temp.name)
+
+
+@contextmanager
+def timer(title):
+	"""
+	Measures time elapsed in current block
+	:param title: Name of block to be visible in output
+	:return:
+	"""
+	from time import time
+	start = time()
+	try:
+		yield
+	finally:
+		timediff = (time() - start) * 1000
+		log.debug("It took {0} ms to execute block '{1}'".format(timediff, title))
+
