@@ -86,5 +86,8 @@ def start_server():
 	testing_app = app.create(index="test.html", locator=test_locator)
 	testing_app.run(host=TEST_HOST, port=TEST_PORT, debug=True, use_reloader=False)
 
+
 def validate_js(content):
-	return True
+	with temp_file() as f:
+		f.write(content.encode("UTF-8"))
+		return execute("./node_modules/jslint/bin/jslint.js {0}".format(f.name))

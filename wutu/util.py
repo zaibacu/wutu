@@ -200,7 +200,7 @@ def temp_file():
 	Creates a temp file and deletes it afterwards
 	:return:
 	"""
-	temp = tempfile.mkstemp()
+	temp = tempfile.NamedTemporaryFile(delete=False)
 	try:
 		yield temp
 	finally:
