@@ -1,6 +1,6 @@
 import unittest
 from test_util import *
-from compiler.compiler import *
+from compiler.common import *
 from util import *
 
 

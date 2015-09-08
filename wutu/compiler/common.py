@@ -3,6 +3,7 @@ from contextlib import contextmanager
 import numbers
 from compiler.http import HttpService
 
+
 def add_variable(stream, name, value, private=True):
 	"""
 	Adds JavaScript variable

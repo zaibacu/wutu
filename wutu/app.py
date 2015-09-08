@@ -4,7 +4,7 @@ from flask import Flask, render_template
 from flask_restful import Api
 
 from wutu.util import *
-from wutu.compiler import create_base, create_stream, get_data
+from wutu.compiler.common import create_base, create_stream, get_data
 
 
 class CustomFlask(Flask):
