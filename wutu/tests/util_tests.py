@@ -2,7 +2,6 @@ import unittest
 from util import *
 from test_util import *
 from module import module_locator
-import os
 
 
 class UtilTests(unittest.TestCase):
