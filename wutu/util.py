@@ -6,6 +6,7 @@ from logbook import Logger
 from contextlib import contextmanager
 
 from wutu.module import Module
+modules = []
 
 
 def get_logger(name):
@@ -17,6 +18,14 @@ def get_logger(name):
 	return Logger(name)
 
 log = get_logger("util")
+
+
+def get_modules():
+	"""
+	Returns currently loaded modules
+	:return:
+	"""
+	return modules
 
 
 def current(*directory):
@@ -95,6 +104,8 @@ def setup_endpoint(api, inst, name):
 	"""
 	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
+	global modules
+	modules.append(inst)
 
 	@api.app.route("/{0}/service.js".format(name), endpoint="{0}.service_endpoint".format(name))
 	def get_service_endpoint():
@@ -165,7 +176,7 @@ def inject_module(module):
 	return injector
 
 
-def get_modules(locator=current):
+def load_modules(locator=current):
 	"""
 	Returns list of modules in directory
 	:param locator: function which tells where to look for modules

@@ -28,7 +28,7 @@ def create(index="index.html", locator=current):
 	app = CustomFlask(__name__)
 	api = Api(app)
 	app.jinja_loader = jinja2.FileSystemLoader(locator())
-	modules = [load_module(module, api=api) for module in get_modules(locator)]
+	[load_module(module, api=api) for module in load_modules(locator)]
 
 	@app.route("/")
 	def index_page():
@@ -37,7 +37,7 @@ def create(index="index.html", locator=current):
 		:return:
 		"""
 		try:
-			return render_template(index, modules=modules)
+			return render_template(index, modules=get_modules())
 		except IOError:
 			return "Failed to render template {0}, error: Not found".format(index)
 
