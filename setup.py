@@ -2,6 +2,7 @@ from setuptools import setup
 from pip.req import parse_requirements
 import sys, os
 sys.path.append("wutu/")
+sys.path.append("wutu/compiler/")
 
 install_reqs = list(parse_requirements("requirements", session={}))
 
