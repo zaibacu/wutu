@@ -1,7 +1,7 @@
 import os
 import inspect
 import tempfile
-from flask import Response
+from flask import Response, request
 from logbook import Logger
 from contextlib import contextmanager
 
@@ -193,6 +193,13 @@ def load_js(file, locator=current):
 
 	return raw
 
+
+def get_request_args():
+	"""
+	Returns arguments passed to request
+	:return:
+	"""
+	return request.args
 
 @contextmanager
 def temp_file():
