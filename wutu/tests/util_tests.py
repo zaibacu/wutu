@@ -22,7 +22,7 @@ class UtilTests(unittest.TestCase):
 		module = load_module(load_modules()[0])
 		result = module_locator(module, "controller.js")
 		expected = "modules/test_module/controller.js"
-		self.assertEqual(expected, result)
+		self.assertEqual(expected, result.replace("\\", "/"))
 
 	def test_endpoint_name(self):
 		result = endpoint_name("TestModule")
