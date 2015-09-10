@@ -54,13 +54,6 @@ class Module(Resource):
 		"""
 		return ""
 
-	def get_identifier(self):
-		"""
-		Returns parameters for querying
-		:return:
-		"""
-		return ["id"]
-
 	def get_name(self):
 		"""
 		Returns module name
