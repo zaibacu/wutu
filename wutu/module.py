@@ -1,7 +1,5 @@
 from flask_restful import Resource
-from compiler.common import *
-import os
-import inspect
+from wutu.compiler.common import *
 
 
 def module_locator(module, *directory):

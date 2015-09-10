@@ -1,9 +1,11 @@
-import app
 from util import *
 from Naked.toolshed.shell import execute
 import sqlite3
 import os
 import sys
+
+from wutu.module import Module
+from wutu import app
 os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "tests"))
 sys.path.append("modules/")
 

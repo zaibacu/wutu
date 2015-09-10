@@ -1,7 +1,7 @@
 from io import StringIO
 from contextlib import contextmanager
 import numbers
-from .http import HttpService
+from wutu.compiler.http import HttpService
 
 
 def add_variable(stream, name, value, private=True):

@@ -1,7 +1,7 @@
 import unittest
-from test_util import *
-from compiler.common import *
-from util import *
+from wutu.test_util import *
+from wutu.compiler.common import *
+from wutu.util import *
 
 
 class CompilerTests(unittest.TestCase):

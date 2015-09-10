@@ -1,6 +1,6 @@
 import unittest
-from test_util import *
-from module import module_locator, Module
+from wutu.test_util import *
+from wutu.module import module_locator, Module
 
 
 class UtilTests(unittest.TestCase):

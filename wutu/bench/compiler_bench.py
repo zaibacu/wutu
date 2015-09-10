@@ -1,4 +1,4 @@
-from wutu.compiler import create_service_js, create_stream
+from wutu.compiler.common import create_service_js, create_stream
 from wutu.util import *
 
 
