@@ -42,8 +42,5 @@ class TestModule(Module):
 		conn.commit()
 		return {"success": True}
 
-	def get_identifier(self):
-		return ["_id"]
-
 	def get_controller(self):
 		return load_js("controller.js", lambda *args: module_locator(self, *args))
