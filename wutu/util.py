@@ -95,6 +95,15 @@ def camel_case_name(name):
 	return "".join([words[0].upper() + words[1:] for words in name.split("_")])
 
 
+def get_identity(inst):
+	"""
+	Returns required positional arguments for module
+	:param inst: module instance
+	:return:
+	"""
+	return list(filter(lambda x: x != "self", inspect.getargspec(inst.get).args))
+
+
 def setup_endpoint(api, inst, name):
 	"""
 	Binds module to API
@@ -102,7 +111,8 @@ def setup_endpoint(api, inst, name):
 	:param inst: module instance
 	:param name: end-point name
 	"""
-	params = "/".join(["<{0}>".format(param) for param in inst.get_identifier()])
+
+	params = "/".join(["<{0}>".format(param) for param in get_identity(inst)])
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
 	global modules
 	modules.append(inst)

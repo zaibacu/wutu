@@ -9,7 +9,7 @@ class UtilTests(unittest.TestCase):
 		self.api = ApiMock()
 
 	def test_directory_scan(self):
-		modules = get_modules(test_locator)
+		modules = load_modules(test_locator)
 		self.assertEqual(modules, ["test_module"])
 
 	def test_module_injector(self):
@@ -20,7 +20,7 @@ class UtilTests(unittest.TestCase):
 		injected_fn()
 
 	def test_module_locator(self):
-		module = load_module(get_modules()[0])
+		module = load_module(load_modules()[0])
 		result = module_locator(module, "controller.js")
 		expected = "modules/test_module/controller.js"
 		self.assertEqual(expected, result)
@@ -36,3 +36,9 @@ class UtilTests(unittest.TestCase):
 			return {"get": lambda req: "Hello, world!"}
 
 		self.assertEqual("Hello, world!", self.api.call("/new_module", "get"))
+
+	def test_module_identity(self):
+		module = load_module(load_modules()[0])
+		result = get_identity(module)
+		expected = ["_id"]
+		self.assertEqual(expected, result)
