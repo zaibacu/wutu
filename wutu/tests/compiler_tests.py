@@ -64,7 +64,6 @@ class CompilerTests(unittest.TestCase):
 		self.assertEqual(excepted, result)
 
 	def test_module(self):
-		from module import Module
 		mod = Module()
 		mod.__name__ = "test_module"
 		stream = StringIO()

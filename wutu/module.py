@@ -92,5 +92,5 @@ class Module(Resource):
 		Returns Ids for this module
 		:return:
 		"""
-		from util import get_identity
+		from wutu.util import get_identity
 		return get_identity(self)
