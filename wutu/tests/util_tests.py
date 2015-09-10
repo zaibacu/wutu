@@ -1,7 +1,6 @@
 import unittest
-from util import *
 from test_util import *
-from module import module_locator
+from module import module_locator, Module
 
 
 class UtilTests(unittest.TestCase):

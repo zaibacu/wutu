@@ -4,7 +4,6 @@ import tempfile
 from flask import Response, request
 from logbook import Logger
 from contextlib import contextmanager
-
 from module import Module
 modules = []
 
