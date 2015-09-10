@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from wutu.compiler.common import *
+from compiler.common import *
 import os
 import inspect
 
@@ -21,6 +21,34 @@ class Module(Resource):
 	"""
 	def __init__(self):
 		super(Module, self).__init__()
+
+	def get(self):
+		"""
+		Stub
+		:return:
+		"""
+		pass
+
+	def post(self):
+		"""
+		Stub
+		:return:
+		"""
+		pass
+
+	def put(self):
+		"""
+		Stub
+		:return:
+		"""
+		pass
+
+	def delete(self):
+		"""
+		Stub
+		:return:
+		"""
+		pass
 
 	@staticmethod
 	def mediatypes():
@@ -60,3 +88,11 @@ class Module(Resource):
 		:return:
 		"""
 		return self.__name__
+
+	def get_identifier(self):
+		"""
+		Returns Ids for this module
+		:return:
+		"""
+		from util import get_identity
+		return get_identity(self)

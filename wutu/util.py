@@ -5,7 +5,7 @@ from flask import Response, request
 from logbook import Logger
 from contextlib import contextmanager
 
-from wutu.module import Module
+from module import Module
 modules = []
 
 

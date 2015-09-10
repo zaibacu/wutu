@@ -1,1 +1,1 @@
-__all__ = ["app", "version", "util", "compiler"]
+__all__ = ["app", "version", "util", "compiler", "module"]
