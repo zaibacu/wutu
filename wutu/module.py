@@ -13,6 +13,12 @@ def module_locator(module, *directory):
 	return os.path.join(get_module_dir(module), *directory)
 
 
+def stub(fn):
+	def wrapper(*args, **kwargs):
+		raise NotImplemented("Method {0} is not implemented. Method desc: {1}".format(fn.__name__, fn.__doc__))
+	return wrapper
+
+
 class Module(Resource):
 	"""
 	Base class for all modules
@@ -20,33 +26,29 @@ class Module(Resource):
 	def __init__(self):
 		super(Module, self).__init__()
 
+	@stub
 	def get(self):
 		"""
-		Stub
-		:return:
+		Responds to GET request
 		"""
-		pass
 
+	@stub
 	def post(self):
 		"""
-		Stub
-		:return:
+		Responds to POST request
 		"""
-		pass
 
+	@stub
 	def put(self):
 		"""
-		Stub
-		:return:
+		Responds to PUT request
 		"""
-		pass
 
+	@stub
 	def delete(self):
 		"""
-		Stub
-		:return:
+		Responds to DELETE request
 		"""
-		pass
 
 	@staticmethod
 	def mediatypes():
