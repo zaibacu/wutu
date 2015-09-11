@@ -1,5 +1,5 @@
-from module import Module, module_locator
-from util import load_js
+from wutu.module import Module, module_locator
+from wutu.util import load_js
 from flask import request
 
 import sqlite3

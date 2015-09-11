@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from wutu.compiler.common import *
 from wutu.decorators import stub
+import os, inspect
 
 
 def module_locator(module, *directory):

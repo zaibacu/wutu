@@ -1,6 +1,7 @@
 import unittest
 from wutu.test_util import *
 from wutu.module import module_locator, Module
+from wutu.decorators import *
 
 
 class UtilTests(unittest.TestCase):

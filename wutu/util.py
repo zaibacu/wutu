@@ -131,25 +131,6 @@ def setup_endpoint(api, inst, name):
 		return Response(inst.get_controller(), mimetype="text/javascript")
 
 
-def create_module(api, name=None):
-	"""
-	A decorator which dynamically creates and binds new module
-	:param api: flask_restful api endpoint
-	:param name: optional name override for module. If not defined, automatically picked from function name
-	:return:
-	"""
-	def injector(fn):
-		nonlocal name
-		if not name:
-			name = fn.__name__
-		ctr = class_factory(camel_case_name(name), Module, **fn())
-		inst = ctr()
-		setup_endpoint(api, inst, name)
-		log.info("Module '{0}' created".format(name))
-
-	return injector
-
-
 def load_module(module, api=None):
 	"""
 	Loads selected module
@@ -167,22 +148,6 @@ def load_module(module, api=None):
 				if api:
 					setup_endpoint(api, inst, name)
 				return inst
-
-
-def inject_module(module):
-	"""
-	Decorator which loads and passes module as a parameter
-	:param module: module name
-	:return: wrapped function
-	"""
-	mod = load_module(module)
-
-	def injector(fn):
-		def wrapper(*args, **kwargs):
-			kwargs["module"] = mod
-			fn(*args, **kwargs)
-		return wrapper
-	return injector
 
 
 def load_modules(locator=current):
@@ -220,6 +185,7 @@ def get_request_args():
 	:return:
 	"""
 	return request.args
+
 
 @contextmanager
 def temp_file():
