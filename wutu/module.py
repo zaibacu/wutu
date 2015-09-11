@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from wutu.compiler.common import *
+from wutu.decorators import stub
 
 
 def module_locator(module, *directory):
@@ -11,12 +12,6 @@ def module_locator(module, *directory):
 	"""
 	get_module_dir = lambda mod: os.path.dirname(inspect.getmodule(mod.__class__).__file__)
 	return os.path.join(get_module_dir(module), *directory)
-
-
-def stub(fn):
-	def wrapper(*args, **kwargs):
-		raise NotImplemented("Method {0} is not implemented. Method desc: {1}".format(fn.__name__, fn.__doc__))
-	return wrapper
 
 
 class Module(Resource):
