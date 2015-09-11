@@ -5,6 +5,7 @@ from flask import Response, request
 from logbook import Logger
 from contextlib import contextmanager
 from wutu.module import Module
+from functools import lru_cache
 modules = []
 
 
@@ -125,6 +126,7 @@ def setup_endpoint(api, inst, name):
 	modules.append(inst)
 
 	@api.app.route("/{0}/service.js".format(name), endpoint="{0}.service_endpoint".format(name))
+	@lru_cache()
 	def get_service_endpoint():
 		"""
 		Endpoint for AngularJS service (Generated)
@@ -132,6 +134,7 @@ def setup_endpoint(api, inst, name):
 		return Response(inst.get_service(), mimetype="text/javascript")
 
 	@api.app.route("/{0}/controller.js".format(name), endpoint="{0}.controller_endpoint".format(name))
+	@lru_cache()
 	def get_controller_endpoint():
 		"""
 		Endpoint for AngularJS controller (User defined)
