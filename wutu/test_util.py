@@ -90,8 +90,8 @@ def start_server():
 
 
 def validate_js(content):
-	if not os.path.isfile("node_modules/jslint/bin/jslint.js"):
+	if not os.path.isfile(location("node_modules/jslint/bin/jslint.js")):
 		raise RuntimeError("You're either missing nodejs package 'jslint', or 'npm' environment. ")
 	with temp_file() as f:
 		f.write(content.encode("UTF-8"))
-		return execute("./node_modules/jslint/bin/jslint.js {0}".format(f.name))
+		return execute(location("./node_modules/jslint/bin/jslint.js {0}".format(f.name)))

@@ -22,8 +22,8 @@ class UtilTests(unittest.TestCase):
 	def test_module_locator(self):
 		module = load_module(load_modules()[0])
 		result = module_locator(module, "controller.js")
-		expected = "modules/test_module/controller.js"
-		self.assertEqual(expected, result.replace("\\", "/"))
+		expected = location("modules/test_module/controller.js")
+		self.assertEqual(expected, result)
 
 	def test_endpoint_name(self):
 		result = endpoint_name("TestModule")
@@ -41,4 +41,10 @@ class UtilTests(unittest.TestCase):
 		module = load_module(load_modules()[0])
 		result = get_identity(module)
 		expected = ["_id"]
+		self.assertEqual(expected, result)
+
+	def test_location(self):
+		result = location("test/something/something/something test.js")
+		expected = os.path.join("test", "something", "something", "something test.js")
+		print(result)
 		self.assertEqual(expected, result)

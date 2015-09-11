@@ -19,6 +19,14 @@ def get_logger(name):
 log = get_logger("util")
 
 
+def location(directory):
+	"""
+	:param directory: Directory in usual unix convention
+	:return: OS-specialized
+	"""
+	return os.path.join(*directory.split("/"))
+
+
 def get_modules():
 	"""
 	Returns currently loaded modules
