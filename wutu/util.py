@@ -45,6 +45,17 @@ def current(*directory):
 	return os.path.join(os.getcwd(), *directory)
 
 
+def module_locator(module, *directory):
+	"""
+	Custom locator for modules
+	:param module: module itself
+	:param directory: search directory
+	:return:
+	"""
+	get_module_dir = lambda mod: os.path.dirname(inspect.getmodule(mod.__class__).__file__)
+	return os.path.join(get_module_dir(module), *directory)
+
+
 def class_factory(name, base, **kwargs):
 	"""
 	Dynamic class generator

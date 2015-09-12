@@ -4,17 +4,6 @@ from wutu.decorators import stub
 import os, inspect
 
 
-def module_locator(module, *directory):
-	"""
-	Custom locator for modules
-	:param module: module itself
-	:param directory: search directory
-	:return:
-	"""
-	get_module_dir = lambda mod: os.path.dirname(inspect.getmodule(mod.__class__).__file__)
-	return os.path.join(get_module_dir(module), *directory)
-
-
 class Module(Resource):
 	"""
 	Base class for all modules

@@ -1,6 +1,6 @@
 import unittest
 from wutu.test_util import *
-from wutu.module import module_locator, Module
+from wutu.util import module_locator
 from wutu.decorators import *
 
 
