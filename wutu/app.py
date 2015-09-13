@@ -2,6 +2,7 @@ import sys
 import jinja2
 from flask import Flask, render_template
 from flask_restful import Api
+from jsmin import jsmin
 
 from wutu.util import *
 from wutu.compiler.common import create_base, create_stream, get_data
@@ -18,10 +19,11 @@ class CustomFlask(Flask):
 	))
 
 
-def create(index="index.html", locator=current):
+def create(index="index.html", minify=True, locator=current):
 	"""
 	Creates wutu app
 	:param index: html file for index page
+	:param minify: Do we want to minify generated JavaScripts (should be False for debug purposes)
 	:param locator: function which tells where to find templates
 	:return:
 	"""
@@ -49,7 +51,13 @@ def create(index="index.html", locator=current):
 
 	@app.route("/wutu.js")
 	def wutu_js():
-		return Response(get_data(api.jsstream), mimetype="text/javascript")
+		def process(data):
+			if minify:
+				return jsmin(data)
+			else:
+				return data
+
+		return Response(process(get_data(api.jsstream)), mimetype="text/javascript")
 
 	app.api = api
 	return app
