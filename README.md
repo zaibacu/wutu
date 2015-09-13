@@ -22,6 +22,7 @@ Version History
 0.0.2 on 2015.xx.xx
 * Restricted and updated API
 * Performance Optimization
+* Gradual typing for API methods
 
 0.0.1 on 2015.08.28
 * First initial version made possible to use in development

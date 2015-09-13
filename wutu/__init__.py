@@ -1,15 +1,17 @@
 __all__ = ["app", "version", "util", "module"]
 
+from typing import Callable
+
 
 class Wutu(object):
 	"""
 	an external API for Wutu Framework
 	"""
-	def __init__(self, index):
+	def __init__(self, index: str) -> None:
 		from wutu import app
 		self.app = app.create(index=index)
 
-	def create_module(self, fn):
+	def create_module(self, fn: Callable):
 		"""
 		Creates a Wutu module from your defined function.
 		This function must include dict with following (each is optional) methods:
@@ -23,7 +25,7 @@ class Wutu(object):
 		from wutu.decorators import create_module
 		return create_module(self.app.api)(fn)
 
-	def run(self, *args, **kwargs):
+	def run(self, *args, **kwargs) -> None:
 		"""
 		Runs web app. Arguments are same as Flask, including:
 			- host: on which address to bind (default: localhost)
@@ -36,7 +38,7 @@ class Wutu(object):
 		self.app.run(*args, **kwargs)
 
 	@staticmethod
-	def load_js(name):
+	def load_js(name: str) -> str:
 		"""
 		Loads and exposes JavaScript file
 		:param name: name of the file

@@ -2,14 +2,18 @@ import os
 import inspect
 import tempfile
 from flask import Response, request
+from flask_restful import Api as FlaskAPI
 from logbook import Logger
 from contextlib import contextmanager
 from wutu.module import Module
 from functools import lru_cache
 modules = []
 
+from typing import List, Dict, TypeVar, Any, Callable
+T = TypeVar("T")
 
-def get_logger(name):
+
+def get_logger(name: str) -> Logger:
 	"""
 	Returns a logging provider
 	:param name: name for logger
@@ -20,7 +24,7 @@ def get_logger(name):
 log = get_logger("util")
 
 
-def location(directory):
+def location(directory: str) -> str:
 	"""
 	:param directory: Directory in usual unix convention
 	:return: OS-specialized
@@ -28,7 +32,7 @@ def location(directory):
 	return os.path.join(*directory.split("/"))
 
 
-def get_modules():
+def get_modules() -> List[Module]:
 	"""
 	Returns currently loaded modules
 	:return:
@@ -36,7 +40,7 @@ def get_modules():
 	return modules
 
 
-def current(*directory):
+def current(*directory: List[str]) -> str:
 	"""
 	Locator service
 	:param directory: what to look for
@@ -45,7 +49,7 @@ def current(*directory):
 	return os.path.join(os.getcwd(), *directory)
 
 
-def module_locator(module, *directory):
+def module_locator(module: Module, *directory: List[str]) -> str:
 	"""
 	Custom locator for modules
 	:param module: module itself
@@ -56,7 +60,7 @@ def module_locator(module, *directory):
 	return os.path.join(get_module_dir(module), *directory)
 
 
-def class_factory(name, base, **kwargs):
+def class_factory(name: str, base: T, **kwargs: Dict[str, Any]) -> object:
 	"""
 	Dynamic class generator
 	:param name: class name
@@ -76,7 +80,7 @@ def class_factory(name, base, **kwargs):
 	return ctr
 
 
-def endpoint_name(name):
+def endpoint_name(name: str) -> str:
 	"""
 	Converts string from CameCase to under_score_case
 	:param name: regular name
@@ -105,7 +109,7 @@ def endpoint_name(name):
 	return "_".join(words)
 
 
-def camel_case_name(name):
+def camel_case_name(name: str) -> str:
 	"""
 	Converts string to CamelCase
 	:param name: input string
@@ -114,7 +118,7 @@ def camel_case_name(name):
 	return "".join([words[0].upper() + words[1:] for words in name.split("_")])
 
 
-def get_identity(inst):
+def get_identity(inst: Module) -> List[str]:
 	"""
 	Returns required positional arguments for module
 	:param inst: module instance
@@ -123,7 +127,7 @@ def get_identity(inst):
 	return list(filter(lambda x: x != "self", inspect.getargspec(inst.get).args))
 
 
-def setup_endpoint(api, inst, name):
+def setup_endpoint(api: FlaskAPI, inst: Module, name: str) -> None:
 	"""
 	Binds module to API
 	:param api: Flask-Restful
@@ -153,14 +157,14 @@ def setup_endpoint(api, inst, name):
 		return Response(inst.get_controller(), mimetype="text/javascript")
 
 
-def load_module(module, api=None):
+def load_module(name: str, api: FlaskAPI=None) -> Module:
 	"""
 	Loads selected module
-	:param module: module name
+	:param name: module name
 	:param api: parameter for automatic binding
 	:return: module instance
 	"""
-	mod = __import__("{0}".format(module), globals(), locals(), fromlist=["*"])
+	mod = __import__("{0}".format(name), globals(), locals(), fromlist=["*"])
 	for _, m in inspect.getmembers(mod, inspect.ismodule):
 		for _, cls in inspect.getmembers(m, inspect.isclass):
 			if issubclass(cls, Module) and cls != Module:
@@ -172,7 +176,7 @@ def load_module(module, api=None):
 				return inst
 
 
-def load_modules(locator=current):
+def load_modules(locator: Callable=current) -> List[str]:
 	"""
 	Returns list of modules in directory
 	:param locator: function which tells where to look for modules
@@ -188,7 +192,7 @@ def load_modules(locator=current):
 		return []
 
 
-def load_js(file, locator=current):
+def load_js(file: str, locator: Callable=current) -> str:
 	"""
 	Loads JavaScript into memory
 	:param file: javascript file
@@ -201,7 +205,7 @@ def load_js(file, locator=current):
 	return raw
 
 
-def get_request_args():
+def get_request_args() -> tuple:
 	"""
 	Returns arguments passed to request
 	:return:
@@ -224,7 +228,7 @@ def temp_file():
 
 
 @contextmanager
-def timer(title):
+def timer(title: str) -> None:
 	"""
 	Measures time elapsed in current block
 	:param title: Name of block to be visible in output
