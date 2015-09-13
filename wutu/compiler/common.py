@@ -41,7 +41,6 @@ def create_service_js(stream, module):
 		add_variable(block, "url", module.__name__)
 		with service_block(stream) as service:
 			_id = module.get_identifier()
-			params = lambda x: ", ".join(x)
 			http = HttpService()
 			service.add_method("get", _id, lambda s:
 				s.write("return " + http.get("base_url() + url", _id)))

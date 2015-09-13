@@ -1,6 +1,7 @@
 import unittest
 from wutu.test_util import *
 from wutu.compiler.common import *
+from wutu.compiler.http import HttpService
 from wutu.util import *
 
 
@@ -71,3 +72,38 @@ class CompilerTests(unittest.TestCase):
 		mod.create_service(stream)
 		self.assertTrue(validate_js(get_data(stream)))
 
+	def test_forming_get(self):
+		mod = Module()
+		mod.__name__ = "test_module"
+		mod.get = lambda self, _id: None
+		http = HttpService()
+		expected = """$http.get(base_url() + url + "/" + _id + "/");"""
+		result = http.get("base_url() + url", mod.get_identifier())
+		self.assertEqual(expected, result)
+
+	def test_forming_post(self):
+		mod = Module()
+		mod.__name__ = "test_module"
+		mod.get = lambda self, _id: None
+		http = HttpService()
+		expected = """$http.post(base_url() + url + "/" + _id + "/", data);"""
+		result = http.post("base_url() + url", mod.get_identifier())
+		self.assertEqual(expected, result)
+
+	def test_forming_put(self):
+		mod = Module()
+		mod.__name__ = "test_module"
+		mod.get = lambda self, _id: None
+		http = HttpService()
+		expected = """$http.put(base_url() + url, data);"""
+		result = http.put("base_url() + url")
+		self.assertEqual(expected, result)
+
+	def test_forming_delete(self):
+		mod = Module()
+		mod.__name__ = "test_module"
+		mod.get = lambda self, _id: None
+		http = HttpService()
+		expected = """$http.delete(base_url() + url + "/" + _id + "/");"""
+		result = http.delete("base_url() + url", mod.get_identifier())
+		self.assertEqual(expected, result)
