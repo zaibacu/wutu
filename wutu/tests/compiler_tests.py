@@ -107,3 +107,21 @@ class CompilerTests(unittest.TestCase):
 		expected = """$http.delete(base_url() + url + "/" + _id + "/");"""
 		result = http.delete("base_url() + url", mod.get_identifier())
 		self.assertEqual(expected, result)
+
+	def test_forming_get_w_two_args(self):
+		mod = Module()
+		mod.__name__ = "test_module"
+		mod.get = lambda self, _id, _id2: None
+		http = HttpService()
+		expected = """$http.get(base_url() + url + "/" + _id + "/" + _id2 + "/");"""
+		result = http.get("base_url() + url", mod.get_identifier())
+		self.assertEqual(expected, result)
+
+	def test_forming_get_w_three_args(self):
+		mod = Module()
+		mod.__name__ = "test_module"
+		mod.get = lambda self, _id, _id2, _id3: None
+		http = HttpService()
+		expected = """$http.get(base_url() + url + "/" + _id + "/" + _id2 + "/" + _id3 + "/");"""
+		result = http.get("base_url() + url", mod.get_identifier())
+		self.assertEqual(expected, result)
