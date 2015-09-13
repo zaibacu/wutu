@@ -51,7 +51,7 @@ def create_service_js(stream, module):
 				s.write("return " + http.post("base_url() + url", _id, "data")))
 			service.add_method("delete", _id, lambda s:
 				s.write("return " + http.delete("base_url() + url", _id)))
-	stream.write("])")
+	stream.write("]);\n")
 
 
 def create_base(stream):
