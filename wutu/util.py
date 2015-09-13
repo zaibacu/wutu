@@ -7,7 +7,8 @@ from logbook import Logger
 from contextlib import contextmanager
 from wutu.module import Module
 from functools import lru_cache
-modules = []
+from weakref import WeakSet
+modules = WeakSet()
 
 from typing import List, Dict, TypeVar, Any, Callable
 T = TypeVar("T")
@@ -138,7 +139,7 @@ def setup_endpoint(api: FlaskAPI, inst: Module, name: str) -> None:
 	params = "/".join(["<{0}>".format(param) for param in get_identity(inst)])
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
 	global modules
-	modules.append(inst)
+	modules.add(inst)
 
 	@api.app.route("/{0}/service.js".format(name), endpoint="{0}.service_endpoint".format(name))
 	@lru_cache()
