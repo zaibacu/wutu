@@ -4,6 +4,7 @@ import os
 import sys
 
 from wutu.util import *
+from wutu.compiler.common import create_stream
 from wutu.module import Module
 from wutu import app
 os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "tests"))
@@ -26,6 +27,7 @@ class ApiMock(object):
 	def __init__(self):
 		self.log = get_logger("api_mock")
 		self.resources = {}
+		self.jsstream = create_stream()
 
 	def add_resource(self, res, *args):
 		for endpoint in args:

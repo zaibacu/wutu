@@ -28,7 +28,13 @@ def create(index="index.html", locator=current):
 	app = CustomFlask(__name__)
 	api = Api(app)
 	app.jinja_loader = jinja2.FileSystemLoader(locator())
-	[load_module(module, api=api) for module in load_modules(locator)]
+	api.jsstream = create_stream()
+	create_base(api.jsstream)
+	for module in load_modules(locator):
+		mod = load_module(module, api=api)
+		mod.create_service(api.jsstream)
+		mod.create_controller(api.jsstream)
+
 
 	@app.route("/")
 	def index_page():
@@ -37,22 +43,13 @@ def create(index="index.html", locator=current):
 		:return:
 		"""
 		try:
-			return render_template(index, modules=get_modules())
+			return render_template(index)
 		except IOError:
 			return "Failed to render template {0}, error: Not found".format(index)
 
-	@app.route("/init.js")
-	def init_page():
-		"""
-		Endpoint for JavaScript init
-		:return:
-		"""
-		stream = create_stream()
-		create_base(stream)
-		return Response(get_data(stream), mimetype="text/javascript")
+	@app.route("/wutu.js")
+	def wutu_js():
+		return Response(get_data(api.jsstream), mimetype="text/javascript")
 
 	app.api = api
 	return app
-
-if __name__ == "__main__":
-	create(sys.argv).run(sys.argv)

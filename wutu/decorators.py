@@ -49,6 +49,8 @@ def create_module(api, name=None):
 		ctr = class_factory(camel_case_name(name), Module, **fn())
 		inst = ctr()
 		setup_endpoint(api, inst, name)
+		inst.create_service(api.jsstream)
+		inst.create_controller(api.jsstream)
 		log.info("Module '{0}' created".format(name))
 
 	return injector

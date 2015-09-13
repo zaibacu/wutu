@@ -9,11 +9,11 @@ def start_server():
 
 	@app.create_module
 	def test_module_2():
-		return {"get": lambda req: "Hello"}
+		return {"get": lambda self: "Hello"}
 
 	@app.create_module
 	def test_module_3():
-		return {"get": lambda req, id: "Hello again, {0}".format(id)}
+		return {"get": lambda self, id: "Hello again, {0}".format(id)}
 
 	app.run(host="localhost", port=5555, debug=True, use_reloader=False)
 

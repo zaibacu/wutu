@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <title>test</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
-    <script type="text/javascript" src="/init.js"></script>
-    {% for module in modules %}
-    <script src="/{< module.get_name()>}/service.js"></script>
-    <script src="/{< module.get_name()>}/controller.js"></script>
-    {% endfor %}
+    <script type="text/javascript" src="/wutu.js"></script>
 </head>
 <body>
     <div ng-controller="TestModuleController">

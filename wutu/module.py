@@ -51,6 +51,14 @@ class Module(Resource):
 		"""
 		create_service_js(stream, self)
 
+	def create_controller(self, stream):
+		"""
+		Constructs AngularJS controller
+		:param stream:
+		:return:
+		"""
+		stream.write(self.get_controller())
+
 	def get_service(self):
 		"""
 		Constructs AngularJS service without stream
