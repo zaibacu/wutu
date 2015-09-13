@@ -5,9 +5,7 @@ module.exports = function(config) {
     files: [
       "node_modules/angular/angular.js",
       "node_modules/angular-mocks/angular-mocks.js",
-      "http://localhost:5555/init.js",
-      "http://localhost:5555/test_module/service.js",
-      "http://localhost:5555/test_module/controller.js",
+      "http://localhost:5555/wutu.js",
 
       "specs/*.js"
     ],
