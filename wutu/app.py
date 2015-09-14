@@ -37,6 +37,10 @@ def create(index="index.html", minify=True, locator=current):
 		mod.create_service(api.jsstream)
 		mod.create_controller(api.jsstream)
 
+	if minify:
+		jsdata = jsmin(get_data(api.jsstream))
+	else:
+		jsdata = get_data(api.jsstream)
 
 	@app.route("/")
 	def index_page():
@@ -51,13 +55,7 @@ def create(index="index.html", minify=True, locator=current):
 
 	@app.route("/wutu.js")
 	def wutu_js():
-		def process(data):
-			if minify:
-				return jsmin(data)
-			else:
-				return data
-
-		return Response(process(get_data(api.jsstream)), mimetype="text/javascript")
+		return Response(jsdata, mimetype="text/javascript")
 
 	app.api = api
 	return app
