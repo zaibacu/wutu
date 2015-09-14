@@ -1,14 +1,10 @@
 from Naked.toolshed.shell import execute
 import sqlite3
-import os
-import sys
-
+import json
 from wutu.util import *
 from wutu.compiler.common import create_stream
-from wutu.module import Module
-from wutu import app
+from wutu import Wutu
 os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "tests"))
-sys.path.append("modules/")
 
 
 class AppMock(object):
@@ -86,9 +82,72 @@ def get_server_url():
 	return "http://{0}:{1}".format(TEST_HOST, TEST_PORT)
 
 
+def test_module():
+	def get_connection():
+		conn = sqlite3.connect("testing.db")
+		return conn
+
+	def get(self, _id):
+		cursor = get_connection().cursor()
+		if _id == "*":  # Wild Card
+			return [{"id": row[0], "text": row[1]} for row in cursor.execute("SELECT id, text FROM notes")]
+		else:
+			return [{"id": row[0], "text": row[1]} for row in cursor.execute(
+				"SELECT id, text FROM notes WHERE id = ?", int(_id))]
+
+	def put(self):
+		data = json.loads(request.data.decode("utf-8"))
+		conn = get_connection()
+		cursor = conn.cursor()
+		cursor.execute("INSERT INTO notes(text) VALUES(?)", (data["text"],))
+		conn.commit()
+		return {"id": cursor.lastrowid}
+
+	def delete(self, _id):
+		conn = get_connection()
+		cursor = conn.cursor()
+		cursor.execute("DELETE FROM notes WHERE id = ?", (_id,))
+		conn.commit()
+		return {"success": True}
+
+	def get_controller(self):
+		return """
+		wutu.controller("TestModuleController", function($scope, TestModuleService){
+			$scope.data = {};
+			TestModuleService.get("*").then(function(response){
+				$scope.data = response.data;
+			});
+
+			$scope.add_note = function(text){
+				TestModuleService.put({"text": text}).then(function(response){
+					$scope.data.push({"id": response.data.id, "text": text})
+				});
+			}
+
+			$scope.delete_note = function(id){
+				TestModuleService.delete(id).then(function(response){
+					$scope.data = $scope.data.filter(function(obj){
+						if(obj.id != id)
+							return true;
+					});
+				});
+			}
+		});
+		"""
+
+	return {
+		"get": get,
+		"put": put,
+		"delete": delete,
+		"get_controller": get_controller
+	}
+
+
+
 def start_server():
-	testing_app = app.create(index="test.html", locator=test_locator)
-	testing_app.run(host=TEST_HOST, port=TEST_PORT, debug=True, use_reloader=False)
+	app = Wutu(index="test.html")
+	app.create_module(test_module)
+	app.run(host=TEST_HOST, port=TEST_PORT, debug=True, use_reloader=False)
 
 
 def validate_js(content):

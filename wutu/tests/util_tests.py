@@ -1,34 +1,22 @@
 import unittest
 from wutu.test_util import *
-from wutu.util import module_locator
 from wutu.decorators import *
+from wutu.compiler.common import get_data
 
 
 class UtilTests(unittest.TestCase):
 	def setUp(self):
 		self.api = ApiMock()
 
-	def test_directory_scan(self):
-		modules = load_modules(test_locator)
-		self.assertEqual(modules, ["test_module"])
-
-	def test_module_injector(self):
-		@inject_module("test_module")
-		def injected_fn(module):
-			self.assertEqual(module.ping(), "pong")
-
-		injected_fn()
-
-	def test_module_locator(self):
-		module = load_module(load_modules()[0])
-		result = module_locator(module, "controller.js")
-		expected = location("modules/test_module/controller.js")
-		self.assertEqual(expected, result)
-
 	def test_endpoint_name(self):
 		result = endpoint_name("TestModule")
 		expected = "test_module"
 		compare_dir(self.assertEqual, expected, result)
+
+	def test_camel_case_name(self):
+		result = camel_case_name("test_module")
+		expected = "TestModule"
+		self.assertEqual(expected, result)
 
 	def test_module_creator(self):
 		@create_module(self.api)
@@ -38,13 +26,20 @@ class UtilTests(unittest.TestCase):
 		self.assertEqual("Hello, world!", self.api.call("/new_module", "get"))
 
 	def test_module_identity(self):
-		module = load_module(load_modules()[0])
+		@create_module(self.api)
+		def new_module():
+			return {"get": lambda self, _id: "Hello, world!"}
+
+		module = self.api.resources["/new_module"]
 		result = get_identity(module)
 		expected = ["_id"]
 		self.assertEqual(expected, result)
 
+	def test_module_creation(self):
+		create_module(self.api)(test_module)
+		self.assertIn("/test_module", self.api.resources.keys())
+
 	def test_location(self):
 		result = location("test/something/something/something test.js")
 		expected = os.path.join("test", "something", "something", "something test.js")
-		print(result)
 		self.assertEqual(expected, result)

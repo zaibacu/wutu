@@ -3,6 +3,7 @@ import jinja2
 from flask import Flask, render_template
 from flask_restful import Api
 from jsmin import jsmin
+from functools import lru_cache
 
 from wutu.util import *
 from wutu.compiler.common import create_base, create_stream, get_data
@@ -32,15 +33,6 @@ def create(index="index.html", minify=True, locator=current):
 	app.jinja_loader = jinja2.FileSystemLoader(locator())
 	api.jsstream = create_stream()
 	create_base(api.jsstream)
-	for module in load_modules(locator):
-		mod = load_module(module, api=api)
-		mod.create_service(api.jsstream)
-		mod.create_controller(api.jsstream)
-
-	if minify:
-		jsdata = jsmin(get_data(api.jsstream))
-	else:
-		jsdata = get_data(api.jsstream)
 
 	@app.route("/")
 	def index_page():
@@ -53,8 +45,13 @@ def create(index="index.html", minify=True, locator=current):
 		except IOError:
 			return "Failed to render template {0}, error: Not found".format(index)
 
+	@lru_cache()
 	@app.route("/wutu.js")
 	def wutu_js():
+		if minify:
+			jsdata = jsmin(get_data(api.jsstream))
+		else:
+			jsdata = get_data(api.jsstream)
 		return Response(jsdata, mimetype="text/javascript")
 
 	app.api = api

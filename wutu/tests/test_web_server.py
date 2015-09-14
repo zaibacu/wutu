@@ -1,5 +1,5 @@
 from wutu import Wutu
-from wutu.test_util import prepare_db
+from wutu.test_util import prepare_db, test_module
 
 
 def start_server():
@@ -14,6 +14,8 @@ def start_server():
 	@app.create_module
 	def test_module_3():
 		return {"get": lambda self, id: "Hello again, {0}".format(id)}
+
+	app.create_module(test_module)
 
 	app.run(host="localhost", port=5555, debug=True, use_reloader=False)
 

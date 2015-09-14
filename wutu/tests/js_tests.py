@@ -1,5 +1,5 @@
 import unittest
-from Naked.toolshed.shell import execute_js, execute, muterun
+from Naked.toolshed.shell import muterun
 from multiprocessing import Process
 from wutu.test_util import *
 from wutu.util import location

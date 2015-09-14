@@ -138,41 +138,6 @@ def setup_endpoint(api: FlaskAPI, inst: Module, name: str) -> None:
 	api.add_resource(inst, "/{0}".format(name), "/{0}/{1}/".format(name, params))
 
 
-def load_module(name: str, api: FlaskAPI=None) -> Module:
-	"""
-	Loads selected module
-	:param name: module name
-	:param api: parameter for automatic binding
-	:return: module instance
-	"""
-	mod = __import__("{0}".format(name), globals(), locals(), fromlist=["*"])
-	for _, m in inspect.getmembers(mod, inspect.ismodule):
-		for _, cls in inspect.getmembers(m, inspect.isclass):
-			if issubclass(cls, Module) and cls != Module:
-				inst = cls()
-				name = endpoint_name(cls.__name__)
-				inst.__name__ = name
-				if api:
-					setup_endpoint(api, inst, name)
-				return inst
-
-
-def load_modules(locator: Callable=current) -> List[str]:
-	"""
-	Returns list of modules in directory
-	:param locator: function which tells where to look for modules
-	:return: list of module names
-	"""
-	try:
-		blacklist = ["__pycache__", "__init__.py", ".DS_Store"]
-		modules = list(filter(lambda name: name not in blacklist, os.listdir(locator("modules"))))
-		log.info("{0} modules loaded".format(len(modules)))
-		return modules
-	except FileNotFoundError:
-		log.error("Failed to load modules from: '{0}'. Maybe incorrect directory?".format(locator("modules")))
-		return []
-
-
 def load_js(file: str, locator: Callable=current) -> str:
 	"""
 	Loads JavaScript into memory

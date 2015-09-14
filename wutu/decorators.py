@@ -13,24 +13,6 @@ def stub(fn):
 	return wrapper
 
 
-def inject_module(module):
-	"""
-	Decorator which loads and passes module as a parameter
-	:param module: module name
-	:return: wrapped function
-	"""
-	from wutu.util import load_module
-	mod = load_module(module)
-
-	def injector(fn):
-		@wraps(fn)
-		def wrapper(*args, **kwargs):
-			kwargs["module"] = mod
-			fn(*args, **kwargs)
-		return wrapper
-	return injector
-
-
 def create_module(api, name=None):
 	"""
 	A decorator which dynamically creates and binds new module
