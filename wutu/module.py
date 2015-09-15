@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from wutu.compiler.common import *
+from wutu.compiler.service import *
 from wutu.decorators import stub
 import os, inspect
 
