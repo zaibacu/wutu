@@ -1,3 +1,7 @@
+import inspect
+from collections import namedtuple
+
+
 class ServiceObj(object):
 	"""
 	AngularJS Service wrapper
@@ -52,18 +56,23 @@ def create_service_js(stream, module):
 	"""
 	from wutu.compiler.http import HttpService
 	from wutu.compiler.common import function_block, add_variable, service_block
+	http = HttpService()
+	struct = namedtuple("Mapping", ["args", "fn"])
+
+	args = module.get_identifier()
+	methods = dict(inspect.getmembers(module.__class__, predicate=inspect.isfunction))
+
+	mapping = { "get": struct(args, lambda s: s.write("return " + http.get("base_url() + url", args))),
+				"post": struct((args + ("data",)), lambda s: s.write("return " + http.post("base_url() + url", args, "data"))),
+				"delete": struct(args, lambda s: s.write("return " + http.delete("base_url() + url", args))),
+				"put": struct(("data",), lambda s: s.write("return " + http.put("base_url() + url", "data")))}
+
+	filtered = {key: mapping[key] for key in (methods.keys() & mapping.keys()) if "Module.{0}".format(key) not in methods[key].__qualname__}
 	stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))
 	with function_block(stream, ["$http"]) as block:
 		add_variable(block, "url", module.__name__)
 		with service_block(stream) as service:
-			_id = module.get_identifier()
-			http = HttpService()
-			service.add_method("get", _id, lambda s:
-				s.write("return " + http.get("base_url() + url", _id)))
-			service.add_method("put", ["data"], lambda s:
-				s.write("return " + http.put("base_url() + url", "data")))
-			service.add_method("post", _id + ["data"], lambda s:
-				s.write("return " + http.post("base_url() + url", _id, "data")))
-			service.add_method("delete", _id, lambda s:
-				s.write("return " + http.delete("base_url() + url", _id)))
+			for key, val in filtered.items():
+				service.add_method(key, val.args, val.fn)
+
 	stream.write("]);\n")
