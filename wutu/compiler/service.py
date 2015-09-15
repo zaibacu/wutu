@@ -62,10 +62,17 @@ def create_service_js(stream, module):
 	args = module.get_identifier()
 	methods = dict(inspect.getmembers(module.__class__, predicate=inspect.isfunction))
 
-	mapping = { "get": struct(args, lambda s: s.write("return " + http.get("base_url() + url", args))),
-				"post": struct((args + ("data",)), lambda s: s.write("return " + http.post("base_url() + url", args, "data"))),
-				"delete": struct(args, lambda s: s.write("return " + http.delete("base_url() + url", args))),
-				"put": struct(("data",), lambda s: s.write("return " + http.put("base_url() + url", "data")))}
+	def construct_fn(method, args):
+		fn = getattr(http, method)
+
+		def inner(stream):
+			stream.write("return " + fn("base_url() + url", args))
+		return inner
+
+	mapping = {"get": struct(args, construct_fn("get", args)),
+			   "post": struct((args + ("data",)), construct_fn("post", args)),
+			   "delete": struct(args, construct_fn("delete", args)),
+			   "put": struct(("data",), construct_fn("put", "data"))}
 
 	filtered = {key: mapping[key] for key in (methods.keys() & mapping.keys()) if "Module.{0}".format(key) not in methods[key].__qualname__}
 	stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))

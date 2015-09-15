@@ -7,9 +7,9 @@ class Wutu(object):
 	"""
 	an external API for Wutu Framework
 	"""
-	def __init__(self, index: str) -> None:
+	def __init__(self, index: str, minify: bool=False) -> None:
 		from wutu import app
-		self.app = app.create(index=index)
+		self.app = app.create(index=index, minify=minify)
 
 	def create_module(self, fn: Callable):
 		"""
