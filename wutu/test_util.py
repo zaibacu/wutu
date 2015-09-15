@@ -95,6 +95,14 @@ def test_module():
 			return [{"id": row[0], "text": row[1]} for row in cursor.execute(
 				"SELECT id, text FROM notes WHERE id = ?", int(_id))]
 
+	def post(self, _id):
+		data = json.loads(request.data.decode("utf-8"))
+		conn = get_connection()
+		cursor = conn.cursor()
+		cursor.execute("UPDATE notes SET text=? WHERE id =", (data["text"], _id))
+		conn.commit()
+		return {"success": True}
+
 	def put(self):
 		data = json.loads(request.data.decode("utf-8"))
 		conn = get_connection()
@@ -138,6 +146,7 @@ def test_module():
 	return {
 		"get": get,
 		"put": put,
+		"post": post,
 		"delete": delete,
 		"get_controller": get_controller
 	}
