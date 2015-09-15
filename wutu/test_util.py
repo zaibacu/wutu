@@ -152,8 +152,11 @@ def test_module():
 	}
 
 
-
 def start_server():
+	"""
+	Starts a test server
+	:return:
+	"""
 	app = Wutu(index="test.html")
 	app.create_module(test_module)
 	app.run(host=TEST_HOST, port=TEST_PORT, debug=True, use_reloader=False)
