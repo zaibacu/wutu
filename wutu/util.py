@@ -123,7 +123,7 @@ def get_identity(inst: Module) -> List[str]:
 	:param inst: module instance
 	:return:
 	"""
-	return list(filter(lambda x: x != "self", inspect.getargspec(inst.get).args))
+	return tuple(filter(lambda x: x != "self", inspect.getargspec(inst.get).args))
 
 
 def setup_endpoint(api: FlaskAPI, inst: Module, name: str) -> None:

@@ -32,7 +32,7 @@ class UtilTests(unittest.TestCase):
 
 		module = self.api.resources["/new_module"]
 		result = get_identity(module)
-		expected = ["_id"]
+		expected = ("_id",)
 		self.assertEqual(expected, result)
 
 	def test_module_creation(self):
