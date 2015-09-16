@@ -74,7 +74,10 @@ def create_service_js(stream, module):
 			   "delete": struct(args, construct_fn("delete", args)),
 			   "put": struct(("data",), construct_fn("put", "data"))}
 
-	filtered = {key: mapping[key] for key in (methods.keys() & mapping.keys()) if "Module.{0}".format(key) not in methods[key].__qualname__}
+	def is_stub(method):
+		return hasattr(method, "__stub__")
+
+	filtered = {key: mapping[key] for key in (methods.keys() & mapping.keys()) if not is_stub(methods[key])}
 	stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))
 	with function_block(stream, ["$http"]) as block:
 		add_variable(block, "url", module.__name__)

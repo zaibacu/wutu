@@ -7,6 +7,7 @@ def stub(fn):
 	Warns about it upon usage
 	:param fn: method
 	"""
+	fn.__stub__ = True
 	@wraps(fn)
 	def wrapper(*args, **kwargs):
 		raise NotImplemented("Method {0} is not implemented. Method desc: {1}".format(fn.__name__, fn.__doc__))
