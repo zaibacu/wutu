@@ -23,6 +23,8 @@ Version History
 * Restricted and updated API
 * Performance Optimization
 * Gradual typing for API methods
+* Removed old style (directory import based) modules. Now it is done using decorator `create_module`
+* AngularJS service generator optimization - don't compile non-implemented methods
 
 0.0.1 on 2015.08.28
 * First initial version made possible to use in development
