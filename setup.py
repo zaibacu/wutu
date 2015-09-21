@@ -4,7 +4,7 @@ import sys, os
 sys.path.append("wutu/")
 sys.path.append("wutu/compiler/")
 
-install_reqs = list(parse_requirements("requirements", session={}))
+install_reqs = list(parse_requirements("requirements.txt", session={}))
 
 
 def version():
