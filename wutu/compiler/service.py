@@ -54,6 +54,7 @@ def create_service_js(stream, module):
     :param module:
     :return:
     """
+    from wutu.util import is_stub
     from wutu.compiler.http import HttpService
     from wutu.compiler.common import function_block, add_variable, service_block
     http = HttpService()
@@ -74,8 +75,6 @@ def create_service_js(stream, module):
                "delete": struct(args, construct_fn("delete", args)),
                "put": struct(("data",), construct_fn("put", "data"))}
 
-    def is_stub(method):
-        return hasattr(method, "__stub__")
 
     filtered = {key: mapping[key] for key in (methods.keys() & mapping.keys()) if not is_stub(methods[key])}
     stream.write("wutu.factory(\"{0}Service\", [\"$http\", ".format(module.__class__.__name__))

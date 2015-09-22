@@ -159,6 +159,15 @@ def get_request_args() -> tuple:
     return request.args
 
 
+def is_stub(method):
+    """
+    Checks if method is stub
+    :param method:
+    :return:
+    """
+    return hasattr(method, "__stub__")
+
+
 @contextmanager
 def temp_file():
     """
