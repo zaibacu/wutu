@@ -10,49 +10,49 @@ from wutu.compiler.common import create_base, create_stream, get_data
 
 
 class CustomFlask(Flask):
-	"""
-	Enchanted Flask module
-	"""
-	jinja_options = Flask.jinja_options.copy()
-	jinja_options.update(dict(
-		variable_start_string='{<',
-		variable_end_string='>}',
-	))
+    """
+    Enchanted Flask module
+    """
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update(dict(
+        variable_start_string='{<',
+        variable_end_string='>}',
+    ))
 
 
 def create(index="index.html", minify=True, locator=current):
-	"""
-	Creates wutu app
-	:param index: html file for index page
-	:param minify: Do we want to minify generated JavaScripts (should be False for debug purposes)
-	:param locator: function which tells where to find templates
-	:return:
-	"""
-	app = CustomFlask(__name__)
-	api = Api(app)
-	app.jinja_loader = jinja2.FileSystemLoader(locator())
-	api.jsstream = create_stream()
-	create_base(api.jsstream)
+    """
+    Creates wutu app
+    :param index: html file for index page
+    :param minify: Do we want to minify generated JavaScripts (should be False for debug purposes)
+    :param locator: function which tells where to find templates
+    :return:
+    """
+    app = CustomFlask(__name__)
+    api = Api(app)
+    app.jinja_loader = jinja2.FileSystemLoader(locator())
+    api.jsstream = create_stream()
+    create_base(api.jsstream)
 
-	@app.route("/")
-	def index_page():
-		"""
-		Endpoint for base page
-		:return:
-		"""
-		try:
-			return render_template(index)
-		except IOError:
-			return "Failed to render template {0}, error: Not found".format(index)
+    @app.route("/")
+    def index_page():
+        """
+        Endpoint for base page
+        :return:
+        """
+        try:
+            return render_template(index)
+        except IOError:
+            return "Failed to render template {0}, error: Not found".format(index)
 
-	@lru_cache()
-	@app.route("/wutu.js")
-	def wutu_js():
-		if minify:
-			jsdata = jsmin(get_data(api.jsstream))
-		else:
-			jsdata = get_data(api.jsstream)
-		return Response(jsdata, mimetype="text/javascript")
+    @lru_cache()
+    @app.route("/wutu.js")
+    def wutu_js():
+        if minify:
+            jsdata = jsmin(get_data(api.jsstream))
+        else:
+            jsdata = get_data(api.jsstream)
+        return Response(jsdata, mimetype="text/javascript")
 
-	app.api = api
-	return app
+    app.api = api
+    return app
