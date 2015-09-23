@@ -70,6 +70,22 @@ def indent_wrapper(stream):
 
 
 @contextmanager
+def promise_resolve(stream):
+    """
+    AngularJS promise resolve
+    :param stream:
+    :return:
+    """
+    stream.write(".then(")
+    with function_block(stream, ["result"]) as block:
+        try:
+            yield block
+        finally:
+            pass
+    stream.write(");")
+
+
+@contextmanager
 def function_block(stream, params):
     """
     Automatic function block handling
