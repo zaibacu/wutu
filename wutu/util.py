@@ -159,7 +159,17 @@ def get_request_args() -> tuple:
     return request.args
 
 
-def is_stub(method):
+def get_implemented_methods(module: Module) -> list:
+    """
+    Returns implemented methods in module
+    :param module:
+    :return:
+    """
+    return {key.lower(): val for key, val in dict(inspect.getmembers(module.__class__, predicate=inspect.isfunction))
+            if not is_stub(val)}
+
+
+def is_stub(method: Callable) -> bool:
     """
     Checks if method is stub
     :param method:
