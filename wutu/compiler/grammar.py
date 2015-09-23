@@ -12,6 +12,10 @@ class Compileable(abc.ABC):
         :return: Compiled string
         """
 
+    def __repr__(self):
+        return self.compile()
+
+
 class Variable(Compileable):
     """
     A base for variables
@@ -34,3 +38,16 @@ class Number(Variable):
     """
     def compile(self) -> str:
         return "{0}".format(self.value)
+
+
+class SimpleDeclare(Compileable):
+    """
+    Builder for variable declaration
+    """
+    def __init__(self, name: str, value: Compileable, private: bool=False):
+        self.name = name
+        self.value = value
+        self.private = private
+
+    def compile(self):
+        return "{0} {1} = {2};".format("var" if self.private else "", self.name, self.value)

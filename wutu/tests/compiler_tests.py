@@ -138,3 +138,7 @@ class GrammarTests(unittest.TestCase):
         from wutu.compiler.grammar import Number
         num = Number(42)
         self.assertEqual("42", num.compile())
+
+    def test_simple_declaration(self):
+        from wutu.compiler.grammar import String, SimpleDeclare
+        self.assertEqual("var foo = \"bar\";", SimpleDeclare("foo", String("bar"), True).compile())
