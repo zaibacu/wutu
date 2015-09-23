@@ -2,6 +2,7 @@ import unittest
 from wutu.test_util import *
 from wutu.compiler.common import *
 from wutu.compiler.http import HttpService
+from wutu.compiler.controller import *
 from wutu.util import *
 
 
@@ -125,3 +126,15 @@ class CompilerTests(unittest.TestCase):
         expected = """$http.get(base_url() + url + "/" + _id + "/" + _id2 + "/" + _id3 + "/");"""
         result = http.get("base_url() + url", mod.get_identifier())
         self.assertEqual(expected, result)
+
+
+class GrammarTests(unittest.TestCase):
+    def test_string(self):
+        from wutu.compiler.grammar import String
+        str = String("test")
+        self.assertEqual("\"test\"", str.compile())
+
+    def test_number(self):
+        from wutu.compiler.grammar import Number
+        num = Number(42)
+        self.assertEqual("42", num.compile())
