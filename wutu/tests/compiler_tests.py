@@ -140,5 +140,16 @@ class GrammarTests(unittest.TestCase):
         self.assertEqual("42", num.compile())
 
     def test_simple_declaration(self):
-        from wutu.compiler.grammar import String, SimpleDeclare
+        from wutu.compiler.grammar import String, SimpleDeclare, Expression
         self.assertEqual("var foo = \"bar\";", SimpleDeclare("foo", String("bar"), True).compile())
+
+    def test_function(self):
+        from wutu.compiler.grammar import Function, String, SimpleDeclare, Expression
+        fun = Function(["name"], [SimpleDeclare("hello_str", String("Hello, "))], Expression("hello_str + \" \" + name"))
+        expected = """
+        function(name){
+            hello_str = "Hello, ";
+            return hello_str + " " + name;
+        };
+        """
+        compare(self.assertEqual, expected, fun.compile())

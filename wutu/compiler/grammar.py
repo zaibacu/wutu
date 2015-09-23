@@ -1,5 +1,5 @@
 import abc
-from typing import Any
+from typing import Any, List
 
 
 class Compileable(abc.ABC):
@@ -24,7 +24,15 @@ class Variable(Compileable):
         self.value = value
 
     def compile(self) -> str:
-        pass
+        return ""
+
+
+class Expression(Variable):
+    """
+    For cases when expression is needed as a variable
+    """
+    def compile(self) -> str:
+        return "{0}".format(self.value)
 
 
 class String(Variable):
@@ -54,3 +62,28 @@ class SimpleDeclare(Compileable):
 
     def compile(self):
         return "{0} {1} = {2};".format("var" if self.private else "", self.name, self.value)
+
+
+class Function(Compileable):
+    """
+    Function builder
+    """
+    def __init__(self, params: List=None, body: List=None, returns: Compileable=None):
+        self.params = params if params else []
+        self.body = body if body else []
+        self.returns = returns
+
+    def compile(self):
+        def create_params():
+            return ",".join(self.params)
+
+        def create_body():
+            return "\n".join([comp.compile() for comp in self.body])
+
+        def create_return():
+            if self.returns:
+                return "return {0};".format(self.returns.compile())
+            else:
+                return ""
+
+        return "function({0}){{\n {1} \n{2}\n}};".format(create_params(), create_body(), create_return())
