@@ -23,6 +23,9 @@ class Variable(Compileable):
     def __init__(self, value: Any):
         self.value = value
 
+    def compile(self) -> str:
+        pass
+
 
 class String(Variable):
     """
