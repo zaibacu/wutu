@@ -11,7 +11,8 @@ def create_service_js(stream, module):
     http = Provider("$http")
     params = module.get_identifier()
     obj = Object()
-    full_url = "base_url() + url + \"/\" + {0} + \"/\"".format(" + \"/\" + ".join(params))
+    extended = "+ \"/\" + {0} + \"/\"".format(" + \"/\" + ".join(params)) if len(params) > 0 else ""
+    full_url = "base_url() + url {0}".format(extended)
     obj.add_member("get", Function(params=params, returns=http.get(full_url)))
     obj.add_member("put", Function(params=("data",), returns=http.put("base_url() + url", "data")))
     obj.add_member("post", Function(params=params + ("data",), returns=http.post(full_url, "data")))
