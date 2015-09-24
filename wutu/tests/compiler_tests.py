@@ -173,3 +173,11 @@ class GrammarTests(unittest.TestCase):
         });
         """
         compare(self.assertEqual, expected, result)
+
+    def test_object(self):
+        from wutu.compiler.grammar import Object, String
+        obj = Object()
+        obj.add_member("something", String("test"))
+        result = obj.compile()
+        expected = "{ \"something\": \"test\" }"
+        compare(self.assertEqual, expected, result)

@@ -93,6 +93,23 @@ class SimpleDeclare(Compilable):
         return "{0} {1} = {2};".format("var" if self.private else "", self.name, self.value).strip()
 
 
+class Object(Compilable):
+    """
+    Class builder
+    """
+    def __init__(self):
+        self.members = []
+
+    def compile(self):
+        body = "\n".join(["\"{0}\": {1}".format(key, val.compile()) for key, val in self.members])
+        content = "{{ {0} }}".format(body)
+
+        return content
+
+    def add_member(self, name: str, content: Compilable):
+        self.members.append((name, content))
+
+
 class Function(Compilable):
     """
     Function builder
