@@ -150,7 +150,7 @@ class GrammarTests(unittest.TestCase):
         function(name){
             hello_str = "Hello, ";
             return hello_str + " " + name;
-        };
+        }
         """
         compare(self.assertEqual, expected, fun.compile())
 
@@ -160,3 +160,15 @@ class GrammarTests(unittest.TestCase):
         result = http.get("http://google.com")
         expected = "$http.get(\"http://google.com\")"
         self.assertEqual(expected, result)
+
+    def test_promise(self):
+        from wutu.compiler.grammar import Provider, Function, SimpleDeclare
+        http = Provider("$http")
+        result = http.get("http://google.com").resolve(Function(["result"],
+                                                                body=[SimpleDeclare("$scope.test", "result.data")]))
+        expected = """
+        $http.get("http://google.com").then(function(result){
+            $scope.test = result.data;
+        });
+        """
+        compare(self.assertEqual, expected, result)
