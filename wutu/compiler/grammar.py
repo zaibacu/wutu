@@ -2,7 +2,7 @@ import abc
 from typing import Any, List
 
 
-class Compileable(abc.ABC):
+class Compilable(abc.ABC):
     """
     A base class for all compileables
     """
@@ -16,7 +16,7 @@ class Compileable(abc.ABC):
         return self.compile()
 
 
-class Variable(Compileable):
+class Variable(Compilable):
     """
     A base for variables
     """
@@ -25,6 +25,21 @@ class Variable(Compileable):
 
     def compile(self) -> str:
         return ""
+
+
+class Provider(object):
+    """
+    A dynamic class which itself is not compilable, but its methods - are
+    """
+    def __init__(self, name):
+        self.name = name
+
+    def __getattr__(self, item):
+        def caller(*args):
+            return "{0}.{1}(\"{2}\")".format(self.name, item, ",".join(args))
+
+        return caller
+
 
 
 class Expression(Variable):
@@ -51,11 +66,11 @@ class Number(Variable):
         return "{0}".format(self.value)
 
 
-class SimpleDeclare(Compileable):
+class SimpleDeclare(Compilable):
     """
     Builder for variable declaration
     """
-    def __init__(self, name: str, value: Compileable, private: bool=False):
+    def __init__(self, name: str, value: Compilable, private: bool=False):
         self.name = name
         self.value = value
         self.private = private
@@ -64,11 +79,11 @@ class SimpleDeclare(Compileable):
         return "{0} {1} = {2};".format("var" if self.private else "", self.name, self.value)
 
 
-class Function(Compileable):
+class Function(Compilable):
     """
     Function builder
     """
-    def __init__(self, params: List=None, body: List=None, returns: Compileable=None):
+    def __init__(self, params: List=None, body: List=None, returns: Compilable=None):
         self.params = params if params else []
         self.body = body if body else []
         self.returns = returns

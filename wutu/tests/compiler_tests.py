@@ -153,3 +153,10 @@ class GrammarTests(unittest.TestCase):
         };
         """
         compare(self.assertEqual, expected, fun.compile())
+
+    def test_provider(self):
+        from wutu.compiler.grammar import Provider
+        http = Provider("$http")
+        result = http.get("http://google.com")
+        expected = "$http.get(\"http://google.com\")"
+        self.assertEqual(expected, result)
