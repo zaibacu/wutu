@@ -44,8 +44,8 @@ class Provider(object):
 
         return caller
 
-    def __setattr__(self, key: str, value: str) -> str:
-        return "{0}.{1} = {2};"
+    def __setattr__(self, key: str, value: str) -> SimpleDeclare:
+        return SimpleDeclare("{0}.{1}".format(self.name, key), value)
 
 
 class Expression(Variable):
