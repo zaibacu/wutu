@@ -118,8 +118,8 @@ def test_module():
         conn.commit()
         return {"success": True}
 
-    def get_controller(self):
-        return """
+    def create_controller(self, stream):
+        stream.write("""
         wutu.controller("TestModuleController", function($scope, TestModuleService){
             $scope.data = {};
             TestModuleService.get("*").then(function(response){
@@ -141,14 +141,14 @@ def test_module():
                 });
             }
         });
-        """
+        """)
 
     return {
         "get": get,
         "put": put,
         "post": post,
         "delete": delete,
-        "get_controller": get_controller
+        "create_controller": create_controller
     }
 
 

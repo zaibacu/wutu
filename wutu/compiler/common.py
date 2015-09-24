@@ -1,7 +1,6 @@
 from io import StringIO
 from contextlib import contextmanager
 import numbers
-from wutu.compiler.service import ServiceObj
 
 
 def add_variable(stream, name, value, private=True):
@@ -99,19 +98,4 @@ def function_block(stream, params):
     finally:
         stream.write("\n")
         stream.write("}")
-
-
-@contextmanager
-def service_block(stream):
-    """
-    Init service wrapper
-    :param stream:
-    :return:
-    """
-    service = ServiceObj(stream)
-    service.write_header()
-    try:
-        yield service
-    finally:
-        service.write_footer()
 

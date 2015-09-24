@@ -101,7 +101,7 @@ class Object(Compilable):
         self.members = []
 
     def compile(self):
-        body = "\n".join(["\"{0}\": {1}".format(key, val.compile()) for key, val in self.members])
+        body = ",\n".join(["\"{0}\": {1}".format(key, val.compile()) for key, val in self.members])
         content = "{{\n {0} \n}}".format(body)
 
         return content
