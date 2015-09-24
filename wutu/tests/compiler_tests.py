@@ -37,7 +37,6 @@ class CompilerTests(unittest.TestCase):
             service.add_method("test_fn2", ["test3"], lambda s: s.write("return false;"))
 
         result = get_data(stream)
-        print(result)
         expected = """
             var service = {
              test_fn: function(test1, test2){
