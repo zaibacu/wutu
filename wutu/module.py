@@ -11,6 +11,8 @@ class Module(Resource):
     """
     def __init__(self):
         super(Module, self).__init__()
+        self.compile_service = True
+        self.compile_module = True
 
     @stub
     def get(self):
