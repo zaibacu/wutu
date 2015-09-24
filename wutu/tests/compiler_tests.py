@@ -154,18 +154,18 @@ class GrammarTests(unittest.TestCase):
         compare(self.assertEqual, expected, fun.compile())
 
     def test_provider(self):
-        from wutu.compiler.grammar import Provider
+        from wutu.compiler.grammar import Provider, String
         http = Provider("$http")
-        result = http.get("http://google.com")
+        result = http.get(String("http://google.com").compile())
         expected = "$http.get(\"http://google.com\")"
         self.assertEqual(expected, result)
         http.url = "my_url_generator()"
         self.assertEqual(["$http.url = my_url_generator();"], http.assignments)
 
     def test_promise(self):
-        from wutu.compiler.grammar import Provider, Function, SimpleDeclare
+        from wutu.compiler.grammar import Provider, Function, SimpleDeclare, String
         http = Provider("$http")
-        result = http.get("http://google.com").resolve(Function(["result"],
+        result = http.get(String("http://google.com").compile()).resolve(Function(["result"],
                                                                 body=[SimpleDeclare("$scope.test", "result.data")]))
         expected = """
         $http.get("http://google.com").then(function(result){

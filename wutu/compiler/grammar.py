@@ -43,7 +43,7 @@ class Provider(object):
             return self[item]
 
         def caller(*args: List[str]) -> str:
-            content = "{0}.{1}(\"{2}\")".format(self.name, item, ",".join(args))
+            content = "{0}.{1}({2})".format(self.name, item, ",".join(args))
             return Promise(content)
 
         return caller
