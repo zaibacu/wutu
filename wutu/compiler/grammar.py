@@ -1,5 +1,5 @@
 import abc
-from typing import Any, List
+from typing import Any, List, Callable
 
 
 class Compilable(abc.ABC):
@@ -34,12 +34,11 @@ class Provider(object):
     def __init__(self, name):
         self.name = name
 
-    def __getattr__(self, item):
-        def caller(*args):
+    def __getattr__(self, item: str) -> Callable:
+        def caller(*args: List[str]) -> str:
             return "{0}.{1}(\"{2}\")".format(self.name, item, ",".join(args))
 
         return caller
-
 
 
 class Expression(Variable):
