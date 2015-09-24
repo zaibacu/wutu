@@ -102,7 +102,7 @@ class Object(Compilable):
 
     def compile(self):
         body = "\n".join(["\"{0}\": {1}".format(key, val.compile()) for key, val in self.members])
-        content = "{{ {0} }}".format(body)
+        content = "{{\n {0} \n}}".format(body)
 
         return content
 
@@ -124,11 +124,11 @@ class Function(Compilable):
             return ",".join(self.params)
 
         def create_body():
-            return "\n".join([comp.compile() for comp in self.body])
+            return "\n\t".join([comp.compile() for comp in self.body])
 
         def create_return():
             if self.returns:
-                return "return {0};".format(self.returns.compile())
+                return "\treturn {0};".format(self.returns.compile())
             else:
                 return ""
 
