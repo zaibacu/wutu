@@ -39,14 +39,21 @@ class Provider(object):
         self.assignments = []
 
     def __getattr__(self, item: str) -> Callable:
+        if item in self.__dict__:
+            return self[item]
+
         def caller(*args: List[str]) -> str:
             content = "{0}.{1}(\"{2}\")".format(self.name, item, ",".join(args))
             return Promise(content)
 
         return caller
 
-    def __setattr__(self, key: str, value: str) -> SimpleDeclare:
-        self.assignments.append(SimpleDeclare("{0}.{1}".format(self.name, key), value))
+    def __setattr__(self, key: str, value: str):
+        special = {"name", "assignments"}
+        if key in special:
+            super().__setattr__(key, value)
+        else:
+            self.assignments.append(SimpleDeclare("{0}.{1}".format(self.name, key), value))
 
 
 class Expression(Variable):
@@ -83,7 +90,7 @@ class SimpleDeclare(Compilable):
         self.private = private
 
     def compile(self):
-        return "{0} {1} = {2};".format("var" if self.private else "", self.name, self.value)
+        return "{0} {1} = {2};".format("var" if self.private else "", self.name, self.value).strip()
 
 
 class Function(Compilable):

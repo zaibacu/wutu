@@ -159,6 +159,8 @@ class GrammarTests(unittest.TestCase):
         result = http.get("http://google.com")
         expected = "$http.get(\"http://google.com\")"
         self.assertEqual(expected, result)
+        http.url = "my_url_generator()"
+        self.assertEqual(["$http.url = my_url_generator();"], http.assignments)
 
     def test_promise(self):
         from wutu.compiler.grammar import Provider, Function, SimpleDeclare
