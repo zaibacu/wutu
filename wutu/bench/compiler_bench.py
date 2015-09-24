@@ -13,7 +13,8 @@ def main():
     mod = Module()
     mod.__name__ = "test_module"
     stream = create_stream()
-    handle_creation(mod, stream)
+    for i in range(0, 1000):
+        handle_creation(mod, stream)
 
 if __name__ == "__main__":
     import cProfile
