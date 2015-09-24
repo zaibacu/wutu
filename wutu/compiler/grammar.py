@@ -53,6 +53,7 @@ class Provider(object):
         if key in special:
             super().__setattr__(key, value)
         else:
+            print(value)
             self.assignments.append(SimpleDeclare("{0}.{1}".format(self.name, key), value))
 
 
