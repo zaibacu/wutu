@@ -44,6 +44,9 @@ class Provider(object):
 
         return caller
 
+    def __setattr__(self, key: str, value: str) -> str:
+        return "{0}.{1} = {2};"
+
 
 class Expression(Variable):
     """
