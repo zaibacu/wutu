@@ -13,7 +13,7 @@ def create_controller_js(stream, module):
     methods = get_implemented_methods(module)
     params = module.get_identifier()
     if "get" in methods:
-        scope.get = service.get(params)
+        scope.get = service.get(*params)
     impl = Function([scope.name, service.name], body=scope.assignments)
-    stream.write(impl)
+    stream.write(impl.compile())
     stream.write(");")

@@ -165,7 +165,7 @@ def get_implemented_methods(module: Module) -> list:
     :param module:
     :return:
     """
-    return {key.lower(): val for key, val in dict(inspect.getmembers(module.__class__, predicate=inspect.isfunction))
+    return {key.lower(): val for key, val in dict(inspect.getmembers(module.__class__, predicate=inspect.isfunction)).items()
             if not is_stub(val)}
 
 
