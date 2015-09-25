@@ -18,7 +18,7 @@ def create_service_js(stream, module):
     obj.add_member("post", Function(params=params + ("data",), returns=http.post(full_url, "data")))
     obj.add_member("delete", Function(params=params, returns=http.delete(full_url)))
     impl = Function([http.name],
-                    body=[SimpleDeclare("url", String(module.__name__)), SimpleDeclare("service", obj, private=True)],
+                    body=[SimpleDeclare("url", String(module.__name__), private=True), SimpleDeclare("service", obj, private=True)],
                     returns=Expression("service"))
     stream.write(impl.compile())
     stream.write("]);\n")
