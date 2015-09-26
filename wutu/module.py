@@ -94,3 +94,13 @@ class Module(Resource):
         """
         from wutu.util import get_identity
         return get_identity(self)
+
+    @staticmethod
+    def get_request_data():
+        """
+        Returns request data
+        :return:
+        """
+        from wutu.util import get_request_json
+        return get_request_json()
+

@@ -96,7 +96,7 @@ def test_module():
                 "SELECT id, text FROM notes WHERE id = ?", int(_id))]
 
     def post(self, _id):
-        data = json.loads(request.data.decode("utf-8"))
+        data = self.get_request_data()
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("UPDATE notes SET text=? WHERE id =", (data["text"], _id))
@@ -104,7 +104,7 @@ def test_module():
         return {"success": True}
 
     def put(self):
-        data = json.loads(request.data.decode("utf-8"))
+        data = self.get_request_data()
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("INSERT INTO notes(text) VALUES(?)", (data["text"],))

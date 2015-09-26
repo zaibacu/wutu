@@ -159,6 +159,23 @@ def get_request_args() -> tuple:
     return request.args
 
 
+def get_request_json() -> dict:
+    """
+    Returns json arguments passed to request
+    :return:
+    """
+    import json
+
+    def first_non_empty(arr):
+        for obj in arr:
+            if len(obj.keys()) > 0:
+                return obj
+
+        return {}
+
+    return first_non_empty([request.get_json(), json.loads(request.data.decode("utf-8"))])
+
+
 def get_implemented_methods(module: Module) -> list:
     """
     Returns implemented methods in module
