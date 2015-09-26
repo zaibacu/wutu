@@ -28,14 +28,15 @@ def add_variable(stream, name, value, private=True):
     stream.write("{0} = {1};\n".format(name, format_value(value)))
 
 
-def create_base(stream):
+def create_base(stream, ngmodules=None):
     """
     Base data to init AngularJS
     :param stream:
     :return:
     """
     add_variable(stream, "base_url", lambda: "function(){ return \"/\"; }")
-    add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [])")
+    modules = ngmodules if ngmodules else []
+    add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", ['{0}'])".format(", '".join(modules)))
 
 
 def create_stream():

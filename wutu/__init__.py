@@ -1,15 +1,15 @@
 __all__ = ["app", "version", "util", "module"]
 
-from typing import Callable
+from typing import Callable, List
 
 
 class Wutu(object):
     """
     an external API for Wutu Framework
     """
-    def __init__(self, index: str, minify: bool=False) -> None:
+    def __init__(self, index: str, ngmodules: List[str], minify: bool=False) -> None:
         from wutu import app
-        self.app = app.create(index=index, minify=minify)
+        self.app = app.create(index=index, ngmodules=ngmodules, minify=minify)
 
     def create_module(self, fn: Callable):
         """
