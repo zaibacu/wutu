@@ -159,6 +159,12 @@ def unwraps(promise: Promise=None) -> tuple:
     """
     body = []
     body.append(SimpleDeclare("result", "[]", private=True))
-    body.append(Expression(promise.resolve(Function(["response"], body=[Expression("result = response.data.slice()")]))))
+    body.append(Expression(promise.resolve(Function(["response"],
+                                                    body=[
+                                                        Expression("""
+                                                        angular.forEach(response.data, function(val){
+                                                            result.push(val);
+                                                            })
+                                                        """)]))))
     returns = Expression("result")
     return body, returns
