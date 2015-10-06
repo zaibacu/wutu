@@ -152,19 +152,26 @@ class Promise(Compilable):
         return "{0}.then({1});".format(self.compile(), body.compile())
 
 
-def unwraps(promise: Promise=None) -> tuple:
+def unwraps(promise: Promise=None, parent: str=None) -> tuple:
     """
     A helper function which unwraps promise by executing and returning result inline.
+    :param promise: promise function to unwrap
+    :param parent: provide parent parameter name if desired to fill existing variable
     :returns: 'body', 'returns'. To be used as Function object parameter
     """
     body = []
-    body.append(SimpleDeclare("result", "[]", private=True))
+    if parent:
+        result_val = parent
+        body.append(SimpleDeclare("result", "[]", private=True))
+    else:
+        result_val = "result"
+
     body.append(Expression(promise.resolve(Function(["response"],
                                                     body=[
                                                         Expression("""
                                                         angular.forEach(response.data, function(val){
-                                                            result.push(val);
+                                                            {0}.push(val);
                                                             })
-                                                        """)]))))
-    returns = Expression("result")
+                                                        """.format(result_val))]))))
+    returns = Expression(result_val)
     return body, returns
