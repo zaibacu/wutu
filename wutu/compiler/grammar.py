@@ -162,8 +162,8 @@ def unwraps(promise: Promise=None, parent: str=None) -> tuple:
     body = []
     if parent:
         result_val = parent
-        body.append(SimpleDeclare("result", "[]", private=True))
     else:
+        body.append(SimpleDeclare("result", "[]", private=True))
         result_val = "result"
 
     body.append(Expression(promise.resolve(Function(["response"],
