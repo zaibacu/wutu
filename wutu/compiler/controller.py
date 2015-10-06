@@ -12,8 +12,10 @@ def create_controller_js(stream, module):
     scope = Provider("$scope")
     methods = get_implemented_methods(module)
     params = module.get_identifier()
-    if "get" in methods:
-        scope.get = Function(params, returns=service.get(*params))
+    scope["get_{0}".format(module.get_entity_name())] = Function(params, returns=service.get(*params))
+    scope["create_{0}".format(module.get_entity_name())] = Function(params, returns=service.put(*params))
+    scope["update_{0}".format(module.get_entity_name())] = Function(params, returns=service.post(*params))
+    scope["remove_{0}".format(module.get_entity_name())] = Function(params, returns=service.get(*params))
     impl = Function([scope.name, service.name], body=scope.assignments)
     stream.write(impl.compile())
     stream.write(");")

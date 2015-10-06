@@ -95,6 +95,13 @@ class Module(Resource):
         from wutu.util import get_identity
         return get_identity(self)
 
+    def get_entity_name(self):
+        """
+        Returns entity name to be used in naming methods in Controller
+        :return:
+        """
+        return self.__name__
+
     @staticmethod
     def get_request_data():
         """
