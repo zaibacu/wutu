@@ -87,13 +87,13 @@ def test_module():
         conn = sqlite3.connect("testing.db")
         return conn
 
-    def get(self, _id):
+    def get(self, _id=None):
         cursor = get_connection().cursor()
-        if _id == "*":  # Wild Card
+        if not _id:  # Wild Card
             return [{"id": row[0], "text": row[1]} for row in cursor.execute("SELECT id, text FROM notes")]
         else:
             return [{"id": row[0], "text": row[1]} for row in cursor.execute(
-                "SELECT id, text FROM notes WHERE id = ?", int(_id))]
+                "SELECT id, text FROM notes WHERE id = ?", _id)]
 
     def post(self, _id):
         data = self.get_request_data()
@@ -107,6 +107,7 @@ def test_module():
         data = self.get_request_data()
         conn = get_connection()
         cursor = conn.cursor()
+        print(data)
         cursor.execute("INSERT INTO notes(text) VALUES(?)", (data["text"],))
         conn.commit()
         return {"id": cursor.lastrowid}
@@ -118,37 +119,12 @@ def test_module():
         conn.commit()
         return {"success": True}
 
-    def create_controller(self, stream):
-        stream.write("""
-        wutu.controller("TestModuleController", function($scope, TestModuleService){
-            $scope.data = {};
-            TestModuleService.get("*").then(function(response){
-                $scope.data = response.data;
-            });
-
-            $scope.add_note = function(text){
-                TestModuleService.put({"text": text}).then(function(response){
-                    $scope.data.push({"id": response.data.id, "text": text})
-                });
-            }
-
-            $scope.delete_note = function(id){
-                TestModuleService.delete(id).then(function(response){
-                    $scope.data = $scope.data.filter(function(obj){
-                        if(obj.id != id)
-                            return true;
-                    });
-                });
-            }
-        });
-        """)
-
     return {
         "get": get,
         "put": put,
         "post": post,
         "delete": delete,
-        "create_controller": create_controller
+        "get_entity_name": lambda req: "note"
     }
 
 
