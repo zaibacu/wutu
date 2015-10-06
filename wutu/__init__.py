@@ -7,7 +7,7 @@ class Wutu(object):
     """
     an external API for Wutu Framework
     """
-    def __init__(self, index: str, ngmodules: List[str], minify: bool=False) -> None:
+    def __init__(self, index: str, ngmodules: List[str]=None, minify: bool=False) -> None:
         from wutu import app
         self.app = app.create(index=index, ngmodules=ngmodules, minify=minify)
 
