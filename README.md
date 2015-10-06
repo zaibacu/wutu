@@ -1,6 +1,6 @@
 About
 =====
-A fusion between AngularJS and Python Flask
+An angularJS-friendly Python framework, designed to work with one-page applications
 
 Basic Usage
 ===========
@@ -19,13 +19,5 @@ It creates endpoint `GET /create_modules/<id>` on `http://localhost:5555`. Also,
 
 Version History
 ===============
-0.0.2 on 2015.xx.xx
-* Restricted and updated API
-* Performance Optimization
-* Gradual typing for API methods
-* Removed old style (directory import based) modules. Now it is done using decorator `create_module`
-* AngularJS service generator optimization - don't compile non-implemented methods
-
-0.0.1 on 2015.08.28
-* First initial version made possible to use in development
+...
 
