@@ -55,6 +55,12 @@ class Provider(object):
         else:
             self.assignments.append(SimpleDeclare("{0}.{1}".format(self.name, key), value))
 
+    def __setitem__(self, key: str, value: str):
+        return self.__setattr__(key, value)
+
+    def __getitem__(self, key: str):
+        return self.__getattr__(key)
+
 
 class Expression(Variable):
     """
