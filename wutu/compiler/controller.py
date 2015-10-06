@@ -14,6 +14,7 @@ def create_controller_js(stream, module):
     params = module.get_identifier()
     post_params = params + ("data",)
     put_params = ("data",)
+    scope["{0}_list".format(module.get_entity_name())] = service.list()
     scope["get_{0}".format(module.get_entity_name())] = Function(params, returns=service.get(*params))
     scope["create_{0}".format(module.get_entity_name())] = Function(put_params, returns=service.put(*put_params))
     scope["update_{0}".format(module.get_entity_name())] = Function(post_params, body=[service.post(*post_params)])
