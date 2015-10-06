@@ -126,7 +126,7 @@ class GrammarTests(unittest.TestCase):
         function(){
             var result = [];
             $http.get("http://google.com").then(function(response){
-                result = response.data.slice();
+                result = response.data.slice()
             });
             return result;
         }
