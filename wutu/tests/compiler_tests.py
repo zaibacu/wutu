@@ -116,3 +116,21 @@ class GrammarTests(unittest.TestCase):
         result = obj.compile()
         expected = "{ \"something\": \"test\" }"
         compare(self.assertEqual, expected, result)
+
+    def test_unwrap(self):
+        from wutu.compiler.grammar import Function, Promise, Provider, String, unwraps
+        http = Provider("$http")
+        promise = http.get(String("http://google.com").compile())
+        result = Function([], *unwraps(promise)).compile()
+        expected = """
+        function(){
+            var result = [];
+            $http.get("http://google.com").then(function(response){
+                result = response.data;
+            });
+            return result;
+        }
+        """
+
+        compare(self.assertEqual, expected, result)
+

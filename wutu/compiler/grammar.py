@@ -150,3 +150,15 @@ class Promise(Compilable):
 
     def resolve(self, body: Function) -> str:
         return "{0}.then({1});".format(self.compile(), body.compile())
+
+
+def unwraps(promise: Promise=None) -> tuple:
+    """
+    A helper function which unwraps promise by executing and returning result inline.
+    :returns: 'body', 'returns'. To be used as Function object parameter
+    """
+    body = []
+    body.append(SimpleDeclare("result", "[]", private=True))
+    body.append(Expression(promise.resolve(Function(["response"], body=[SimpleDeclare("result", "response.data")]))))
+    returns = Expression("result")
+    return body, returns
