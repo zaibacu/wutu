@@ -30,6 +30,18 @@ class Variable(Compilable):
         return ""
 
 
+class Arg(object):
+    def __init__(self, onstr: str, oncall: Callable):
+        self.onstr = onstr
+        self.oncall = oncall
+
+    def compile(self):
+        return self.onstr
+
+    def __call__(self, *args, **kwargs):
+        return self.oncall(*args, **kwargs)
+
+
 class Provider(object):
     """
     A dynamic class which itself is not compilable, but its methods - are
@@ -42,11 +54,11 @@ class Provider(object):
         if item in self.__dict__:
             return self[item]
 
-        def caller(*args: List[str]) -> str:
+        def caller(*args: List[str]) -> Compilable:
             content = "{0}.{1}({2})".format(self.name, item, ",".join(args))
             return Promise(content)
 
-        return caller
+        return Arg(Expression("{0}.{1}".format(self.name, item)).compile(), caller)
 
     def __setattr__(self, key: str, value: str):
         special = {"name", "assignments"}
@@ -169,9 +181,9 @@ def unwraps(promise: Promise=None, parent: str=None) -> tuple:
     body.append(Expression(promise.resolve(Function(["response"],
                                                     body=[
                                                         Expression("""
-                                                        angular.forEach(response.data, function(val){
+                                                        angular.forEach(response.data, function(val){{
                                                             {0}.push(val);
-                                                            })
+                                                            }})
                                                         """.format(result_val))]))))
     returns = Expression(result_val)
     return body, returns
