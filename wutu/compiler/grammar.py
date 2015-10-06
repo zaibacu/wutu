@@ -159,6 +159,6 @@ def unwraps(promise: Promise=None) -> tuple:
     """
     body = []
     body.append(SimpleDeclare("result", "[]", private=True))
-    body.append(Expression(promise.resolve(Function(["response"], body=[SimpleDeclare("result", "response.data")]))))
+    body.append(Expression(promise.resolve(Function(["response"], body=[Expression("result = response.data.slice()")]))))
     returns = Expression("result")
     return body, returns
