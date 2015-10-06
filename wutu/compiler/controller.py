@@ -18,7 +18,7 @@ def create_controller_js(stream, module):
     scope["get_{0}".format(module.get_entity_name())] = Function(params, returns=service.get(*params))
     scope["create_{0}".format(module.get_entity_name())] = Function(put_params, returns=service.put(*put_params))
     scope["update_{0}".format(module.get_entity_name())] = Function(post_params, body=[service.post(*post_params)])
-    scope["remove_{0}".format(module.get_entity_name())] = Function(params, body=[service.get(*params)])
+    scope["remove_{0}".format(module.get_entity_name())] = Function(params, body=[service.delete(*params)])
     impl = Function([scope.name, service.name], body=scope.assignments)
     stream.write(impl.compile())
     stream.write(");")
