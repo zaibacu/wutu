@@ -5,5 +5,6 @@ python:
 
 before_script:
 - cd wutu/tests && npm install
+- cd ../..
 
 script: python setup.py test
