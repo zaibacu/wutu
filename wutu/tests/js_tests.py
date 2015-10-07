@@ -4,6 +4,7 @@ from multiprocessing import Process
 from wutu.test_util import *
 from wutu.util import location
 import time
+from nose.tools import nottest
 
 
 def start_selenium():
@@ -22,9 +23,11 @@ class JsTests(unittest.TestCase):
         self.p.terminate()
         execute("rm testing.db")
 
+    @nottest
     def test_run_unit_tests(self):
         result = execute(location("./node_modules/karma/bin/karma start"))
 
+    @nottest
     def test_run_e2e_tests(self):
         selenium = Process(target=start_selenium)
         selenium.start()
