@@ -134,6 +134,13 @@ def start_server():
     """
     app = Wutu(index="test.html", minify=False)
     app.create_module(test_module)
+    @app.create_module
+    def greetings_module():
+        hellos = ["Hello", "Hola", "Labas"]
+        return {
+            "get": lambda req: [{"text": hello} for hello in hellos],
+            "get_entity_name": lambda req: "greeting"
+        }
     app.run(host=TEST_HOST, port=TEST_PORT, debug=True, use_reloader=False)
 
 

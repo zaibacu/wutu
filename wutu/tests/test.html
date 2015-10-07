@@ -7,6 +7,12 @@
     <script type="text/javascript" src="/wutu.js"></script>
 </head>
 <body>
+    <div ng-controller="GreetingsModuleController">
+            <span ng-repeat="greeting in greeting_list">
+                {{ greeting.text }}
+            </span>
+
+    </div>
     <div ng-controller="TestModuleController">
         <div class="note-block" ng-repeat="row in note_list">
             <span class="note-text">{{ row.text }}</span> <button class="node-delete" ng-click="remove_note(row.id)">-</button>
@@ -16,5 +22,7 @@
             <input type="submit" value="Add"/>
         </form>
     </div>
+
+
 </body>
 </html>
