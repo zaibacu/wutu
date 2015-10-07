@@ -107,10 +107,9 @@ def test_module():
         data = self.get_request_data()
         conn = get_connection()
         cursor = conn.cursor()
-        print(data)
         cursor.execute("INSERT INTO notes(text) VALUES(?)", (data["text"],))
         conn.commit()
-        return {"id": cursor.lastrowid}
+        return {"id": cursor.lastrowid, "text": data["text"]}
 
     def delete(self, _id):
         conn = get_connection()

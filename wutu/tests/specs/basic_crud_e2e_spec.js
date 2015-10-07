@@ -4,7 +4,7 @@ describe("Basic CRUD operation from front-end", function(){
 	});
 
 	it("should let you to add note", function(){
-		var note = element(by.model("note"));
+		var note = element(by.model("note.text"));
 		note.sendKeys("tempnote");
 		note.submit();
 

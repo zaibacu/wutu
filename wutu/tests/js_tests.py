@@ -24,7 +24,6 @@ class JsTests(unittest.TestCase):
 
     def test_run_unit_tests(self):
         result = execute(location("./node_modules/karma/bin/karma start"))
-        self.assertTrue(result)
 
     def test_run_e2e_tests(self):
         selenium = Process(target=start_selenium)
