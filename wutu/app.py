@@ -2,7 +2,6 @@ import sys
 import jinja2
 from flask import Flask, render_template
 from flask_restful import Api
-from jsmin import jsmin
 from functools import lru_cache
 
 from wutu.util import *
@@ -49,9 +48,11 @@ def create(index="index.html", ngmodules=None, minify=True, locator=current):
     @app.route("/wutu.js")
     def wutu_js():
         if minify:
+            from jsmin import jsmin
             jsdata = jsmin(get_data(api.jsstream))
         else:
-            jsdata = get_data(api.jsstream)
+            from jsbeautifier import beautify
+            jsdata = beautify(get_data(api.jsstream))
         return Response(jsdata, mimetype="text/javascript")
 
     app.api = api
