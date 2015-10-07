@@ -1,5 +1,8 @@
 About
 =====
+[![Build Status](https://travis-ci.org/zaibacu/wutu.svg?branch=master)](https://travis-ci.org/zaibacu/wutu)
+[![Documentation Status](https://readthedocs.org/projects/wutu/badge/?version=latest)](http://wutu.readthedocs.org/en/latest/?badge=latest)
+
 An angularJS-friendly Python framework, designed to work with one-page applications
 
 Basic Usage
@@ -46,4 +49,3 @@ controller called `GreetingsModuleController` which injects and uses previously 
 Version History
 ===============
 0.1.0 - First public version
-
