@@ -9,7 +9,10 @@ Welcome to Wutu's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+	:maxdepth: 2
+
+	installing
+	usage
 
 
 
