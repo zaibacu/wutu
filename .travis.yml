@@ -3,4 +3,7 @@ python:
 - 3.4
 - 3.5
 
+before_script:
+- cd wutu/tests && npm install
+
 script: python setup.py test
