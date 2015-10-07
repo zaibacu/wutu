@@ -23,7 +23,6 @@ class JsTests(unittest.TestCase):
         self.p.terminate()
         execute("rm testing.db")
 
-    @nottest
     def test_run_unit_tests(self):
         result = execute(location("./node_modules/karma/bin/karma start"))
 
