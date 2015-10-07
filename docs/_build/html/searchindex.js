@@ -1,0 +1,1 @@
+Search.setIndex({envversion:43,titleterms:{welcom:0,indic:0,document:0,tabl:0,wutu:0},filenames:["index"],objects:{},terms:{modul:0,page:0,index:0,content:0,search:0},objnames:{},objtypes:{},titles:["Welcome to Wutu&#8217;s documentation!"]})
