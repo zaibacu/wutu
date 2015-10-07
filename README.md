@@ -20,7 +20,7 @@ app.run(host="localhost", port=5555)
 ```
 
 It creates endpoint `GET /create_modules/<id>` on `http://localhost:5555`. Also, it creates `AngularJS` service called `GreetingsModuleService` which implements all the basic http requests to this module, and
-controllercalled `GreetingsModuleController` which injects and uses previously created service by default. 
+controller called `GreetingsModuleController` which injects and uses previously created service by default. 
 
 `index.html` may look something like this
 
