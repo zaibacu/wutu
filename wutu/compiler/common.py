@@ -36,7 +36,11 @@ def create_base(stream, ngmodules=None):
     """
     add_variable(stream, "base_url", lambda: "function(){ return \"/\"; }")
     modules = ngmodules if ngmodules else []
-    add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [{0}])".format("', '".join(modules)))
+    if len(modules) > 0:
+        modules_str = "'{0}'".format("', '".join(modules))
+    else:
+        modules_str = ""
+    add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [{0}])".format(modules_str))
 
 
 def create_stream():
