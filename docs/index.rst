@@ -13,5 +13,6 @@ Contents:
 
 	installing
 	usage
+	compiler
 
 
