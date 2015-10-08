@@ -178,6 +178,7 @@ def unwraps(promise: Promise=None, parent: str=None) -> tuple:
         body.append(SimpleDeclare("result", "[]", private=True))
         result_val = "result"
 
+    body.append(Expression("if({0} !== undefined){{".format(result_val)))
     body.append(Expression(promise.resolve(Function(["response"],
                                                     body=[
                                                         Expression("""
@@ -185,5 +186,6 @@ def unwraps(promise: Promise=None, parent: str=None) -> tuple:
                                                             {0}.push(val);
                                                             }})
                                                         """.format(result_val))]))))
+    body.append(Expression("}} else {{ return {0}; }}".format(promise.compile())))
     returns = Expression(result_val)
     return body, returns
