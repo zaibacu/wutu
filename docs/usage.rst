@@ -72,8 +72,8 @@ Eg.
 
 .. code-block:: html
 
-	<script type="text/javascript" src=""//code.angularjs.org/X.Y.Z/angular.min.js"></script>
-	<script type="text/javascript" src=""//code.angularjs.org/X.Y.Z/angular-cookies.js"></script>
+	<script type="text/javascript" src="//code.angularjs.org/X.Y.Z/angular.min.js"></script>
+	<script type="text/javascript" src="//code.angularjs.org/X.Y.Z/angular-cookies.js"></script>
 
 This would include your plugin.
 
