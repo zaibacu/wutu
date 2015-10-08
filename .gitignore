@@ -28,3 +28,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 .idea
+
+_build
+_static
+_templates
