@@ -62,3 +62,34 @@ Vital parts are:
 And required by `AngularJS`:
  * `ng-app` notation on html tag
  * bind required controller
+
+Adding AngularJS Plugins
+------------------------
+
+First of all, you must include plugin's JavaScript into your main html file. Same goes with `AngularJS`, same goes here.
+
+Eg.
+
+.. code-block:: html
+	<script type="text/javascript" src=""//code.angularjs.org/X.Y.Z/angular.min.js"></script>
+	<script type="text/javascript" src=""//code.angularjs.org/X.Y.Z/angular-cookies.js"></script>
+
+This would include your plugin.
+
+Second step is to tell app constructor, that you will use certain plugin. In `ngCookies` case it would go like this
+
+.. code-block:: python
+	from wutu import Wutu
+	app = Wutu(index="index.html", ngmodules=["ngCookies"])
+
+Very similar to `AngularJS` module constructor
+
+Static Files
+-------------
+
+There is no static file hosting by design. Same position goes with other popular frameworks: `Flask`, `Django` etc.
+The reason is very simple - there are tools in the market which are already perfect for that, and there is no reason
+to drop whole project performance because of those files. It is still possible to do hackish solution and make them work
+, but such solution is only viable in development environment.
+
+Our recommendation would be Nginx static file hosting: https://www.nginx.com/resources/admin-guide/serving-static-content/
