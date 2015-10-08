@@ -71,6 +71,7 @@ First of all, you must include plugin's JavaScript into your main html file. Sam
 Eg.
 
 .. code-block:: html
+
 	<script type="text/javascript" src=""//code.angularjs.org/X.Y.Z/angular.min.js"></script>
 	<script type="text/javascript" src=""//code.angularjs.org/X.Y.Z/angular-cookies.js"></script>
 
@@ -79,6 +80,7 @@ This would include your plugin.
 Second step is to tell app constructor, that you will use certain plugin. In `ngCookies` case it would go like this
 
 .. code-block:: python
+
 	from wutu import Wutu
 	app = Wutu(index="index.html", ngmodules=["ngCookies"])
 
