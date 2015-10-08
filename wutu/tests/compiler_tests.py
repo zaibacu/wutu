@@ -125,12 +125,17 @@ class GrammarTests(unittest.TestCase):
         expected = """
         function(){
             var result = [];
-            $http.get("http://google.com").then(function(response){
-                angular.forEach(response.data,
-                        function(val){
-                            result.push(val);
-                        })
-            });
+            if(result !== undefined){
+                $http.get("http://google.com").then(function(response){
+                    angular.forEach(response.data,
+                            function(val){
+                                result.push(val);
+                            })
+                });
+            }
+            else {
+                return $http.get("http://google.com");
+            }
             return result;
         }
         """
