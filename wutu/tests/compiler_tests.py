@@ -134,7 +134,9 @@ class GrammarTests(unittest.TestCase):
                 });
             }
             else {
-                return $http.get("http://google.com");
+                return $http.get("http://google.com").then(function(response){
+                    return response.data;
+                });
             }
             return result;
         }
