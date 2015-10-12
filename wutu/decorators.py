@@ -40,3 +40,17 @@ def create_module(api, name=None):
 
     return injector
 
+
+def require_user(fn):
+    """
+    A Decorator which asks for user auth for access
+    :param fn:
+    :return:
+    """
+    user = None
+
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        return fn(*args, **kwargs + {"user": user})
+
+    return wrapper
