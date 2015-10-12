@@ -186,6 +186,9 @@ def unwraps(promise: Promise=None, parent: str=None) -> tuple:
                                                             {0}.push(val);
                                                             }})
                                                         """.format(result_val))]))))
-    body.append(Expression("}} else {{ return {0}; }}".format(promise.compile())))
+    body.append(Expression("}} else {{ return {0}; }}".format(
+        promise.resolve(Function(["response"],
+                                 returns=Expression("response.data")))))
+    )
     returns = Expression(result_val)
     return body, returns
