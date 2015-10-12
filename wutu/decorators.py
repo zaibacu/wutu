@@ -41,16 +41,17 @@ def create_module(api, name=None):
     return injector
 
 
-def require_user(fn):
+def require_user(api):
     """
     A Decorator which asks for user auth for access
-    :param fn:
-    :return:
+    :param api: flask_restful api endpoint
     """
-    user = None
+    def injector(fn):
+        user = None
 
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        return fn(*args, **kwargs + {"user": user})
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            return fn(*args, **kwargs + {"user": user})
 
-    return wrapper
+        return wrapper
+    return injector
