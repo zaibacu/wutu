@@ -5,6 +5,12 @@ About
 
 An angularJS-friendly Python framework, designed to work with one-page applications
 
+Installiation
+=============
+```bash
+pip install wutu
+```
+
 Basic Usage
 ===========
 ```Python
