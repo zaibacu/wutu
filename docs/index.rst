@@ -14,5 +14,6 @@ Contents:
 	installing
 	usage
 	compiler
+	js-utils
 
 
