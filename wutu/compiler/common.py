@@ -51,7 +51,7 @@ def create_base(stream, ngmodules=None):
                 },
                 link: function(scope, element, attrs) {
                     scope.promise().then(function(response){
-                        scope.$parent.data = response.data;
+                        scope.$parent.data = response;
                     });
                 }
             };
