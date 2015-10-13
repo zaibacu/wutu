@@ -6,15 +6,6 @@ from wutu.util import *
 
 
 class CompilerTests(unittest.TestCase):
-    def test_initial_tmpl(self):
-        stream = create_stream()
-        create_base(stream)
-        result = get_data(stream)
-        expected = """
-                var base_url = function(){ return "/"; };
-                var wutu = angular.module("wutu", []);
-            """
-        compare(self.assertEqual, expected.strip(), result.strip())
 
     def test_function_block(self):
         stream = create_stream()
