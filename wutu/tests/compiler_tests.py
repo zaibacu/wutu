@@ -7,19 +7,6 @@ from wutu.util import *
 
 class CompilerTests(unittest.TestCase):
 
-    def test_function_block(self):
-        stream = create_stream()
-        with function_block(stream, ["test1", "test2"]) as block:
-            block.write("console.log('Hello world!');")
-
-        result = get_data(stream)
-        expected = """
-            function(test1, test2){
-                console.log('Hello world!');
-            }
-        """
-        compare(self.assertEqual, expected.strip(), result.strip())
-
     def test_service(self):
         mod = Module()
         mod.__name__ = "test_module"
