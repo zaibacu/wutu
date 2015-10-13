@@ -42,6 +42,22 @@ def create_base(stream, ngmodules=None):
         modules_str = ""
     add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [{0}])".format(modules_str))
 
+    stream.write("""
+    wutu.directive("unwrap", [function() {
+            return {
+                restrict: 'E',
+                scope: {
+                    "promise": "&promise"
+                },
+                link: function(scope, element, attrs) {
+                    scope.promise().then(function(response){
+                        scope.$parent.data = response.data;
+                    });
+                }
+            };
+        }]);
+    """)
+
 
 def create_stream():
     """
