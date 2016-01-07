@@ -9,5 +9,12 @@ def compile_snippet(tmpl, **kwargs):
     :param kwargs: arguments passed to context
     :return: generated HTML
     """
+    def wrapper(val):
+        if isinstance(val, str):
+            return "\"{0}\"".format(val)
+        else:
+            return val
+
+    kwargs.update({"wrap": wrapper})
     template = env.get_template(tmpl)
     return template.render(**kwargs)
