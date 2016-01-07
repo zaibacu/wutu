@@ -15,7 +15,6 @@ def add_variable(stream, name, value, private=True):
     stream.write(str(compile_snippet("variable.html", local=private, name=name, value=value)))
 
 
-
 def create_base(stream, ngmodules=None):
     """
     Base data to init AngularJS
@@ -29,22 +28,7 @@ def create_base(stream, ngmodules=None):
     else:
         modules_str = ""
     add_variable(stream, "wutu", lambda: "angular.module(\"wutu\", [{0}])".format(modules_str))
-
-    stream.write("""
-    wutu.directive("unwrap", [function() {
-            return {
-                restrict: 'E',
-                scope: {
-                    "promise": "&promise"
-                },
-                link: function(scope, element, attrs) {
-                    scope.promise().then(function(response){
-                        scope.$parent.data = response;
-                    });
-                }
-            };
-        }]);
-    """)
+    stream.write(str(compile_snippet("unwrap_directive.html")))
 
 
 def create_stream():
