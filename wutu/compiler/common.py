@@ -23,11 +23,7 @@ def create_base(stream, ngmodules=None):
     """
     add_variable(stream, "base_url", lambda: "function(){ return \"/\"; }")
     modules = ngmodules if ngmodules else []
-    if len(modules) > 0:
-        modules_str = "'{0}'".format("', '".join(modules))
-    else:
-        modules_str = ""
-    stream.write(compile_snippet("angular_module.html", name="wutu", dep=modules))
+    stream.write(str(compile_snippet("angular_module.html", name="wutu", dep=modules)))
     stream.write(str(compile_snippet("unwrap_directive.html")))
 
 
