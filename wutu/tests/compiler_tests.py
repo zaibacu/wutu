@@ -128,4 +128,15 @@ class SnippetsTests(unittest.TestCase):
     def test_local_variable(self):
         expected = "var foo = \"bar\";"
         result = compile_snippet("variable.html", local=True, name="foo", value="bar")
-        self.assertEqual(expected, result)
+        self.assertEqual(expected, str(result))
+
+    def test_local_variable_without_assign(self):
+        expected = "var test;"
+        result = compile_snippet("variable.html", local=True, name="test")
+        self.assertEqual(expected, str(result))
+
+    def test_fn_as_variable(self):
+        expected = "helloMsg = alert(\"Hello, world!\");"
+        fn_snippet = compile_snippet("function_call.html", name="alert", params=["\"Hello, world!\""])
+        result = compile_snippet("variable.html", name="helloMsg", value=fn_snippet)
+        self.assertEqual(expected, str(result))

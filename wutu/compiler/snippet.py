@@ -2,6 +2,18 @@ from jinja2 import Environment, PackageLoader
 env = Environment(loader=PackageLoader("wutu", "snippets"))
 
 
+class Compiled(object):
+    """
+    A wrapper for compiled snippet code,
+    to avoid be handled as a string
+    """
+    def __init__(self, text):
+        self.text = text
+
+    def __str__(self):
+        return self.text
+
+
 def compile_snippet(tmpl, **kwargs):
     """
     Compiles selected snipped with jinja2
@@ -17,4 +29,4 @@ def compile_snippet(tmpl, **kwargs):
 
     kwargs.update({"wrap": wrapper})
     template = env.get_template(tmpl)
-    return template.render(**kwargs)
+    return Compiled(template.render(**kwargs))
