@@ -140,3 +140,22 @@ class SnippetsTests(unittest.TestCase):
         fn_snippet = compile_snippet("function_call.html", name="alert", params=["\"Hello, world!\""])
         result = compile_snippet("variable.html", name="helloMsg", value=fn_snippet)
         self.assertEqual(expected, str(result))
+
+    def test_fn_block(self):
+        expected = """
+        function hello(name){
+            hello_str = "Hello, ";
+            return hello_str + " " + name;
+        }
+        """
+        fn_block = compile_snippet("block.html",
+                                   statements=[compile_snippet("variable.html", name="hello_str", value="Hello, ")],
+                                   returns="hello_str + \" \" + name"
+                                   )
+
+        result = compile_snippet("function_define.html",
+                                 name="hello",
+                                 params=["name"],
+                                 content=fn_block)
+
+        compare(self.assertEqual, expected, str(result))
