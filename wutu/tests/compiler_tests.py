@@ -126,4 +126,6 @@ class GrammarTests(unittest.TestCase):
 
 class SnippetsTests(unittest.TestCase):
     def test_local_variable(self):
-        print(compile_snippet("variable.html", local=True, name="test", value=10))
+        expected = "var foo = \"bar\";"
+        result = compile_snippet("variable.html", local=True, name="foo", value="bar")
+        self.assertEqual(expected, result)
