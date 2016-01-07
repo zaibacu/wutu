@@ -30,7 +30,7 @@ def compile_snippet(tmpl, **kwargs):
         elif callable(val):
             return val()
         else:
-            raise NotImplementedError("Not supported... Yet")
+            return val
 
     kwargs.update({"wrap": wrapper})
     template = env.get_template(tmpl)
