@@ -1,5 +1,6 @@
 import abc
 from typing import Any, List, Callable
+from .snippet import compile_snippet
 
 
 class Compilable(abc.ABC):
@@ -55,7 +56,7 @@ class Provider(object):
             return self[item]
 
         def caller(*args: List[str]) -> Compilable:
-            content = "{0}.{1}({2})".format(self.name, item, ",".join(args))
+            content = str(compile_snippet("method.html", obj=self.name, method=item, args=args))
             return Promise(content)
 
         return Arg(Expression("{0}.{1}".format(self.name, item)).compile(), caller)
@@ -108,7 +109,7 @@ class SimpleDeclare(Compilable):
         self.private = private
 
     def compile(self):
-        return "{0} {1} = {2};".format("var" if self.private else "", self.name, self.value).strip()
+        return str(compile_snippet("variable.html", local=self.private, name=self.name, value=self.value))
 
 
 class Object(Compilable):
