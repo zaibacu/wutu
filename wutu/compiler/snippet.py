@@ -22,10 +22,15 @@ def compile_snippet(tmpl, **kwargs):
     :return: generated HTML
     """
     def wrapper(val):
-        if isinstance(val, str):
-            return "\"{0}\"".format(val)
-        else:
+        import numbers
+        if isinstance(val, numbers.Number):
             return val
+        elif isinstance(val, str):
+            return "\"{0}\"".format(val)
+        elif callable(val):
+            return val()
+        else:
+            raise NotImplementedError("Not supported... Yet")
 
     kwargs.update({"wrap": wrapper})
     template = env.get_template(tmpl)
