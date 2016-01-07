@@ -7,6 +7,7 @@ class Compilable(abc.ABC):
     """
     A base class for all compileables
     """
+
     @abc.abstractmethod
     def compile(self) -> str:
         """
@@ -24,6 +25,7 @@ class Variable(Compilable):
     """
     A base for variables
     """
+
     def __init__(self, value: Any):
         self.value = value
 
@@ -47,6 +49,7 @@ class Provider(object):
     """
     A dynamic class which itself is not compilable, but its methods - are
     """
+
     def __init__(self, name):
         self.name = name
         self.assignments = []
@@ -79,6 +82,7 @@ class Expression(Variable):
     """
     For cases when expression is needed as a variable
     """
+
     def compile(self) -> str:
         return "{0}".format(self.value)
 
@@ -87,6 +91,7 @@ class String(Variable):
     """
     A string variable representation
     """
+
     def compile(self) -> str:
         return "\"{0}\"".format(self.value)
 
@@ -95,6 +100,7 @@ class Number(Variable):
     """
     A number variable representation
     """
+
     def compile(self) -> str:
         return "{0}".format(self.value)
 
@@ -103,7 +109,8 @@ class SimpleDeclare(Compilable):
     """
     Builder for variable declaration
     """
-    def __init__(self, name: str, value: Compilable, private: bool=False):
+
+    def __init__(self, name: str, value: Compilable, private: bool = False):
         self.name = name
         self.value = value
         self.private = private
@@ -116,6 +123,7 @@ class Object(Compilable):
     """
     Class builder
     """
+
     def __init__(self):
         self.members = []
 
@@ -133,7 +141,8 @@ class Function(Compilable):
     """
     Function builder
     """
-    def __init__(self, params: List=None, body: List=None, returns: Compilable=None):
+
+    def __init__(self, params: List = None, body: List = None, returns: Compilable = None):
         self.params = params if params else []
         self.body = body if body else []
         self.returns = returns
@@ -165,7 +174,7 @@ class Promise(Compilable):
         return "{0}.then({1});".format(self.compile(), body.compile())
 
 
-def unwraps(promise: Promise=None, parent: str=None) -> tuple:
+def unwraps(promise: Promise = None, parent: str = None) -> tuple:
     """
     A helper function which unwraps promise by executing and returning result inline.
     :param promise: promise function to unwrap
@@ -179,17 +188,21 @@ def unwraps(promise: Promise=None, parent: str=None) -> tuple:
         body.append(SimpleDeclare("result", "[]", private=True))
         result_val = "result"
 
-    body.append(Expression("if({0} !== undefined){{".format(result_val)))
-    body.append(Expression(promise.resolve(Function(["response"],
-                                                    body=[
-                                                        Expression("""
-                                                        angular.forEach(response.data, function(val){{
-                                                            {0}.push(val);
-                                                            }})
-                                                        """.format(result_val))]))))
-    body.append(Expression("}} else {{ return {0} }}".format(
-        promise.resolve(Function(["response"],
-                                 returns=Expression("response.data")))))
-    )
+    true_block = promise.resolve(Function(["response"],
+                                          body=[
+                                              Expression("""
+                                                angular.forEach(response.data, function(val){{
+                                                    {0}.push(val);
+                                                    }})
+                                                """.format(result_val))]))
+
+    false_block = promise.resolve(Function(["response"],
+                                           returns=Expression("response.data")))
+
+    body.append(str(compile_snippet("if_exists_else.html",
+                                    cond=result_val,
+                                    returns_true=true_block,
+                                    return_false=false_block)))
+
     returns = Expression(result_val)
     return body, returns
