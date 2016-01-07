@@ -2,6 +2,7 @@ import unittest
 from wutu.test_util import *
 from wutu.compiler.common import *
 from wutu.compiler.controller import *
+from wutu.compiler.snippet import *
 from wutu.util import *
 
 
@@ -122,3 +123,7 @@ class GrammarTests(unittest.TestCase):
 
         compare(self.assertEqual, expected, result)
 
+
+class SnippetsTests(unittest.TestCase):
+    def test_local_variable(self):
+        print(compile_snippet("variable.html", local=True, name="test", value=10))
