@@ -190,11 +190,10 @@ def unwraps(promise: Promise = None, parent: str = None) -> tuple:
 
     true_block = promise.resolve(Function(["response"],
                                           body=[
-                                              Expression("""
-                                                angular.forEach(response.data, function(val){{
-                                                    {0}.push(val);
-                                                    }})
-                                                """.format(result_val))]))
+                                              Expression(
+                                                  str(compile_snippet("angular_for_each_push.html",
+                                                                      container=result_val)))
+                                          ]))
 
     false_block = promise.resolve(Function(["response"],
                                            returns=Expression("response.data")))
