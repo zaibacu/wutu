@@ -1,6 +1,6 @@
 from io import StringIO
 from contextlib import contextmanager
-import numbers
+from .snippet import compile_snippet
 
 
 def add_variable(stream, name, value, private=True):
@@ -12,20 +12,8 @@ def add_variable(stream, name, value, private=True):
     :param private: should it be declared as private?
     :return:
     """
-    if private:
-        stream.write("var ")
+    stream.write(str(compile_snippet("variable.html", local=private, name=name, value=value)))
 
-    def format_value(val):
-        if isinstance(val, numbers.Number):
-            return val
-        elif isinstance(val, str):
-            return "\"{0}\"".format(val)
-        elif callable(val):
-            return val()
-        else:
-            raise NotImplementedError("Not supported... Yet")
-
-    stream.write("{0} = {1};\n".format(name, format_value(value)))
 
 
 def create_base(stream, ngmodules=None):
