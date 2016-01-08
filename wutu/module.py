@@ -87,11 +87,16 @@ class Module(Resource):
         :param stream:
         :return:
         """
+        creator = create_module_js(stream, self)
+        inner_stream = next(creator)
+
         if self.create_service:
-            self.create_service(stream)
+            self.create_service(inner_stream)
         if self.create_controller:
-            self.create_controller(stream)
-        return create_module_js(stream, self)
+            self.create_controller(inner_stream)
+
+        next(creator)
+        return get_data(stream)
 
     def get_name(self):
         """

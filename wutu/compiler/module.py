@@ -6,5 +6,9 @@ def create_module_js(stream, mod):
     :return:
     """
     from wutu.compiler.snippet import compile_snippet
-    module = compile_snippet("angular_module.html", name=mod.get_name())
-    stream.write(str(compile_snippet("require_wrapper.html", content=module)))
+    from wutu.compiler.common import create_stream, get_data
+    inner_stream = create_stream()
+    inner_stream.write(str(compile_snippet("angular_module.html", name=mod.get_name())))
+    yield inner_stream
+    yield stream.write(str(compile_snippet("require_wrapper.html", content=get_data(inner_stream))))
+
