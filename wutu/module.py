@@ -14,6 +14,7 @@ class Module(Resource):
         super(Module, self).__init__()
         self.compile_service = True
         self.compile_module = True
+        self.directives = []
 
     @stub
     def get(self):

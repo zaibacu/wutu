@@ -5,7 +5,7 @@ from flask_restful import Api
 from functools import lru_cache
 
 from wutu.util import *
-from wutu.compiler.common import create_base, create_stream, get_data
+from wutu.compiler.common import create_stream, get_data
 
 
 class CustomFlask(Flask):
@@ -31,6 +31,9 @@ def create(index="index.html", minify=True, locator=current):
     api = Api(app)
     app.jinja_loader = jinja2.FileSystemLoader(locator())
     api.jsstream = create_stream()
+
+    from wutu.compiler.snippet import compile_snippet
+    api.jsstream.write(str(compile_snippet("wutu_util.html")))
 
     from wutu.decorators import create_module
 
