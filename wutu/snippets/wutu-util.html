@@ -1,0 +1,15 @@
+var util = angular.module("wutu-util", []);
+
+util.directive("unwrap", [function() {
+    return {
+        restrict: 'E',
+        scope: {
+            "promise": "&promise"
+        },
+        link: function(scope, element, attrs) {
+            scope.promise().then(function(response){
+                scope.$parent.data = response;
+            });
+        }
+    };
+}]);
