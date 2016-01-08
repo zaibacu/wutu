@@ -2,6 +2,7 @@ from flask_restful import Resource
 from wutu.compiler.common import *
 from wutu.compiler.service import *
 from wutu.compiler.controller import *
+from wutu.compiler.module import *
 from wutu.decorators import stub
 
 
@@ -79,6 +80,14 @@ class Module(Resource):
         stream = create_stream()
         self.create_controller(stream)
         return get_data(stream)
+
+    def bootstrap_module(self, stream):
+        """
+        Bootstraps current module as an AngularJS module
+        :param stream:
+        :return:
+        """
+        return create_module_js(stream, self)
 
     def get_name(self):
         """

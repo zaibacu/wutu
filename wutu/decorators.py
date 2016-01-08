@@ -32,6 +32,7 @@ def create_module(api, name=None):
         ctr = class_factory(camel_case_name(name), Module, **fn())
         inst = ctr()
         setup_endpoint(api, inst, name)
+        inst.bootstrap_module(api.jsstream)
         if inst.create_service:
             inst.create_service(api.jsstream)
         if inst.create_controller:
