@@ -1,0 +1,12 @@
+if({{ cond }} != undefined){
+    {{ block_true }}
+    {% if returns_true %}
+        return {{ returns_true }}
+    {% endif %}
+}
+else{
+    {{ block_false }}
+    {% if returns_false %}
+        return {{ returns_false }}
+    {% endif %}
+}

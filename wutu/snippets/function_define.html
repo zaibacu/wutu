@@ -1,0 +1,8 @@
+function{% if name %} {{name}}{% endif %}({{ params|join(", ")}}){% if content %}
+{
+    {{ content }}
+    {% if returns %}
+        return {{ returns }};
+    {% endif %}
+}
+{% endif %}

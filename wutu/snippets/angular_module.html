@@ -1,0 +1,1 @@
+{% if declare %}var {{ declare }} = {% endif %}angular.module("{{ name }}", [{{ dep|join(", ") }}]);

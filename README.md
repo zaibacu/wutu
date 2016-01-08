@@ -54,4 +54,6 @@ controller called `GreetingsModuleController` which injects and uses previously 
 
 Version History
 ===============
+0.1.5 - Use jinja2 for templates rendering
+0.1.4 ... 0.1.1 - various small changes
 0.1.0 - First public version

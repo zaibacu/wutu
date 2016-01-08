@@ -2,6 +2,7 @@ import unittest
 from wutu.test_util import *
 from wutu.compiler.common import *
 from wutu.compiler.controller import *
+from wutu.compiler.snippet import *
 from wutu.util import *
 
 
@@ -76,10 +77,10 @@ class GrammarTests(unittest.TestCase):
         self.assertEqual(["$http.url = my_url_generator();"], http.assignments)
 
     def test_promise(self):
-        from wutu.compiler.grammar import Provider, Function, SimpleDeclare, String
+        from wutu.compiler.grammar import Provider, Function, SimpleDeclare, String, Expression
         http = Provider("$http")
         result = http.get(String("http://google.com").compile()).resolve(Function(["result"],
-                                                                body=[SimpleDeclare("$scope.test", "result.data")]))
+                                                                body=[SimpleDeclare("$scope.test", Expression("result.data"))]))
         expected = """
         $http.get("http://google.com").then(function(result){
             $scope.test = result.data;
@@ -103,7 +104,7 @@ class GrammarTests(unittest.TestCase):
         expected = """
         function(){
             var result = [];
-            if(result !== undefined){
+            if(result != undefined){
                 $http.get("http://google.com").then(function(response){
                     angular.forEach(response.data,
                             function(val){
@@ -122,3 +123,39 @@ class GrammarTests(unittest.TestCase):
 
         compare(self.assertEqual, expected, result)
 
+
+class SnippetsTests(unittest.TestCase):
+    def test_local_variable(self):
+        expected = "var foo = \"bar\";"
+        result = compile_snippet("variable.html", local=True, name="foo", value="bar")
+        self.assertEqual(expected, str(result))
+
+    def test_local_variable_without_assign(self):
+        expected = "var test;"
+        result = compile_snippet("variable.html", local=True, name="test")
+        self.assertEqual(expected, str(result))
+
+    def test_fn_as_variable(self):
+        expected = "helloMsg = alert(\"Hello, world!\");"
+        fn_snippet = compile_snippet("function_call.html", name="alert", params=["\"Hello, world!\""])
+        result = compile_snippet("variable.html", name="helloMsg", value=fn_snippet)
+        self.assertEqual(expected, str(result))
+
+    def test_fn_block(self):
+        expected = """
+        function hello(name){
+            hello_str = "Hello, ";
+            return hello_str + " " + name;
+        }
+        """
+        fn_block = compile_snippet("block.html",
+                                   statements=[compile_snippet("variable.html", name="hello_str", value="Hello, ")],
+                                   returns="hello_str + \" \" + name"
+                                   )
+
+        result = compile_snippet("function_define.html",
+                                 name="hello",
+                                 params=["name"],
+                                 content=fn_block)
+
+        compare(self.assertEqual, expected, str(result))
