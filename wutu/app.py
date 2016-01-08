@@ -19,7 +19,7 @@ class CustomFlask(Flask):
     ))
 
 
-def create(index="index.html", ngmodules=None, minify=True, locator=current):
+def create(index="index.html", minify=True, locator=current):
     """
     Creates wutu app
     :param index: html file for index page
@@ -31,7 +31,15 @@ def create(index="index.html", ngmodules=None, minify=True, locator=current):
     api = Api(app)
     app.jinja_loader = jinja2.FileSystemLoader(locator())
     api.jsstream = create_stream()
-    create_base(api.jsstream, ngmodules)
+
+    from wutu.decorators import create_module
+
+    @create_module(api, name="wutu")
+    def root():
+        return {
+            "create_controller": False,
+            "create_service": False
+        }
 
     @app.route("/")
     def index_page():
