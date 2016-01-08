@@ -199,18 +199,17 @@ def unwraps(promise: Promise = None, parent: str = None) -> tuple:
 
     true_block = promise.resolve(Function(["response"],
                                           body=[
-                                              Expression(
-                                                  str(compile_snippet("angular_foreach_push.html",
-                                                                      container=result_val)))
+                                              Expression.from_snippet("angular_foreach_push.html",
+                                                                      container=result_val)
                                           ]))
 
     false_block = promise.resolve(Function(["response"],
                                            returns=Expression("response.data")))
 
-    body.append(Expression(str(compile_snippet("if_exists_else.html",
-                                    cond=result_val,
-                                    block_true=true_block,
-                                    returns_false=false_block))))
+    body.append(Expression.from_snippet("if_exists_else.html",
+                                        cond=result_val,
+                                        block_true=true_block,
+                                        returns_false=false_block))
 
     returns = Expression(result_val)
     return body, returns
