@@ -88,7 +88,7 @@ class Module(Resource):
         :param depends: dependencies form other modules
         :return:
         """
-        creator = create_module_js(stream, self)
+        creator = create_module_js(stream, self, depends)
         inner_stream = next(creator)
 
         if self.create_service:
