@@ -87,6 +87,10 @@ class Module(Resource):
         :param stream:
         :return:
         """
+        if self.create_service:
+            self.create_service(stream)
+        if self.create_controller:
+            self.create_controller(stream)
         return create_module_js(stream, self)
 
     def get_name(self):
