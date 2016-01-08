@@ -34,6 +34,7 @@ def create_module(api, name=None, depends=None):
         inst = ctr()
         setup_endpoint(api, inst, name)
         inst.bootstrap_module(api.jsstream, depends)
+        api.loaded_modules.append(inst)
         log.info("Module '{0}' created".format(name))
 
     return injector

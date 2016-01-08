@@ -35,6 +35,7 @@ class Wutu(object):
         :param kwargs:
         :return:
         """
+        self.app.on_run()
         self.app.run(*args, **kwargs)
 
     @staticmethod

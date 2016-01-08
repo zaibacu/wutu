@@ -31,18 +31,10 @@ def create(index="index.html", minify=True, locator=current):
     api = Api(app)
     app.jinja_loader = jinja2.FileSystemLoader(locator())
     api.jsstream = create_stream()
+    api.loaded_modules = []
 
     from wutu.compiler.snippet import compile_snippet
     api.jsstream.write(str(compile_snippet("wutu_util.html")))
-
-    from wutu.decorators import create_module
-
-    @create_module(api, name="wutu")
-    def root():
-        return {
-            "create_controller": False,
-            "create_service": False
-        }
 
     @app.route("/")
     def index_page():
@@ -54,6 +46,20 @@ def create(index="index.html", minify=True, locator=current):
             return render_template(index)
         except IOError:
             return "Failed to render template {0}, error: Not found".format(index)
+
+    def create_root():
+        from wutu.decorators import create_module
+
+        global_deps = ["\"{0}\"".format(module.get_name()) for module in api.loaded_modules]
+
+        @create_module(api, name="wutu", depends=global_deps)
+        def root():
+            return {
+                "create_controller": False,
+                "create_service": False
+            }
+
+    app.on_run = lambda: create_root()
 
     @lru_cache()
     @app.route("/wutu.js")
