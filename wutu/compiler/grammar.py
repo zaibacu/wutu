@@ -157,12 +157,10 @@ class Function(Compilable):
         self.returns = returns
 
     def compile(self):
-        def create_body():
-            return "\n\t".join([comp.compile() for comp in self.body])
-
+        body = str(compile_snippet("block.html", statements=self.body))
         return str(compile_snippet("function_define.html",
                                    params=self.params,
-                                   content=create_body(),
+                                   content=body,
                                    returns=self.returns))
 
 
