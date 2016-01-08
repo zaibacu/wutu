@@ -1,7 +1,4 @@
-from wutu.module import Module
-
-
-def create_module_js(stream, mod: Module):
+def create_module_js(stream, mod):
     """
     Creates AngularJS module for our module
     :param stream: api stream - to put data
