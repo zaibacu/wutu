@@ -1,0 +1,5 @@
+{
+    {% for key, val in members %}
+        "{{ key }}": {{ val }}{% if not loop.last %},{% endif %}
+    {% endfor %}
+}
