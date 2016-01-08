@@ -1,4 +1,4 @@
-function {{name}}({{ params|join(", ")}}){% if content %}
+function{% if name %} {{name}}{% endif %}({{ params|join(", ")}}){% if content %}
 {
     {{ content }}
 }
