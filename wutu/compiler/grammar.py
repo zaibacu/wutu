@@ -86,6 +86,15 @@ class Expression(Variable):
     def compile(self) -> str:
         return "{0}".format(self.value)
 
+    @staticmethod
+    def from_snippet(tmpl: str, **kwargs) -> Expression:
+        """
+        Creates expression statement from provided snippet
+        :param tmpl: snippet template file name
+        :returns: Expression object
+        """
+        return Expression(str(compile_snippet(tmpl, **kwargs)))
+
 
 class String(Variable):
     """
