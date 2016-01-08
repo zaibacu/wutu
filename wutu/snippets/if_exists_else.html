@@ -1,4 +1,4 @@
-if({{ cond !== undefined }}){
+if({{ cond }} != undefined){
     {{ block_true }}
     {% if returns_true %}
         return {{ returns_true }}

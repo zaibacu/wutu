@@ -77,10 +77,10 @@ class GrammarTests(unittest.TestCase):
         self.assertEqual(["$http.url = my_url_generator();"], http.assignments)
 
     def test_promise(self):
-        from wutu.compiler.grammar import Provider, Function, SimpleDeclare, String
+        from wutu.compiler.grammar import Provider, Function, SimpleDeclare, String, Expression
         http = Provider("$http")
         result = http.get(String("http://google.com").compile()).resolve(Function(["result"],
-                                                                body=[SimpleDeclare("$scope.test", "result.data")]))
+                                                                body=[SimpleDeclare("$scope.test", Expression("result.data"))]))
         expected = """
         $http.get("http://google.com").then(function(result){
             $scope.test = result.data;
@@ -104,7 +104,7 @@ class GrammarTests(unittest.TestCase):
         expected = """
         function(){
             var result = [];
-            if(result !== undefined){
+            if(result != undefined){
                 $http.get("http://google.com").then(function(response){
                     angular.forEach(response.data,
                             function(val){
