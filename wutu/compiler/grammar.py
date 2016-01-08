@@ -157,19 +157,13 @@ class Function(Compilable):
         self.returns = returns
 
     def compile(self):
-        def create_params():
-            return ",".join(self.params)
-
         def create_body():
             return "\n\t".join([comp.compile() for comp in self.body])
 
-        def create_return():
-            if self.returns:
-                return "\treturn {0};".format(self.returns.compile())
-            else:
-                return ""
-
-        return "function({0}){{\n {1} \n{2}\n}}".format(create_params(), create_body(), create_return())
+        return str(compile_snippet("function_define.html",
+                                   params=self.params,
+                                   content=create_body(),
+                                   returns=self.returns))
 
 
 class Promise(Compilable):
