@@ -14,11 +14,12 @@ def stub(fn):
     return wrapper
 
 
-def create_module(api, name=None):
+def create_module(api, name=None, depends=None):
     """
     A decorator which dynamically creates and binds new module
     :param api: flask_restful api endpoint
     :param name: optional name override for module. If not defined, automatically picked from function name
+    :param depends: dependencies from other modules
     :return:
     """
     from wutu.util import get_logger, camel_case_name, class_factory, setup_endpoint
@@ -32,7 +33,7 @@ def create_module(api, name=None):
         ctr = class_factory(camel_case_name(name), Module, **fn())
         inst = ctr()
         setup_endpoint(api, inst, name)
-        inst.bootstrap_module(api.jsstream)
+        inst.bootstrap_module(api.jsstream, depends)
         log.info("Module '{0}' created".format(name))
 
     return injector

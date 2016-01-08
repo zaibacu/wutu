@@ -81,10 +81,11 @@ class Module(Resource):
         self.create_controller(stream)
         return get_data(stream)
 
-    def bootstrap_module(self, stream):
+    def bootstrap_module(self, stream, depends=None):
         """
         Bootstraps current module as an AngularJS module
         :param stream:
+        :param depends: dependencies form other modules
         :return:
         """
         creator = create_module_js(stream, self)
