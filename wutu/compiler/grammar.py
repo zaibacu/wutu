@@ -69,7 +69,7 @@ class Provider(object):
         if key in special:
             super().__setattr__(key, value)
         else:
-            self.assignments.append(SimpleDeclare("{0}.{1}".format(self.name, key), value))
+            self.assignments.append(SimpleDeclare("{0}.{1}".format(self.name, key), Expression(value)))
 
     def __setitem__(self, key: str, value: str):
         return self.__setattr__(key, value)
@@ -185,23 +185,23 @@ def unwraps(promise: Promise = None, parent: str = None) -> tuple:
     if parent:
         result_val = parent
     else:
-        body.append(SimpleDeclare("result", "[]", private=True))
+        body.append(SimpleDeclare("result", Expression("[]"), private=True))
         result_val = "result"
 
     true_block = promise.resolve(Function(["response"],
                                           body=[
                                               Expression(
-                                                  str(compile_snippet("angular_for_each_push.html",
+                                                  str(compile_snippet("angular_foreach_push.html",
                                                                       container=result_val)))
                                           ]))
 
     false_block = promise.resolve(Function(["response"],
                                            returns=Expression("response.data")))
 
-    body.append(str(compile_snippet("if_exists_else.html",
+    body.append(Expression(str(compile_snippet("if_exists_else.html",
                                     cond=result_val,
-                                    returns_true=true_block,
-                                    return_false=false_block)))
+                                    block_true=true_block,
+                                    returns_false=false_block))))
 
     returns = Expression(result_val)
     return body, returns
