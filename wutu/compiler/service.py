@@ -7,7 +7,7 @@ def create_service_js(stream, module):
     """
     from wutu.util import get_implemented_methods
     from wutu.compiler.grammar import Provider, Function, Object, SimpleDeclare, String, Expression, unwraps
-    stream.write("wutu.factory('{0}Service', ['$http', ".format(module.__class__.__name__))
+    stream.write("mod.factory('{0}Service', ['$http', ".format(module.__class__.__name__))
     http = Provider("$http")
     params = module.get_identifier()
     obj = Object()
