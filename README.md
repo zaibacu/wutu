@@ -54,6 +54,9 @@ controller called `GreetingsModuleController` which injects and uses previously 
 
 Version History
 ===============
+0.2
+---
+	0.2.0 -- Each module should go as a separate JS entity
 0.1
 ---
     0.1.5 - Use jinja2 for templates rendering
