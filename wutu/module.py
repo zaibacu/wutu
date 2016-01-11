@@ -89,7 +89,7 @@ class Module(Resource):
         :param depends: dependencies form other modules
         :return:
         """
-        creator = create_module_js(stream, self, depends)
+        creator = create_module_js(stream, self, ["\"wutu_util\""] + depends if depends else [])
         inner_stream = next(creator)
 
         if self.create_service:
