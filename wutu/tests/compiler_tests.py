@@ -7,17 +7,6 @@ from wutu.util import *
 
 
 class CompilerTests(unittest.TestCase):
-
-    def test_service(self):
-        mod = Module()
-        mod.__name__ = "test_module"
-        stream = StringIO()
-        create_base(stream)
-        mod.create_service(stream)
-        result = get_data(stream)
-        expected = """
-        """
-
     def test_string_argument(self):
         stream = create_stream()
         add_variable(stream, "test", "hello")
@@ -31,14 +20,6 @@ class CompilerTests(unittest.TestCase):
         result = get_data(stream).strip()
         excepted = "var test = 123;"
         self.assertEqual(excepted, result)
-
-    def test_module(self):
-        mod = Module()
-        mod.__name__ = "test_module"
-        stream = StringIO()
-        create_base(stream)
-        mod.create_service(stream)
-        self.assertTrue(validate_js(get_data(stream)))
 
 
 class GrammarTests(unittest.TestCase):
