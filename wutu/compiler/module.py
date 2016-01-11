@@ -14,5 +14,5 @@ def create_module_js(stream, mod, depends=None):
                                            declare="mod",
                                            dep=depends if depends else [])))
     yield inner_stream
-    yield stream.write(str(compile_snippet("require_wrapper.html", content=get_data(inner_stream))))
+    yield stream.write(str(compile_snippet("fn_wrapper.html", content=get_data(inner_stream))))
 
