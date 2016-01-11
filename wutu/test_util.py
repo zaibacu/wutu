@@ -24,6 +24,7 @@ class ApiMock(object):
         self.log = get_logger("api_mock")
         self.resources = {}
         self.jsstream = create_stream()
+        self.loaded_modules = []
 
     def add_resource(self, res, *args):
         for endpoint in args:
