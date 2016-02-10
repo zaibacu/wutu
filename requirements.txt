@@ -4,3 +4,4 @@ naked==0.1.31
 logbook==0.10.1
 jsmin==2.1.4
 jsbeautifier==1.5.10
+mypy-lang
